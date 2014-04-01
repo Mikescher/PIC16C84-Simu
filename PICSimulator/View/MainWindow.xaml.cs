@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Windows;
 using System.Windows.Input;
 
 
@@ -56,6 +58,36 @@ namespace PICSimulator.View
 			sc_document.AskSaveIfDirty();
 
 			this.Close();
+		}
+
+		private void CompileEnabled(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = sc_document != null && !string.IsNullOrWhiteSpace(sc_document.Path);
+
+			e.Handled = true;
+		}
+
+		private void CompileExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			string resultPath = Path.Combine(Path.GetDirectoryName(sc_document.Path), Path.GetFileNameWithoutExtension(sc_document.Path) + ".lst");
+
+			if (File.Exists(resultPath))
+			{
+				File.Delete(resultPath);
+			}
+
+			Process proc = new Process()
+			{
+				StartInfo = new ProcessStartInfo(@"Compiler\il_ass16.exe", '"' + sc_document.Path + '"')
+			};
+
+			proc.Start();
+			proc.WaitForExit();
+
+			if (File.Exists(resultPath))
+			{
+				MessageBox.Show("Yay");
+			}
 		}
 
 		#endregion

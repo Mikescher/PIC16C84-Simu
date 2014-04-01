@@ -1,14 +1,24 @@
 ﻿<Window x:Class="PICSimulator.View.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:self="clr-namespace:PICSimulator.View"
         Title="MainWindow" Height="450" Width="600">
 
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Theme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
     <Window.CommandBindings>
         <CommandBinding Command="Save" Executed="SaveExecuted" />
         <CommandBinding Command="SaveAs" Executed="SaveAsExecuted" />
         <CommandBinding Command="Open" Executed="OpenExecuted" />
         <CommandBinding Command="New" Executed="NewExecuted" />
         <CommandBinding Command="Close" Executed="CloseExecuted" />
+        <CommandBinding Command="self:CustomCmds.Compile" CanExecute="CompileEnabled" Executed="CompileExecuted" />
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -16,6 +26,7 @@
         <KeyBinding Command="SaveAs" Key="S" Modifiers="Control+Shift" />
         <KeyBinding Command="Open" Key="O" Modifiers="Control" />
         <KeyBinding Command="New" Key="N" Modifiers="Control" />
+        <KeyBinding Command="self:CustomCmds.Compile" Key="F5" />
     </Window.InputBindings>
 
     <Grid>
@@ -47,14 +58,14 @@
         </Menu>
 
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="5" Background="BlanchedAlmond">
-            <Button Content="New" Command="New" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
-            <Button Content="Open" Command="Open" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
-            <Button Content="Save" Command="Save" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
-            <Button Content="Save As" Command="SaveAs" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
-            <Button Content="Compile" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
-            <Button Content="Run" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
-            <Button Content="Pause" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
-            <Button Content="Stop" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
+            <Button Content="New" Command="New"/>
+            <Button Content="Open" Command="Open"/>
+            <Button Content="Save" Command="Save"/>
+            <Button Content="Save As" Command="SaveAs"/>
+            <Button Content="Compile" Command="self:CustomCmds.Compile"/>
+            <Button Content="Run"/>
+            <Button Content="Pause"/>
+            <Button Content="Stop"/>
         </StackPanel>
 
         <TextBox Grid.Row="2" Grid.Column="2" Margin="5"  x:Name="txtCode" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"/>

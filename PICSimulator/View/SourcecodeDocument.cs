@@ -47,32 +47,23 @@ namespace PICSimulator.View
 		public static SourcecodeDocument OpenNew(Window owner, TextBox handler)
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			ofd.Filter = "All Files|*|Sourcecode (.src)|*.src|Compiled Code (.lst)|*.lst";
-			ofd.FilterIndex = 1;
+			ofd.Filter = "All Files|*|Sourcecode (.src)|*.src";
+			ofd.FilterIndex = 2;
 			ofd.CheckFileExists = true;
 			ofd.CheckPathExists = true;
 
 			if (ofd.ShowDialog().GetValueOrDefault(false))
 			{
-				if (System.IO.Path.GetExtension(ofd.FileName).ToLower() == "flt")
+				try
 				{
-					// TODO Directly load flt
+					string s = File.ReadAllText(ofd.FileName);
 
-					return null;
+					return new SourcecodeDocument(owner, handler, s, ofd.FileName);
 				}
-				else
+				catch (IOException)
 				{
-					try
-					{
-						string s = File.ReadAllText(ofd.FileName);
-
-						return new SourcecodeDocument(owner, handler, s, ofd.FileName);
-					}
-					catch (IOException)
-					{
-						MessageBox.Show("Error: Could not load File.");
-						return null;
-					}
+					MessageBox.Show("Error: Could not load File.");
+					return null;
 				}
 			}
 			else

@@ -1,0 +1,30 @@
+Symbol/Label nicht definiert o. Arg. fehlt
+Syntax-Fehler
+Symbol / Label bereits definiert
+Adressbereich überschritten
+Registerfile ist kein gültiger Port
+ELSEIF ohne IF
+ENDIF ohne IF
+Kein ENDIF vorhanden
+Code sichern.
+Dateiname =
+1. Durchlauf
+2. Durchlauf
+Kein Code erzeugt !
+Symboltabelle voll
+Fehlerhaftes Argument
+Datei nicht gefunden
+Fehler in DEVICE-Anweisung
+unbekannter Operator
+Überlauf im Ergebnis
+gültiger Adressbereich überschritten
+Programmspeicher bereits mit Code belegt
+Includedatei
+Division durch Null
+Nur Bitadressierung [0..7] erlaubt
+Paging Konflikt
+Fehler in Zeile
+keine gültigen DEBUG Informationen
+Programm zu groß
+Labeltabelle voll
+iL_BAS16.PIC file not found
