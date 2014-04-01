@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using PICSimulator.Model;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -12,6 +13,7 @@ namespace PICSimulator.View
 	public partial class MainWindow : Window
 	{
 		private SourcecodeDocument sc_document;
+		private PICController controller = null;
 
 		public MainWindow()
 		{
@@ -86,6 +88,15 @@ namespace PICSimulator.View
 
 			if (File.Exists(resultPath))
 			{
+				var cmds = PICProgramLoader.LoadFromFile(resultPath);
+
+				if (cmds == null)
+				{
+					MessageBox.Show("Error while reading compiled file.");
+					return;
+				}
+
+				controller = new PICController(cmds);
 				MessageBox.Show("Yay");
 			}
 		}
