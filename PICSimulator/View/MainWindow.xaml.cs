@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 
 namespace PICSimulator.View
 {
@@ -19,9 +9,55 @@ namespace PICSimulator.View
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private SourcecodeDocument sc_document;
+
 		public MainWindow()
 		{
 			InitializeComponent();
+
+			sc_document = new SourcecodeDocument(this, txtCode);
 		}
+
+		#region Event Handler
+
+		private void NewExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			sc_document.AskSaveIfDirty();
+
+			sc_document = new SourcecodeDocument(this, txtCode);
+		}
+
+		private void OpenExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			sc_document.AskSaveIfDirty();
+
+
+			sc_document = SourcecodeDocument.OpenNew(this, txtCode) ?? sc_document;
+		}
+
+		private void SaveExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			if (!sc_document.Save())
+			{
+				MessageBox.Show("Error while saving");
+			}
+		}
+
+		private void SaveAsExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			if (!sc_document.SaveAs())
+			{
+				MessageBox.Show("Error while saving");
+			}
+		}
+
+		private void CloseExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			sc_document.AskSaveIfDirty();
+
+			this.Close();
+		}
+
+		#endregion
 	}
 }

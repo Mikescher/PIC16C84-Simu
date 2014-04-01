@@ -2,6 +2,22 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="450" Width="600">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="Save" Executed="SaveExecuted" />
+        <CommandBinding Command="SaveAs" Executed="SaveAsExecuted" />
+        <CommandBinding Command="Open" Executed="OpenExecuted" />
+        <CommandBinding Command="New" Executed="NewExecuted" />
+        <CommandBinding Command="Close" Executed="CloseExecuted" />
+    </Window.CommandBindings>
+
+    <Window.InputBindings>
+        <KeyBinding Command="Save" Key="S" Modifiers="Control" />
+        <KeyBinding Command="SaveAs" Key="S" Modifiers="Control+Shift" />
+        <KeyBinding Command="Open" Key="O" Modifiers="Control" />
+        <KeyBinding Command="New" Key="N" Modifiers="Control" />
+    </Window.InputBindings>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -19,22 +35,29 @@
         </Grid.ColumnDefinitions>
 
         <Menu Grid.Row="0" Grid.ColumnSpan="5">
-            <MenuItem Header="File"/>
-            <MenuItem Header="Edit"/>
-            <MenuItem Header="Help"/>
+            <MenuItem Header="File">
+                <MenuItem Header="New" Command="New"/>
+                <MenuItem Header="Open" Command="Open"/>
+                <MenuItem Header="Exit" Command="Close"/>
+            </MenuItem>
+            <MenuItem Header="Edit">
+            </MenuItem>
+            <MenuItem Header="Help">
+            </MenuItem>
         </Menu>
 
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="5" Background="BlanchedAlmond">
+            <Button Content="New" Command="New" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
+            <Button Content="Open" Command="Open" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
+            <Button Content="Save" Command="Save" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
+            <Button Content="Save As" Command="SaveAs" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
+            <Button Content="Compile" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
             <Button Content="Run" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
-            <Button Content="Run" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
-            <Button Content="Run" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
-            <Button Content="Run" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
-            <Button Content="Run" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
-            <Button Content="Run" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
-            <Button Content="Run" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
+            <Button Content="Pause" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
+            <Button Content="Stop" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
         </StackPanel>
 
-        <TextBox Grid.Row="2" Grid.Column="2" Margin="5"   TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"/>
+        <TextBox Grid.Row="2" Grid.Column="2" Margin="5"  x:Name="txtCode" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"/>
 
         <GridSplitter Grid.Row="2" Grid.Column="1" Grid.RowSpan="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" ShowsPreview="False" Width="3" />
         <GridSplitter Grid.Row="2" Grid.Column="3" Grid.RowSpan="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" ShowsPreview="False" Width="3" />

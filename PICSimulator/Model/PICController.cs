@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace PICSimulator.Model
 {
-    class PICController
-    {
-    }
+	class PICController
+	{
+		public bool isRunning { get; private set; }
+
+		public PICController()
+		{
+			isRunning = false;
+		}
+	}
 }

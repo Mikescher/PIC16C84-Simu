@@ -1,0 +1,46 @@
+; Zählt bei steigender Flanke (PIN RA - Bit 0) das Register COUNTER hoch
+
+	DEVICE    16F84
+		CONFIG    RBPU_ON
+		CONFIG    WDT_ON
+		CONFIG    ANSEL
+		CONFIG    ANSELH
+
+		
+COUNTER			EQU		15H
+CURRENT			EQU		16H
+TEMP_BIT		EQU		17H
+TEMP_CURR		EQU		18H
+		
+	org		0
+
+	MOVLW 00H ; Register W = 0
+	MOVWF COUNTER ; Counter (=0)
+	MOVWF CURRENT ; currState (=0)
+
+loop
+	
+	MOVF 05, W ; Aktueller Zustand in W
+	MOVWF TEMP_CURR ; 18H == TEMP
+
+	XORWF CURRENT, W ; W = Akt xor vorherig
+	
+	MOVWF TEMP_BIT ; W -> 17
+	BTFSS TEMP_BIT, 0   ; Skip if W != 0
+	goto jmpend
+	
+	BTFSS TEMP_CURR, 0   ; Skip if W == 1 (MACHE NUR BEI STEIGENDER FLANKE)
+	goto jmpend
+	
+	
+	INCF COUNTER, 1
+jmpend
+	
+	
+	MOVF TEMP_CURR, W ; Update CurrState
+	MOVWF CURRENT
+	
+	goto loop
+	
+	
+	end
