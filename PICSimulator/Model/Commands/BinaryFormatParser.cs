@@ -44,6 +44,8 @@ namespace PICSimulator.Model.Commands
 				{
 					if (format[i] == value[i])
 						continue;
+					else
+						return null;
 				}
 				else if (format[i] == 'x')
 				{

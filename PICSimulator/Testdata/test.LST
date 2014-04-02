@@ -14,33 +14,7 @@
                     00014             
                     00015           org  0
                     00016           
-0000 3000           00017           MOVLW 00H ; Register W = 0
-0001 0095           00018           MOVWF COUNTER ; Counter (=0)
-0002 0096           00019           MOVWF CURRENT ; currState (=0)
-                    00020           
-                    00021  loop     
-                    00022            
-0003 0805           00023           MOVF 05, W ; Aktueller Zustand in W
-0004 0098           00024           MOVWF TEMP_CURR ; 18H == TEMP
-                    00025           
-0005 0616           00026           XORWF CURRENT, W ; W = Akt xor vorherig
-                    00027            
-0006 0097           00028           MOVWF TEMP_BIT ; W -> 17
-0007 1C17           00029           BTFSS TEMP_BIT, 0   ; Skip if W != 0
-0008 280C           00030           goto jmpend
-                    00031            
-0009 1C18           00032           BTFSS TEMP_CURR, 0   ; Skip if W == 1 (MACHE NUR BEI STEIGE
-000A 280C           00033           goto jmpend
-                    00034            
-                    00035            
-000B 0A95           00036           INCF COUNTER, 1
-                    00037  jmpend   
-                    00038            
-                    00039            
-000C 0818           00040           MOVF TEMP_CURR, W ; Update CurrState
-000D 0096           00041           MOVWF CURRENT
-                    00042            
-000E 2803           00043           goto loop
-                    00044            
-                    00045            
-                    00046           end
+0000 30CC           00017           MOVLW 0CCH        ; Register W = 0
+0001 0098           00018           MOVWF TEMP_CURR  ; 18H == TEMP
+                    00019           
+                    00020           end

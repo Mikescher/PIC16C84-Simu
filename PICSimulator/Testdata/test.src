@@ -14,33 +14,7 @@ TEMP_CURR		EQU		18H
 		
 	org		0
 
-	MOVLW 00H ; Register W = 0
-	MOVWF COUNTER ; Counter (=0)
-	MOVWF CURRENT ; currState (=0)
+	MOVLW 0CCH        ; Register W = 0
+	MOVWF TEMP_CURR  ; 18H == TEMP
 
-loop
-	
-	MOVF 05, W ; Aktueller Zustand in W
-	MOVWF TEMP_CURR ; 18H == TEMP
-
-	XORWF CURRENT, W ; W = Akt xor vorherig
-	
-	MOVWF TEMP_BIT ; W -> 17
-	BTFSS TEMP_BIT, 0   ; Skip if W != 0
-	goto jmpend
-	
-	BTFSS TEMP_CURR, 0   ; Skip if W == 1 (MACHE NUR BEI STEIGENDER FLANKE)
-	goto jmpend
-	
-	
-	INCF COUNTER, 1
-jmpend
-	
-	
-	MOVF TEMP_CURR, W ; Update CurrState
-	MOVWF CURRENT
-	
-	goto loop
-	
-	
 	end

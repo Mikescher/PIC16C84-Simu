@@ -19,7 +19,7 @@ namespace PICSimulator.Model.Commands
 
 		public override string ToString()
 		{
-			return string.Format("[{0:X04}] <{1:X04}> ({2}: {3})", Position, Command, SourceCodeLine, SourceCodeText);
+			return string.Format("[{0:X04}] {1}:<{2:X04}> ({3}: {4})", Position, this.GetType().Name, Command, SourceCodeLine, SourceCodeText);
 		}
 	}
 }

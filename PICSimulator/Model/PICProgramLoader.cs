@@ -61,7 +61,7 @@ namespace PICSimulator.Model
 		private static uint? ParseHex(string v)
 		{
 			v = v.Trim();
-			v = v.TrimStart('0');
+			//v = v.TrimStart('0');
 
 			try
 			{

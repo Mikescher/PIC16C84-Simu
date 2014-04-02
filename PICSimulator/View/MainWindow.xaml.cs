@@ -1,4 +1,5 @@
 ﻿using PICSimulator.Model;
+using PICSimulator.Model.Events;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -81,6 +82,11 @@ namespace PICSimulator.View
 
 		private void CompileExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
+			if (!sc_document.Save())
+			{
+				return;
+			}
+
 			string resultPath = Path.Combine(Path.GetDirectoryName(sc_document.Path), Path.GetFileNameWithoutExtension(sc_document.Path) + ".lst");
 
 			if (File.Exists(resultPath))
@@ -107,15 +113,43 @@ namespace PICSimulator.View
 				}
 
 				controller = new PICController(cmds);
-				MessageBox.Show("Yay");
+				//MessageBox.Show("Yay");
 			}
+		}
+
+		private void RunEnabled(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = controller != null && !controller.isRunning;
+
+			e.Handled = true;
+		}
+
+		private void RunExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			controller.Start();
+			txtCode.IsReadOnly = true;
 		}
 
 		#endregion
 
 		private void onIdle()
 		{
-			// Test for Outgoing Events in controller
+			PICEvent e;
+
+			if (controller != null && controller.Outgoing_Events.TryDequeue(out e))
+			{
+				if (e is RegisterChangedEvent)
+				{
+					rgridMain.Set((e as RegisterChangedEvent).RegisterPos, (e as RegisterChangedEvent).NewValue);
+				}
+				else
+				{
+					throw new ArgumentException();
+				}
+			}
+
+
+			this.Dispatcher.BeginInvoke(new Action(onIdle), DispatcherPriority.ApplicationIdle);
 		}
 	}
 }

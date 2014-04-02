@@ -19,6 +19,7 @@
         <CommandBinding Command="New" Executed="NewExecuted" />
         <CommandBinding Command="Close" Executed="CloseExecuted" />
         <CommandBinding Command="self:CustomCmds.Compile" CanExecute="CompileEnabled" Executed="CompileExecuted" />
+        <CommandBinding Command="self:CustomCmds.Run" CanExecute="RunEnabled" Executed="RunExecuted" />
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -26,7 +27,6 @@
         <KeyBinding Command="SaveAs" Key="S" Modifiers="Control+Shift" />
         <KeyBinding Command="Open" Key="O" Modifiers="Control" />
         <KeyBinding Command="New" Key="N" Modifiers="Control" />
-        <KeyBinding Command="self:CustomCmds.Compile" Key="F5" />
     </Window.InputBindings>
 
     <Grid>
@@ -63,7 +63,7 @@
             <Button Content="Save" Command="Save"/>
             <Button Content="Save As" Command="SaveAs"/>
             <Button Content="Compile" Command="self:CustomCmds.Compile"/>
-            <Button Content="Run"/>
+            <Button Content="Run" Command="self:CustomCmds.Run"/>
             <Button Content="Pause"/>
             <Button Content="Stop"/>
         </StackPanel>
@@ -81,7 +81,7 @@
         </StackPanel>
 
         <ScrollViewer Grid.Row="2" Grid.Column="4" Grid.RowSpan="3" Margin="5">
-            <self:RegisterGrid/>
+            <self:RegisterGrid x:Name="rgridMain"/>
         </ScrollViewer>
 
         <GridSplitter Grid.Row="3" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" ShowsPreview="False" Height="3" />

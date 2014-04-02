@@ -240,9 +240,9 @@ namespace PICSimulator.View
 			return _values[pos];
 		}
 
-		public void set(int pos, uint val)
+		public void Set(uint pos, uint val)
 		{
-			val = Math.Max(val, 0xFF);
+			val = Math.Min(val, 0xFF);
 
 			if (_values[pos] != val)
 			{
