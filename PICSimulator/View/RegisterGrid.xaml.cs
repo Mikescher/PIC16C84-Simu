@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -12,7 +14,18 @@ namespace PICSimulator.View
 		private const int CELL_COUNT_X = 8;
 		private const int CELL_COUNT_Y = 32;
 
-		private const int CELL_FONT_SIZE = 12;
+		private const int CELL_FONT_SIZE = 14;
+
+		private static string[] CELL_HEADER_Y = 
+		{ 
+			"00", "08", "10", "18", "20", "28", "30", "38", 
+			"40", "48", "50", "58", "60", "68", "70", "78", 
+			"80", "88", "90", "98", "A0", "A8", "B0", "B8", 
+			"C0", "C8", "D0", "D8", "E0", "E8", "F0", "F8", "XX", "XX", "XX"
+		};
+
+		private uint[] _values = new uint[CELL_COUNT_X * CELL_COUNT_Y];
+		private TextBox[] textboxes = new TextBox[CELL_COUNT_X * CELL_COUNT_Y];
 
 		public RegisterGrid()
 		{
@@ -23,7 +36,7 @@ namespace PICSimulator.View
 
 		private void CreateGrid()
 		{
-			// Definitions
+			#region Definitions
 
 			for (int y = 0; y < CELL_COUNT_Y + 1; y++)
 			{
@@ -35,22 +48,58 @@ namespace PICSimulator.View
 				gridMain.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(0, GridUnitType.Auto) });
 			}
 
-			// Header
+			#endregion
 
-			for (int y = 0; y < CELL_COUNT_Y + 1; y++)
+			#region Header
+
+			// Header (TOPLEFT)
+
 			{
 				Border b = new Border()
 				{
+					Background = new SolidColorBrush(Colors.Gainsboro),
 					BorderBrush = new SolidColorBrush(Colors.Black),
-					BorderThickness = new Thickness(1)
+					BorderThickness = new Thickness(1, 1, 1, 1)
 				};
 
 				TextBlock t = new TextBlock()
 				{
 					Background = new SolidColorBrush(Colors.Gainsboro),
-					Text = string.Format("{0:X02}", y * CELL_COUNT_X),
+					Text = string.Format(""),
 					FontFamily = new FontFamily("Courier New"),
-					FontSize = CELL_FONT_SIZE
+					FontSize = CELL_FONT_SIZE,
+					VerticalAlignment = VerticalAlignment.Center,
+					HorizontalAlignment = HorizontalAlignment.Center,
+					FontWeight = FontWeights.Bold
+				};
+
+				gridMain.Children.Add(b);
+				Grid.SetRow(b, 0);
+				Grid.SetColumn(b, 0);
+
+				b.Child = t;
+			}
+
+			// Header (Y)
+
+			for (int y = 0; y < CELL_COUNT_Y; y++)
+			{
+				Border b = new Border()
+				{
+					Background = new SolidColorBrush(Colors.Gainsboro),
+					BorderBrush = new SolidColorBrush(Colors.Black),
+					BorderThickness = new Thickness(1, 0, 1, 1)
+				};
+
+				TextBlock t = new TextBlock()
+				{
+					Background = new SolidColorBrush(Colors.Gainsboro),
+					Text = string.Format(CELL_HEADER_Y[y]),
+					FontFamily = new FontFamily("Courier New"),
+					FontSize = CELL_FONT_SIZE,
+					VerticalAlignment = VerticalAlignment.Center,
+					HorizontalAlignment = HorizontalAlignment.Center,
+					FontWeight = FontWeights.Bold
 				};
 
 				gridMain.Children.Add(b);
@@ -60,12 +109,15 @@ namespace PICSimulator.View
 				b.Child = t;
 			}
 
-			for (int x = 0; x < CELL_COUNT_X + 1; x++)
+			// Header (X)
+
+			for (int x = 0; x < CELL_COUNT_X; x++)
 			{
 				Border b = new Border()
 				{
+					Background = new SolidColorBrush(Colors.Gainsboro),
 					BorderBrush = new SolidColorBrush(Colors.Black),
-					BorderThickness = new Thickness(0, 0, 1, 1)
+					BorderThickness = new Thickness(0, 1, 1, 1)
 				};
 
 				TextBlock t = new TextBlock()
@@ -73,7 +125,10 @@ namespace PICSimulator.View
 					Background = new SolidColorBrush(Colors.Gainsboro),
 					Text = string.Format("{0:X02}", x),
 					FontFamily = new FontFamily("Courier New"),
-					FontSize = CELL_FONT_SIZE
+					FontSize = CELL_FONT_SIZE,
+					VerticalAlignment = VerticalAlignment.Center,
+					HorizontalAlignment = HorizontalAlignment.Center,
+					FontWeight = FontWeights.Bold
 				};
 
 				gridMain.Children.Add(b);
@@ -82,6 +137,10 @@ namespace PICSimulator.View
 
 				b.Child = t;
 			}
+
+			#endregion
+
+			#region Elements
 
 			// Elements
 
@@ -97,11 +156,23 @@ namespace PICSimulator.View
 
 					TextBox t = new TextBox()
 					{
+						Background = new SolidColorBrush(Colors.Transparent),
 						BorderThickness = new Thickness(0),
 						Text = "00",
 						FontFamily = new FontFamily("Courier New"),
-						FontSize = CELL_FONT_SIZE
+						FontSize = CELL_FONT_SIZE,
+						VerticalAlignment = VerticalAlignment.Center,
+						HorizontalAlignment = HorizontalAlignment.Center,
+						Tag = y * CELL_COUNT_X + x,
+						MaxLength = 2
 					};
+
+					t.PreviewTextInput += cell_PreviewTextInput;
+					t.TextChanged += cell_TextChanged;
+					t.LostFocus += cell_LostFocus;
+					t.LostKeyboardFocus += cell_LostKeyboardFocus;
+
+					textboxes[(int)t.Tag] = t;
 
 					gridMain.Children.Add(b);
 					Grid.SetRow(b, y + 1);
@@ -109,6 +180,75 @@ namespace PICSimulator.View
 
 					b.Child = t;
 				}
+			}
+
+			#endregion
+		}
+
+		void cell_LostKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+		{
+			TextBox t = sender as TextBox;
+			if (t == null)
+				return;
+			int pos = (int)t.Tag;
+
+			t.Text = String.Format("{0:X02}", _values[pos]);
+		}
+
+		void cell_LostFocus(object sender, RoutedEventArgs e)
+		{
+			TextBox t = sender as TextBox;
+			if (t == null)
+				return;
+			int pos = (int)t.Tag;
+
+			t.Text = String.Format("{0:X02}", _values[pos]);
+		}
+
+		void cell_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			TextBox t = sender as TextBox;
+			if (t == null)
+				return;
+			int pos = (int)t.Tag;
+
+
+			if (t.Text.ToUpper() != t.Text)
+			{
+				int ss = t.SelectionStart;
+				t.Text = t.Text.ToUpper();
+				t.SelectionStart = ss;
+			}
+
+			if (!string.IsNullOrWhiteSpace(t.Text))
+			{
+				_values[pos] = Convert.ToUInt32(t.Text, 16);
+			}
+		}
+
+		void cell_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+		{
+			TextBox t = sender as TextBox;
+			if (t == null)
+				return;
+
+			e.Handled = !Regex.Match(e.Text, @"^[0-9A-Fa-f]$").Success;
+		}
+
+		public uint get(int pos)
+		{
+			return _values[pos];
+		}
+
+		public void set(int pos, uint val)
+		{
+			val = Math.Max(val, 0xFF);
+
+			if (_values[pos] != val)
+			{
+				_values[pos] = val;
+
+				textboxes[pos].Text = String.Format("{0:X02}", val);
 			}
 		}
 	}
