@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace PICSimulator.Model.Commands
 {
-    class PICCommand_ANDWF: PICCommand
+	class PICCommand_ANDWF : PICCommand
 	{
 		public const string COMMANDCODE = "00 0101 dfff ffff";
 
