@@ -1,8 +1,10 @@
 ﻿using PICSimulator.Model;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 
 namespace PICSimulator.View
@@ -20,6 +22,14 @@ namespace PICSimulator.View
 			InitializeComponent();
 
 			sc_document = new SourcecodeDocument(this, txtCode);
+
+			sc_document = new SourcecodeDocument( //TODO Remove Me - Only for ... reasons
+				this,
+				txtCode,
+				File.ReadAllText(@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata\test.src"),
+				@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata\test.src");
+
+			this.Dispatcher.BeginInvoke(new Action(onIdle), DispatcherPriority.ApplicationIdle);
 		}
 
 		#region Event Handler
@@ -102,5 +112,10 @@ namespace PICSimulator.View
 		}
 
 		#endregion
+
+		private void onIdle()
+		{
+			// Test for Outgoing Events in controller
+		}
 	}
 }

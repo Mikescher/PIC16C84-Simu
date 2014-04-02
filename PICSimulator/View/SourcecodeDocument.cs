@@ -114,8 +114,8 @@ namespace PICSimulator.View
 			SaveFileDialog sfd = new SaveFileDialog();
 			sfd.AddExtension = true;
 			sfd.DefaultExt = ".src";
-            sfd.Filter = "All Files|*|Sourcecode|*.src";
-            sfd.FilterIndex = 2;
+			sfd.Filter = "All Files|*|Sourcecode|*.src";
+			sfd.FilterIndex = 2;
 
 			if (sfd.ShowDialog().GetValueOrDefault(false))
 			{
