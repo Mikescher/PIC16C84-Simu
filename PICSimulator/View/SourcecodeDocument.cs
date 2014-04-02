@@ -47,7 +47,7 @@ namespace PICSimulator.View
 		public static SourcecodeDocument OpenNew(Window owner, TextBox handler)
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			ofd.Filter = "All Files|*|Sourcecode (.src)|*.src";
+			ofd.Filter = "All Files|*|Source- and Programmcode|*.src,*.lst|Sourcecode|*.src|Programmcode|*.lst";
 			ofd.FilterIndex = 2;
 			ofd.CheckFileExists = true;
 			ofd.CheckPathExists = true;
