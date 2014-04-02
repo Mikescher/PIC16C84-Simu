@@ -71,6 +71,9 @@
     <Compile Include="Model\Commands\PICCommand_INCFSZ.cs" />
     <Compile Include="Model\PICController.cs" />
     <Compile Include="Model\PICProgramLoader.cs" />
+    <Compile Include="View\IORegisterGrid.xaml.cs">
+      <DependentUpon>IORegisterGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\RegisterGrid.xaml.cs">
       <DependentUpon>RegisterGrid.xaml</DependentUpon>
     </Compile>
@@ -117,6 +120,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="View\IORegisterGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\RegisterGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

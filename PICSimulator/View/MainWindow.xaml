@@ -42,7 +42,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <Menu Grid.Row="0" Grid.ColumnSpan="5">
@@ -75,7 +75,13 @@
         <ScrollViewer Grid.Row="2" Grid.Column="0" Grid.RowSpan="3" Margin="5">
             <self:RegisterGrid/>
         </ScrollViewer>
-        <Rectangle Grid.Row="2" Grid.Column="4" Grid.RowSpan="3" Fill="Black" Margin="5"></Rectangle>
+
+        <StackPanel Grid.Row="2" Grid.Column="4" Grid.RowSpan="3" Orientation="Vertical" Margin="5">
+            <self:IORegisterGrid Margin="0, 0, 0, 10" Caption="RA"/>
+            <self:IORegisterGrid Margin="0, 0, 0, 10" Caption="RB"/>
+            <self:IORegisterGrid Margin="0, 0, 0, 10" Caption="RC"/>
+            <self:IORegisterGrid Margin="0, 0, 0, 10" Caption="RD"/>
+        </StackPanel>
 
         <GridSplitter Grid.Row="3" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" ShowsPreview="False" Height="3" />
 
