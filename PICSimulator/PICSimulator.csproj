@@ -62,8 +62,18 @@
     <Compile Include="Model\Commands\PICCommand.cs" />
     <Compile Include="Model\Commands\PICCommand_ADDWF.cs" />
     <Compile Include="Model\Commands\PICCommand_ANDWF.cs" />
+    <Compile Include="Model\Commands\PICCommand_CLRF.cs" />
+    <Compile Include="Model\Commands\PICCommand_CLRW.cs" />
+    <Compile Include="Model\Commands\PICCommand_COMF.cs" />
+    <Compile Include="Model\Commands\PICCommand_DECF.cs" />
+    <Compile Include="Model\Commands\PICCommand_DECFSZ.cs" />
+    <Compile Include="Model\Commands\PICCommand_INCF.cs" />
+    <Compile Include="Model\Commands\PICCommand_INCFSZ.cs" />
     <Compile Include="Model\PICController.cs" />
     <Compile Include="Model\PICProgramLoader.cs" />
+    <Compile Include="View\RegisterGrid.xaml.cs">
+      <DependentUpon>RegisterGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\CustomCmds.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -107,6 +117,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="View\RegisterGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
