@@ -61,6 +61,7 @@
     <Compile Include="Model\Commands\PICComandHelper.cs" />
     <Compile Include="Model\Commands\PICCommand.cs" />
     <Compile Include="Model\Commands\PICCommand_ADDWF.cs" />
+    <Compile Include="Model\Commands\PICCommand_ANDWF.cs" />
     <Compile Include="Model\PICController.cs" />
     <Compile Include="Model\PICProgramLoader.cs" />
     <Compile Include="View\CustomCmds.cs" />
