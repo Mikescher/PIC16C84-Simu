@@ -1,5 +1,4 @@
-﻿
-namespace PICSimulator.Model.Commands
+﻿namespace PICSimulator.Model.Commands
 {
 	class PICCommand_CLRW : PICCommand
 	{
