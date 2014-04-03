@@ -7,7 +7,27 @@ namespace PICSimulator.Model
 {
 	static class PICProgramLoader
 	{
-		public static List<PICCommand> LoadFromFile(string file)
+		public static PICCommand[] LoadFromFile(string file)
+		{
+			List<PICCommand> list = LoadListFromFile(file);
+
+			if (list == null || list.Count <= 0)
+				return null;
+
+			PICCommand[] result = new PICCommand[list.Count];
+
+			for (int p = 0; p < list.Count; p++)
+			{
+				if (list[p].Position != p)
+					return null;
+
+				result[p] = list[p];
+			}
+
+			return result;
+		}
+
+		public static List<PICCommand> LoadListFromFile(string file)
 		{
 			string[] lines = File.ReadAllLines(file);
 

@@ -119,7 +119,7 @@ namespace PICSimulator.View
 
 		private void RunEnabled(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.CanExecute = controller != null && !controller.isRunning;
+			e.CanExecute = controller != null && controller.Mode == PICControllerMode.WAITING;
 
 			e.Handled = true;
 		}
@@ -135,19 +135,20 @@ namespace PICSimulator.View
 		private void onIdle()
 		{
 			PICEvent e;
-
-			if (controller != null && controller.Outgoing_Events.TryDequeue(out e))
+			if (controller != null)
 			{
-				if (e is RegisterChangedEvent)
+				while (controller.Outgoing_Events.TryDequeue(out e))
 				{
-					rgridMain.Set((e as RegisterChangedEvent).RegisterPos, (e as RegisterChangedEvent).NewValue);
-				}
-				else
-				{
-					throw new ArgumentException();
+					if (e is RegisterChangedEvent)
+					{
+						rgridMain.Set((e as RegisterChangedEvent).RegisterPos, (e as RegisterChangedEvent).NewValue);
+					}
+					else
+					{
+						throw new ArgumentException();
+					}
 				}
 			}
-
 
 			this.Dispatcher.BeginInvoke(new Action(onIdle), DispatcherPriority.ApplicationIdle);
 		}

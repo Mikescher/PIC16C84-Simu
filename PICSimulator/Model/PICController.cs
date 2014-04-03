@@ -1,29 +1,31 @@
 ﻿using PICSimulator.Model.Commands;
 using PICSimulator.Model.Events;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace PICSimulator.Model
 {
 	class PICController
 	{
+		public const uint ADDR_PC = 0x02;
+
 		private Thread thread;
 
-		public bool isRunning { get; private set; } // Set to true while running - false when program ended (NOT WHEN PAUSED)
+		public PICControllerMode Mode { get; private set; } // Set to true while running - false when program ended (NOT WHEN PAUSED)
 
-		public bool isPaused { get; private set; }
-
-		private List<PICCommand> CommandList;
+		private PICCommand[] CommandList;
 
 		public ConcurrentQueue<PICEvent> Outgoing_Events = new ConcurrentQueue<PICEvent>();
 		public ConcurrentQueue<PICEvent> Incoming_Events = new ConcurrentQueue<PICEvent>();
 
 		private uint[] register = new uint[0xFF];
 
-		public PICController(List<PICCommand> cmds)
+		private uint register_W = 0x00;
+
+		public PICController(PICCommand[] cmds)
 		{
-			isRunning = false;
+			Mode = PICControllerMode.WAITING;
+
 			CommandList = cmds;
 		}
 
@@ -31,46 +33,90 @@ namespace PICSimulator.Model
 		{
 			hardResetRegister();
 
-			while (isRunning)
+			while (Mode != PICControllerMode.FINISHED)
 			{
-				if (!isPaused)
+				if (Mode == PICControllerMode.PAUSED)
 				{
 					Thread.Sleep(0); // Release Control
 
 					continue;
 				}
 
-				//Do Smth
+				if (register[ADDR_PC] >= CommandList.Length) // PC > Commandcount
+				{
+					Mode = PICControllerMode.FINISHED;
+					continue;
+				}
+
+				//################
+				//#    FETCH     #
+				//################
+
+				PICCommand cmd = CommandList[register[ADDR_PC]];
+
+				//################
+				//# INCREMENT PC #
+				//################
+
+				SetRegisterWithEvent(ADDR_PC, register[ADDR_PC] + 1);
+
+				//################
+				//#   EXECUTE    #
+				//################
+
+				cmd.Execute(this);
+
+
+
+				/* DEBUG */
+				Thread.Sleep(1750);
 			}
 		}
 
-		private void setRegisterWithEvent(uint p, uint n)
+		public void SetRegisterWithEvent(uint p, uint n)
 		{
-			register[p] = n;
+			register[p] = n % 0xFF; //TODO Interrupt @ Overflow ... oder so ?
 
 			Outgoing_Events.Enqueue(new RegisterChangedEvent() { RegisterPos = p, NewValue = n });
+		}
+
+		public uint GetRegister(uint p)
+		{
+			return register[p];
+		}
+
+		public void SetWRegisterWithEvent(uint n)
+		{
+			register_W = n % 0xFF; //TODO Interrupt @ Overflow ... oder so ?
+
+			//Outgoing_Events.Enqueue(new RegisterChangedEvent() { RegisterPos = p, NewValue = n }); //TODO Register W Changed Event
+		}
+
+		public uint GetWRegister()
+		{
+			return register_W;
 		}
 
 		private void hardResetRegister()
 		{
 			for (uint i = 0; i < 0xFF; i++)
 			{
-				setRegisterWithEvent(i, 0x00);
+				SetRegisterWithEvent(i, 0x00);
 			}
 
-			setRegisterWithEvent(0x03, 0x18);
-			setRegisterWithEvent(0x81, 0xFF);
-			setRegisterWithEvent(0x85, 0x1F);
-			setRegisterWithEvent(0x86, 0xFF);
+			SetRegisterWithEvent(0x03, 0x18);
+			SetRegisterWithEvent(0x81, 0xFF);
+			SetRegisterWithEvent(0x85, 0x1F);
+			SetRegisterWithEvent(0x86, 0xFF);
 		}
 
 		public void Start()
 		{
 			thread = new Thread(new ThreadStart(run));
 
-			thread.Start();
+			Mode = PICControllerMode.RUNNING;
 
-			isRunning = true;
+			thread.Start();
 		}
 	}
 }

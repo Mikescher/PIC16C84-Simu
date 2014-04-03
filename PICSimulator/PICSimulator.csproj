@@ -98,8 +98,8 @@
     <Compile Include="Model\Events\PICEvent.cs" />
     <Compile Include="Model\Events\RegisterChangedEvent.cs" />
     <Compile Include="Model\PICController.cs" />
+    <Compile Include="Model\PICControllerMode.cs" />
     <Compile Include="Model\PICProgramLoader.cs" />
-    <Compile Include="Model\PICRegister.cs" />
     <Compile Include="View\IORegisterGrid.xaml.cs">
       <DependentUpon>IORegisterGrid.xaml</DependentUpon>
     </Compile>

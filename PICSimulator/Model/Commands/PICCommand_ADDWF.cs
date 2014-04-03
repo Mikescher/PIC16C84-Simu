@@ -10,5 +10,15 @@ namespace PICSimulator.Model.Commands
 		{
 
 		}
+
+		public override void Execute(PICController controller)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public override string GetCommandCodeFormat()
+		{
+			return COMMANDCODE;
+		}
 	}
 }
