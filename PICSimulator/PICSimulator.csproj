@@ -95,6 +95,7 @@
     <Compile Include="Model\Commands\PICCommand_DECFSZ.cs" />
     <Compile Include="Model\Commands\PICCommand_INCF.cs" />
     <Compile Include="Model\Commands\PICCommand_INCFSZ.cs" />
+    <Compile Include="Model\Events\WRegisterChangedEvent.cs" />
     <Compile Include="Model\Events\PICEvent.cs" />
     <Compile Include="Model\Events\RegisterChangedEvent.cs" />
     <Compile Include="Model\PICController.cs" />

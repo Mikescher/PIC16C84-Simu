@@ -89,7 +89,7 @@ namespace PICSimulator.Model
 		{
 			register_W = n % 0xFF; //TODO Interrupt @ Overflow ... oder so ?
 
-			//Outgoing_Events.Enqueue(new RegisterChangedEvent() { RegisterPos = p, NewValue = n }); //TODO Register W Changed Event
+			Outgoing_Events.Enqueue(new WRegisterChangedEvent() { NewValue = n }); //TODO Register W Changed Event
 		}
 
 		public uint GetWRegister()

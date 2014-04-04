@@ -18,9 +18,13 @@ namespace PICSimulator.View
 		private SourcecodeDocument sc_document;
 		private PICController controller = null;
 
+		public bool CodeIsReadOnly { get { return false; } set { } }
+
 		public MainWindow()
 		{
 			InitializeComponent();
+
+			DataContext = this;
 
 			sc_document = new SourcecodeDocument(this, txtCode);
 
@@ -35,11 +39,31 @@ namespace PICSimulator.View
 
 		#region Event Handler
 
+		#region New
+
+		private void NewEnabled(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = controller == null || controller.Mode == PICControllerMode.FINISHED;
+
+			e.Handled = true;
+		}
+
 		private void NewExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
 			sc_document.AskSaveIfDirty();
 
 			sc_document = new SourcecodeDocument(this, txtCode);
+		}
+
+		#endregion
+
+		#region Open
+
+		private void OpenEnabled(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = controller == null || controller.Mode == PICControllerMode.FINISHED;
+
+			e.Handled = true;
 		}
 
 		private void OpenExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -50,6 +74,17 @@ namespace PICSimulator.View
 			sc_document = SourcecodeDocument.OpenNew(this, txtCode) ?? sc_document;
 		}
 
+		#endregion
+
+		#region Save
+
+		private void SaveEnabled(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = sc_document != null && sc_document.isDirty;
+
+			e.Handled = true;
+		}
+
 		private void SaveExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
 			if (!sc_document.Save())
@@ -57,6 +92,10 @@ namespace PICSimulator.View
 				MessageBox.Show("Error while saving");
 			}
 		}
+
+		#endregion
+
+		#region SaveAs
 
 		private void SaveAsExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
@@ -66,12 +105,28 @@ namespace PICSimulator.View
 			}
 		}
 
+		#endregion
+
+		#region Close
+
+		private void CloseEnabled(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = controller == null || controller.Mode == PICControllerMode.FINISHED;
+
+			e.Handled = true;
+		}
+
 		private void CloseExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
 			sc_document.AskSaveIfDirty();
 
 			this.Close();
 		}
+
+
+		#endregion
+
+		#region Compile
 
 		private void CompileEnabled(object sender, CanExecuteRoutedEventArgs e)
 		{
@@ -117,6 +172,10 @@ namespace PICSimulator.View
 			}
 		}
 
+		#endregion
+
+		#region Run
+
 		private void RunEnabled(object sender, CanExecuteRoutedEventArgs e)
 		{
 			e.CanExecute = controller != null && controller.Mode == PICControllerMode.WAITING;
@@ -127,8 +186,9 @@ namespace PICSimulator.View
 		private void RunExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
 			controller.Start();
-			txtCode.IsReadOnly = true;
 		}
+
+		#endregion
 
 		#endregion
 
@@ -143,6 +203,10 @@ namespace PICSimulator.View
 					{
 						rgridMain.Set((e as RegisterChangedEvent).RegisterPos, (e as RegisterChangedEvent).NewValue);
 					}
+					else if (e is WRegisterChangedEvent)
+					{
+						lblRegW.Text = "0x" + string.Format("{0:X02}", (e as WRegisterChangedEvent).NewValue);
+					}
 					else
 					{
 						throw new ArgumentException();
@@ -151,6 +215,11 @@ namespace PICSimulator.View
 			}
 
 			this.Dispatcher.BeginInvoke(new Action(onIdle), DispatcherPriority.ApplicationIdle);
+		}
+
+		private void txtCode_PreviewTextInput(object sender, TextCompositionEventArgs e)
+		{
+			e.Handled = !(sc_document != null && (controller == null || controller.Mode == PICControllerMode.FINISHED));
 		}
 	}
 }
