@@ -151,4 +151,13 @@
   <data name="folder_open" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\icons\folder-open.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="sealing_arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\sealing-arrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sealing_wax" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\sealing-wax.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="arrow_curve_000_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\icons\arrow-curve-000-left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

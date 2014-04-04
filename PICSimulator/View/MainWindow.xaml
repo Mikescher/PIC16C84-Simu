@@ -22,6 +22,8 @@
         <CommandBinding Command="self:CustomCmds.Compile" CanExecute="CompileEnabled" Executed="CompileExecuted" />
         <CommandBinding Command="self:CustomCmds.Run" CanExecute="RunEnabled" Executed="RunExecuted" />
         <CommandBinding Command="self:CustomCmds.Stop" CanExecute="StopEnabled" Executed="StopExecuted" />
+        <CommandBinding Command="self:CustomCmds.Continue" CanExecute="ContinueEnabled" Executed="ContinueExecuted" />
+        <CommandBinding Command="self:CustomCmds.Step" CanExecute="StepEnabled" Executed="StepExecuted" />
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -72,9 +74,13 @@
             <self:SimpleToolbarSeparator />
 
             <self:SimpleToolbarButton BText="Run" BSource="../icons/control.png" BCommand="self:CustomCmds.Run"/>
+            <self:SimpleToolbarButton BText="Stop" BSource="../icons/control-stop-square.png" BCommand="self:CustomCmds.Stop"/>
+
+            <self:SimpleToolbarSeparator />
+
             <self:SimpleToolbarButton BText="Pause" BSource="../icons/control-pause.png" BCommand="self:CustomCmds.Pause"/>
             <self:SimpleToolbarButton BText="Continue" BSource="../icons/arrow-curve-000-double.png" BCommand="self:CustomCmds.Continue"/>
-            <self:SimpleToolbarButton BText="Stop" BSource="../icons/control-stop-square.png" BCommand="self:CustomCmds.Stop"/>
+            <self:SimpleToolbarButton BText="Step" BSource="../icons/arrow-curve-000-left.png" BCommand="self:CustomCmds.Step"/>
         </StackPanel>
 
         <avEdit:TextEditor Grid.Row="2" Grid.Column="2" Margin="5" x:Name="txtCode" PreviewTextInput="txtCode_PreviewTextInput"/>
@@ -89,13 +95,17 @@
             <self:IORegisterGrid Margin="0, 0, 0, 10" Caption="RD"/>
 
             <DockPanel >
-                <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Width="100">
-                    <TextBlock Text="W-Register"/>
-                    <TextBlock Text="PCL"/>
+                <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Width="115">
+                    <TextBlock TextAlignment="Right" Text="W-Register"/>
+                    <TextBlock TextAlignment="Right" Text="PCL"/>
+                    <TextBlock TextAlignment="Right" Text="Frequency Display"/>
+                    <TextBlock TextAlignment="Right" Text="Frequency Controller"/>
                 </StackPanel>
-                <StackPanel DockPanel.Dock="Right" Orientation="Vertical">
+                <StackPanel DockPanel.Dock="Right" Orientation="Vertical" Margin="8, 0, 0, 0">
                     <TextBlock Name="lblRegW"  Text="0x00"/>
                     <TextBlock Name="lblRegPCL"  Text="0x00"/>
+                    <TextBlock Name="lblFreqView"  Text="0"/>
+                    <TextBlock Name="lblFreqModel"  Text="0"/>
                 </StackPanel>
             </DockPanel>
         </StackPanel>

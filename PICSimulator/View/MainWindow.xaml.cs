@@ -1,5 +1,6 @@
 ﻿using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+using PICSimulator.Helper;
 using PICSimulator.Model;
 using PICSimulator.Model.Events;
 using System;
@@ -18,6 +19,8 @@ namespace PICSimulator.View
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private FrequencyCounter IdleCounter = new FrequencyCounter();
+
 		private SourcecodeDocument sc_document;
 		private PICController controller = null;
 
@@ -55,7 +58,7 @@ namespace PICSimulator.View
 			txtCode.ShowLineNumbers = true;
 			txtCode.Options.CutCopyWholeLine = true;
 
-			txtCode.TextArea.LeftMargins.Insert(0, IconBar = new IconBarMargin());
+			txtCode.TextArea.LeftMargins.Insert(0, IconBar = new IconBarMargin(this));
 		}
 
 		#region Event Handler
@@ -189,7 +192,8 @@ namespace PICSimulator.View
 				}
 
 				controller = new PICController(cmds);
-				//MessageBox.Show("Yay");
+				controller.RaiseCompleteEventResetChain();
+				IconBar.Reset();
 			}
 		}
 
@@ -197,7 +201,7 @@ namespace PICSimulator.View
 
 		#region Run
 
-		private void RunEnabled(object sender, CanExecuteRoutedEventArgs e)
+		private void RunEnabled(object sender, CanExecuteRoutedEventArgs e) //TODO WOnt change when Conditions change (test every idle (BUT HOW ????))
 		{
 			e.CanExecute = controller != null && controller.Mode == PICControllerMode.WAITING;
 
@@ -227,10 +231,46 @@ namespace PICSimulator.View
 
 		#endregion
 
+		#region Continue
+
+		private void ContinueEnabled(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = controller != null && controller.Mode == PICControllerMode.PAUSED;
+
+			e.Handled = true;
+		}
+
+		private void ContinueExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			controller.Continue();
+		}
+
+		#endregion
+
+		#region Step
+
+		private void StepEnabled(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = controller != null && controller.Mode == PICControllerMode.PAUSED;
+
+			e.Handled = true;
+		}
+
+		private void StepExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			controller.Step();
+		}
+
+		#endregion
+
 		#endregion
 
 		private void onIdle()
 		{
+			IdleCounter.Inc();
+
+			//#################################
+
 			PICEvent e;
 			if (controller != null)
 			{
@@ -239,6 +279,13 @@ namespace PICSimulator.View
 					HandleEvent(e);
 				}
 			}
+
+			//#################################
+
+			lblFreqView.Text = String.Format("{0:00000}", (int)IdleCounter.Frequency);
+			lblFreqModel.Text = String.Format("{0:00000}", controller == null ? 0 : (int)controller.Frequency.Frequency);
+
+			//#################################
 
 			this.Dispatcher.BeginInvoke(new Action(onIdle), DispatcherPriority.ApplicationIdle);
 		}
@@ -253,7 +300,7 @@ namespace PICSimulator.View
 
 				if (ce.RegisterPos == PICController.ADDR_PC)
 				{
-					IconBar.SetPC(controller.GetSCLineForPC(ce.NewValue - 1)); // -1 Because PC_INC before Exec (--> just looks better)
+					IconBar.SetPC(controller.GetSCLineForPC(ce.NewValue));
 					lblRegPCL.Text = "0x" + string.Format("{0:X02}", ce.NewValue);
 				}
 			}
@@ -278,6 +325,23 @@ namespace PICSimulator.View
 		{
 			if (controller != null)
 				controller.Stop(); // Kill 'em with fire
+		}
+
+		public bool OnBreakPointChanged(int line, bool newVal)
+		{
+			if (controller == null)
+				return false;
+
+			long pc = controller.GetPCLineForSCLine(line);
+
+			if (pc < 0)
+				return false;
+			else
+			{
+				controller.Incoming_Events.Enqueue(new BreakPointChangedEvent() { Position = (uint)pc, Value = newVal });
+
+				return true;
+			}
 		}
 	}
 }
