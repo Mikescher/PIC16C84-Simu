@@ -118,5 +118,18 @@ namespace PICSimulator.Model
 
 			thread.Start();
 		}
+
+		public void Stop()
+		{
+			while (thread.IsAlive)
+			{
+				Mode = PICControllerMode.FINISHED;
+			}
+		}
+
+		public long GetSCLineForPC(uint pc)
+		{
+			return pc < CommandList.Length ? CommandList[pc].SourceCodeLine : -1L;
+		}
 	}
 }

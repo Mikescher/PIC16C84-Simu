@@ -45,7 +45,7 @@ namespace PICSimulator.Model
 
 				uint? pos = ParseHex(v.Item1);
 				uint? cmd = ParseHex(v.Item2);
-				uint? scpos = ParseHex(v.Item3);
+				uint? scpos = ParseBin(v.Item3);
 
 				string txt = v.Item4;
 
@@ -81,11 +81,28 @@ namespace PICSimulator.Model
 		private static uint? ParseHex(string v)
 		{
 			v = v.Trim();
-			//v = v.TrimStart('0');
 
 			try
 			{
 				return Convert.ToUInt32(v, 16);
+			}
+			catch (FormatException)
+			{
+				return null;
+			}
+			catch (ArgumentException)
+			{
+				return null;
+			}
+		}
+
+		private static uint? ParseBin(string v)
+		{
+			v = v.Trim();
+
+			try
+			{
+				return Convert.ToUInt32(v, 10);
 			}
 			catch (FormatException)
 			{

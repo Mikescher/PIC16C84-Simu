@@ -14,7 +14,46 @@
                     00014             
                     00015           org  0
                     00016           
-0000 30CC           00017           MOVLW 0CCH        ; Register W = 0
-0001 0098           00018           MOVWF TEMP_CURR  ; 18H == TEMP
-                    00019           
-                    00020           end
+0000 30CC           00017           MOVLW 0CCH
+0001 0098           00018           MOVWF TEMP_CURR
+                    00019            
+0002 30BC           00020           MOVLW 0BCH
+0003 0098           00021           MOVWF TEMP_CURR
+                    00022            
+0004 30AC           00023           MOVLW 0ACH
+0005 0098           00024           MOVWF TEMP_CURR
+                    00025            
+0006 309C           00026           MOVLW 09CH
+0007 0098           00027           MOVWF TEMP_CURR
+                    00028            
+0008 308C           00029           MOVLW 08CH
+0009 0098           00030           MOVWF TEMP_CURR
+                    00031            
+000A 307C           00032           MOVLW 07CH
+000B 0098           00033           MOVWF TEMP_CURR
+                    00034            
+000C 306C           00035           MOVLW 06CH
+000D 0098           00036           MOVWF TEMP_CURR
+                    00037            
+000E 305C           00038           MOVLW 05CH
+000F 0098           00039           MOVWF TEMP_CURR
+                    00040            
+0010 304C           00041           MOVLW 04CH
+0011 0098           00042           MOVWF TEMP_CURR
+                    00043            
+0012 303C           00044           MOVLW 03CH
+0013 0098           00045           MOVWF TEMP_CURR
+                    00046            
+0014 302C           00047           MOVLW 02CH
+0015 0098           00048           MOVWF TEMP_CURR
+                    00049            
+0016 301C           00050           MOVLW 01CH
+0017 0098           00051           MOVWF TEMP_CURR
+                    00052            
+0018 300C           00053           MOVLW 00CH
+0019 0098           00054           MOVWF TEMP_CURR
+                    00055            
+001A 3000           00056           MOVLW 000H
+001B 0098           00057           MOVWF TEMP_CURR
+                    00058           
+                    00059           end

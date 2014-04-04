@@ -185,7 +185,7 @@ namespace PICSimulator.View
 			#endregion
 		}
 
-		void cell_LostKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+		private void cell_LostKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
 		{
 			TextBox t = sender as TextBox;
 			if (t == null)
@@ -195,7 +195,7 @@ namespace PICSimulator.View
 			t.Text = String.Format("{0:X02}", _values[pos]);
 		}
 
-		void cell_LostFocus(object sender, RoutedEventArgs e)
+		private void cell_LostFocus(object sender, RoutedEventArgs e)
 		{
 			TextBox t = sender as TextBox;
 			if (t == null)
@@ -205,7 +205,7 @@ namespace PICSimulator.View
 			t.Text = String.Format("{0:X02}", _values[pos]);
 		}
 
-		void cell_TextChanged(object sender, TextChangedEventArgs e)
+		private void cell_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			TextBox t = sender as TextBox;
 			if (t == null)
@@ -226,7 +226,7 @@ namespace PICSimulator.View
 			}
 		}
 
-		void cell_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+		private void cell_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
 		{
 			TextBox t = sender as TextBox;
 			if (t == null)

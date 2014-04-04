@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:self="clr-namespace:PICSimulator.View"
-        Title="MainWindow" Height="550" Width="900">
+        xmlns:avEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+        Title="MainWindow" Height="550" Width="900" Closed="Window_Closed">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -20,6 +21,7 @@
         <CommandBinding Command="Close" Executed="CloseExecuted" CanExecute="CloseEnabled"/>
         <CommandBinding Command="self:CustomCmds.Compile" CanExecute="CompileEnabled" Executed="CompileExecuted" />
         <CommandBinding Command="self:CustomCmds.Run" CanExecute="RunEnabled" Executed="RunExecuted" />
+        <CommandBinding Command="self:CustomCmds.Stop" CanExecute="StopEnabled" Executed="StopExecuted" />
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -57,19 +59,25 @@
             </MenuItem>
         </Menu>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="5" Background="BlanchedAlmond">
-            <Button Content="New" Command="New"/>
-            <Button Content="Open" Command="Open"/>
-            <Button Content="Save" Command="Save"/>
-            <Button Content="Save As" Command="SaveAs"/>
-            <Button Content="Compile" Command="self:CustomCmds.Compile"/>
-            <Button Content="Run" Command="self:CustomCmds.Run"/>
-            <Button Content="Pause" Command="self:CustomCmds.Pause"/>
-            <Button Content="Continue" Command="self:CustomCmds.Continue"/>
-            <Button Content="Stop"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="5">
+            <self:SimpleToolbarButton BText="New" BSource="../icons/document.png" BCommand="New"/>
+            <self:SimpleToolbarButton BText="Open" BSource="../icons/folder-open.png" BCommand="Open"/>
+            <self:SimpleToolbarButton BText="Save" BSource="../icons/disk-return.png" BCommand="Save"/>
+            <self:SimpleToolbarButton BText="Save As" BSource="../icons/disk-rename.png" BCommand="SaveAs"/>
+            
+            <self:SimpleToolbarSeparator />
+            
+            <self:SimpleToolbarButton BText="Compile" BSource="../icons/box.png" BCommand="self:CustomCmds.Compile"/>
+
+            <self:SimpleToolbarSeparator />
+
+            <self:SimpleToolbarButton BText="Run" BSource="../icons/control.png" BCommand="self:CustomCmds.Run"/>
+            <self:SimpleToolbarButton BText="Pause" BSource="../icons/control-pause.png" BCommand="self:CustomCmds.Pause"/>
+            <self:SimpleToolbarButton BText="Continue" BSource="../icons/arrow-curve-000-double.png" BCommand="self:CustomCmds.Continue"/>
+            <self:SimpleToolbarButton BText="Stop" BSource="../icons/control-stop-square.png" BCommand="self:CustomCmds.Stop"/>
         </StackPanel>
 
-        <TextBox Grid.Row="2" Grid.Column="2" Margin="5" x:Name="txtCode" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto" PreviewTextInput="txtCode_PreviewTextInput"/>
+        <avEdit:TextEditor Grid.Row="2" Grid.Column="2" Margin="5" x:Name="txtCode" PreviewTextInput="txtCode_PreviewTextInput"/>
 
         <GridSplitter Grid.Row="2" Grid.Column="1" Grid.RowSpan="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" ShowsPreview="False" Width="3" />
         <GridSplitter Grid.Row="2" Grid.Column="3" Grid.RowSpan="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" ShowsPreview="False" Width="3" />
@@ -83,9 +91,11 @@
             <DockPanel >
                 <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Width="100">
                     <TextBlock Text="W-Register"/>
+                    <TextBlock Text="PCL"/>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Right" Orientation="Vertical">
                     <TextBlock Name="lblRegW"  Text="0x00"/>
+                    <TextBlock Name="lblRegPCL"  Text="0x00"/>
                 </StackPanel>
             </DockPanel>
         </StackPanel>

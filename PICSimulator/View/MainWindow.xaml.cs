@@ -1,4 +1,6 @@
-﻿using PICSimulator.Model;
+﻿using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+using PICSimulator.Model;
 using PICSimulator.Model.Events;
 using System;
 using System.Diagnostics;
@@ -6,6 +8,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using System.Xml;
 
 
 namespace PICSimulator.View
@@ -18,11 +21,15 @@ namespace PICSimulator.View
 		private SourcecodeDocument sc_document;
 		private PICController controller = null;
 
+		private IconBarMargin IconBar;
+
 		public bool CodeIsReadOnly { get { return false; } set { } }
 
 		public MainWindow()
 		{
 			InitializeComponent();
+
+			Init();
 
 			DataContext = this;
 
@@ -35,6 +42,20 @@ namespace PICSimulator.View
 				@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata\test.src");
 
 			this.Dispatcher.BeginInvoke(new Action(onIdle), DispatcherPriority.ApplicationIdle);
+		}
+
+		private void Init()
+		{
+			using (XmlReader reader = new XmlTextReader(new StringReader(Properties.Resources.Assembler)))
+			{
+				IHighlightingDefinition customHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
+				txtCode.SyntaxHighlighting = customHighlighting;
+			}
+
+			txtCode.ShowLineNumbers = true;
+			txtCode.Options.CutCopyWholeLine = true;
+
+			txtCode.TextArea.LeftMargins.Insert(0, IconBar = new IconBarMargin());
 		}
 
 		#region Event Handler
@@ -190,6 +211,22 @@ namespace PICSimulator.View
 
 		#endregion
 
+		#region Stop
+
+		private void StopEnabled(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = controller != null && controller.Mode != PICControllerMode.WAITING && controller.Mode != PICControllerMode.FINISHED;
+
+			e.Handled = true;
+		}
+
+		private void StopExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			controller.Stop();
+		}
+
+		#endregion
+
 		#endregion
 
 		private void onIdle()
@@ -199,27 +236,48 @@ namespace PICSimulator.View
 			{
 				while (controller.Outgoing_Events.TryDequeue(out e))
 				{
-					if (e is RegisterChangedEvent)
-					{
-						rgridMain.Set((e as RegisterChangedEvent).RegisterPos, (e as RegisterChangedEvent).NewValue);
-					}
-					else if (e is WRegisterChangedEvent)
-					{
-						lblRegW.Text = "0x" + string.Format("{0:X02}", (e as WRegisterChangedEvent).NewValue);
-					}
-					else
-					{
-						throw new ArgumentException();
-					}
+					HandleEvent(e);
 				}
 			}
 
 			this.Dispatcher.BeginInvoke(new Action(onIdle), DispatcherPriority.ApplicationIdle);
 		}
 
+		private void HandleEvent(PICEvent e)
+		{
+			if (e is RegisterChangedEvent)
+			{
+				RegisterChangedEvent ce = e as RegisterChangedEvent;
+
+				rgridMain.Set(ce.RegisterPos, ce.NewValue);
+
+				if (ce.RegisterPos == PICController.ADDR_PC)
+				{
+					IconBar.SetPC(controller.GetSCLineForPC(ce.NewValue - 1)); // -1 Because PC_INC before Exec (--> just looks better)
+					lblRegPCL.Text = "0x" + string.Format("{0:X02}", ce.NewValue);
+				}
+			}
+			else if (e is WRegisterChangedEvent)
+			{
+				WRegisterChangedEvent ce = e as WRegisterChangedEvent;
+
+				lblRegW.Text = "0x" + string.Format("{0:X02}", ce.NewValue);
+			}
+			else
+			{
+				throw new ArgumentException();
+			}
+		}
+
 		private void txtCode_PreviewTextInput(object sender, TextCompositionEventArgs e)
 		{
 			e.Handled = !(sc_document != null && (controller == null || controller.Mode == PICControllerMode.FINISHED));
+		}
+
+		private void Window_Closed(object sender, EventArgs e)
+		{
+			if (controller != null)
+				controller.Stop(); // Kill 'em with fire
 		}
 	}
 }

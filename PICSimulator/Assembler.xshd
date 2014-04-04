@@ -1,0 +1,62 @@
+﻿<?xml version="1.0"?>
+<SyntaxDefinition name="Assembler" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+  <Color name="Comment" foreground="Green" />
+  <Color name="String" foreground="Blue" />
+  <Color name="Digit" foreground="Red" />
+  
+  <!-- This is the main ruleset. -->
+  <RuleSet ignoreCase="true">
+    <Span color="Comment" begin=";" />
+    
+    <Keywords fontWeight="bold" foreground="Blue">
+        <Word>ADDWF</Word>
+        <Word>ANDWF</Word>
+        <Word>CLRF</Word>
+        <Word>CLRW</Word>
+        <Word>COMF</Word>
+        <Word>DECF</Word>
+        <Word>DECFSZ</Word>
+        <Word>INCF</Word>
+        <Word>INCFSZ</Word>
+        <Word>IORWF</Word>
+        <Word>MOVF</Word>
+        <Word>MOVWF</Word>
+        <Word>NOP</Word>
+        <Word>RLF</Word>
+        <Word>RRF</Word>
+        <Word>SUBWF</Word>
+        <Word>SWAPF</Word>
+        <Word>XORWF</Word>
+        <Word>BCF</Word>
+        <Word>BSF</Word>
+        <Word>BTFSC</Word>
+        <Word>BTFSS</Word>
+        <Word>ADDLW</Word>
+        <Word>ANDLW</Word>
+        <Word>CALL</Word>
+        <Word>CLRWDT</Word>
+        <Word>GOTO</Word>
+        <Word>IORLW</Word>
+        <Word>MOVLW</Word>
+        <Word>RETFIE</Word>
+        <Word>RETLW</Word>
+        <Word>RETURN</Word>
+        <Word>SLEEP</Word>
+        <Word>SUBLW</Word>
+        <Word>XORLW</Word>
+    </Keywords>
+
+    <Keywords fontWeight="bold" foreground="DarkGreen">
+        <Word>EQU</Word>
+        <Word>DEVICE</Word>
+        <Word>CONFIG</Word>
+        <Word>ORG</Word>
+        <Word>END</Word>
+    </Keywords>
+
+    <Rule color="Digit">
+      \b[0-9][0-9a-fA-F]*[H]?
+    </Rule>
+    
+  </RuleSet>
+</SyntaxDefinition>

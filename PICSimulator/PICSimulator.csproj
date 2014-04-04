@@ -34,8 +34,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.AvalonEdit">
+      <HintPath>..\packages\AvalonEdit.4.4.0.9727\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -101,15 +105,22 @@
     <Compile Include="Model\PICController.cs" />
     <Compile Include="Model\PICControllerMode.cs" />
     <Compile Include="Model\PICProgramLoader.cs" />
-    <Compile Include="View\IORegisterGrid.xaml.cs">
+    <Compile Include="View\IconBarMargin.cs" />
+    <Compile Include="View\Controls\IORegisterGrid.xaml.cs">
       <DependentUpon>IORegisterGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\RegisterGrid.xaml.cs">
+    <Compile Include="View\Controls\RegisterGrid.xaml.cs">
       <DependentUpon>RegisterGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\CustomCmds.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Controls\SimpleToolbarButton.xaml.cs">
+      <DependentUpon>SimpleToolbarButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Controls\SimpleToolbarSeparator.xaml.cs">
+      <DependentUpon>SimpleToolbarSeparator.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SourcecodeDocument.cs" />
   </ItemGroup>
@@ -131,6 +142,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Assembler.xshd" />
     <None Include="Compiler\ass16txt.ger">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -140,6 +152,7 @@
     <None Include="Compiler\il_bas16.pic">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -150,15 +163,23 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="View\IORegisterGrid.xaml">
+    <Page Include="View\Controls\IORegisterGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\RegisterGrid.xaml">
+    <Page Include="View\Controls\RegisterGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Controls\SimpleToolbarButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Controls\SimpleToolbarSeparator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -174,6 +195,16 @@
     <Content Include="Compiler\il_ass16.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="icons\box.png" />
+    <Resource Include="icons\arrow-curve-000-double.png" />
+    <Resource Include="icons\control-pause.png" />
+    <Resource Include="icons\control-stop-square.png" />
+    <Resource Include="icons\control.png" />
+    <Resource Include="icons\disk-rename.png" />
+    <Resource Include="icons\disk-return.png" />
+    <Resource Include="icons\document.png" />
+    <Resource Include="icons\folder-open.png" />
+    <Resource Include="icons\arrow-left.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

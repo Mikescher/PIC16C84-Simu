@@ -1,8 +1,8 @@
-﻿
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
+using System;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
+
 namespace PICSimulator.View
 {
 	class SourcecodeDocument
@@ -16,7 +16,7 @@ namespace PICSimulator.View
 
 		public bool isDirty { get { return Value != LastSaved_Value; } }
 
-		public SourcecodeDocument(Window owner, TextBox handler, string text, string path)
+		public SourcecodeDocument(Window owner, ICSharpCode.AvalonEdit.TextEditor handler, string text, string path)
 		{
 			LastSaved_Value = text;
 			Value = text;
@@ -30,7 +30,7 @@ namespace PICSimulator.View
 			updateTitle();
 		}
 
-		public SourcecodeDocument(Window owner, TextBox handler)
+		public SourcecodeDocument(Window owner, ICSharpCode.AvalonEdit.TextEditor handler)
 		{
 			LastSaved_Value = null;
 			Value = "";
@@ -44,7 +44,7 @@ namespace PICSimulator.View
 			updateTitle();
 		}
 
-		public static SourcecodeDocument OpenNew(Window owner, TextBox handler)
+		public static SourcecodeDocument OpenNew(Window owner, ICSharpCode.AvalonEdit.TextEditor handler)
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
 			ofd.Filter = "All Files|*|Source- and Programmcode|*.src,*.lst|Sourcecode|*.src|Programmcode|*.lst";
@@ -72,9 +72,9 @@ namespace PICSimulator.View
 			}
 		}
 
-		private void OnChange(object sender, TextChangedEventArgs args)
+		private void OnChange(object sender, EventArgs args)
 		{
-			Value = (sender as TextBox).Text;
+			Value = (sender as ICSharpCode.AvalonEdit.TextEditor).Text;
 
 			updateTitle();
 		}
