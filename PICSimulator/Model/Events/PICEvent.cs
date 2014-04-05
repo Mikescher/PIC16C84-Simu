@@ -1,7 +1,7 @@
 ﻿
 namespace PICSimulator.Model.Events
 {
-	abstract class PICEvent
+	public abstract class PICEvent
 	{
 	}
 }

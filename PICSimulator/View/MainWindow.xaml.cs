@@ -34,7 +34,6 @@ namespace PICSimulator.View
 
 			Init();
 
-			DataContext = this;
 
 			sc_document = new SourcecodeDocument(this, txtCode);
 
@@ -49,6 +48,8 @@ namespace PICSimulator.View
 
 		private void Init()
 		{
+			DataContext = this;
+
 			using (XmlReader reader = new XmlTextReader(new StringReader(Properties.Resources.Assembler)))
 			{
 				IHighlightingDefinition customHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
@@ -59,6 +60,13 @@ namespace PICSimulator.View
 			txtCode.Options.CutCopyWholeLine = true;
 
 			txtCode.TextArea.LeftMargins.Insert(0, IconBar = new IconBarMargin(this));
+
+			//#####################
+
+			rgridMain.Parent = this;
+
+			iogridA.Initialize(rgridMain, PICController.PORT_A, PICController.TRIS_A);
+			iogridB.Initialize(rgridMain, PICController.PORT_B, PICController.TRIS_B);
 		}
 
 		#region Event Handler
@@ -341,6 +349,14 @@ namespace PICSimulator.View
 				controller.Incoming_Events.Enqueue(new BreakPointChangedEvent() { Position = (uint)pc, Value = newVal });
 
 				return true;
+			}
+		}
+
+		public void SendEventToController(PICEvent e)
+		{
+			if (controller != null)
+			{
+				controller.Incoming_Events.Enqueue(e);
 			}
 		}
 	}

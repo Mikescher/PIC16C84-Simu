@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using PICSimulator.Helper;
+using System.Windows.Controls;
 
 namespace PICSimulator.View
 {
@@ -15,6 +16,12 @@ namespace PICSimulator.View
 
 		public string Caption { get; set; }
 
+
+
+		private RegisterGrid Parent;
+		private uint Position_PINS;
+		private uint Position_TRIS;
+
 		public IORegisterGrid()
 		{
 			InitializeComponent();
@@ -30,24 +37,180 @@ namespace PICSimulator.View
 			Caption = "XXX";
 		}
 
+		public void Initialize(RegisterGrid parent, uint pins_pos, uint tris_pos)
+		{
+			Parent = parent;
+			Position_PINS = pins_pos;
+			Position_TRIS = tris_pos;
+
+			Parent.RegisterChanged += OnRegisterChanged;
+
+			setTRIS(Parent.get(Position_TRIS));
+			setPINS(Parent.get(Position_PINS));
+		}
+
+		private void OnRegisterChanged(uint pos, uint val)
+		{
+			if (pos == Position_TRIS)
+			{
+				setTRIS(val);
+			}
+			else if (pos == Position_PINS)
+			{
+				setPINS(val);
+			}
+		}
+
+		public void setTRIS(uint val)
+		{
+			for (int i = 0; i < 8; i++)
+			{
+				setTRIS(i, BinaryHelper.GetBit(i, val));
+			}
+		}
+
 		public void setTRIS(int pos, bool val)
 		{
-			if (tris[pos] ^ val)
-			{
-				tris[pos] = val;
+			tris[pos] = val;
 
-				txtTRIS[pos].Text = val ? "o" : "i";
+			txtTRIS[pos].Text = val ? "o" : "i";
+		}
+
+		public void setPINS(uint val)
+		{
+			for (int i = 0; i < 8; i++)
+			{
+				setPINS(i, BinaryHelper.GetBit(i, val));
 			}
 		}
 
 		public void setPINS(int pos, bool val)
 		{
-			if (pins[pos] ^ val)
-			{
-				pins[pos] = val;
+			pins[pos] = val;
 
-				txtPINS[pos].Text = val ? "1" : "0";
-			}
+			txtPINS[pos].Text = val ? "1" : "0";
 		}
+
+		private void Pin_MouseDown(int nmbr)
+		{
+			setPINS(nmbr, !pins[nmbr]);
+			Parent.Set(Position_PINS, GetValue_PINS());
+		}
+
+		private void Tris_MouseDown(int nmbr)
+		{
+			setTRIS(nmbr, !tris[nmbr]);
+			Parent.Set(Position_TRIS, GetValue_TRIS());
+		}
+
+		public uint GetValue_PINS()
+		{
+			uint r = pins[7] ? 1u : 0u;
+
+			for (int i = 6; i >= 0; i--)
+			{
+				r *= 2;
+				r += pins[i] ? 1u : 0u;
+			}
+
+			return r;
+		}
+
+		public uint GetValue_TRIS()
+		{
+			uint r = tris[7] ? 1u : 0u;
+
+			for (int i = 6; i >= 0; i--)
+			{
+				r *= 2;
+				r += tris[i] ? 1u : 0u;
+			}
+
+			return r;
+		}
+
+		#region Obnoxious Mouse Events
+
+		private void Pin7_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			Pin_MouseDown(7);
+		}
+
+		private void Pin6_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			Pin_MouseDown(6);
+		}
+
+		private void Pin5_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			Pin_MouseDown(5);
+		}
+
+		private void Pin4_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			Pin_MouseDown(4);
+		}
+
+		private void Pin3_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			Pin_MouseDown(3);
+		}
+
+		private void Pin2_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			Pin_MouseDown(2);
+		}
+
+		private void Pin1_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			Pin_MouseDown(1);
+		}
+
+		private void Pin0_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			Pin_MouseDown(0);
+		}
+
+		private void Tris7_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			Tris_MouseDown(7);
+		}
+
+		private void Tris6_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			Tris_MouseDown(6);
+		}
+
+		private void Tris5_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			Tris_MouseDown(5);
+		}
+
+		private void Tris4_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			Tris_MouseDown(4);
+		}
+
+		private void Tris3_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			Tris_MouseDown(3);
+		}
+
+		private void Tris2_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			Tris_MouseDown(2);
+		}
+
+		private void Tris1_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			Tris_MouseDown(1);
+		}
+
+		private void Tris0_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			Tris_MouseDown(0);
+		}
+
+		#endregion
 	}
 }

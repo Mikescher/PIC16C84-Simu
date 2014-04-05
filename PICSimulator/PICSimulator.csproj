@@ -61,6 +61,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helper\BinaryHelper.cs" />
     <Compile Include="Helper\FrequencyCounter.cs" />
     <Compile Include="Model\Commands\BinaryFormatParser.cs" />
     <Compile Include="Model\Commands\PICCommand_XORLW.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Model\Commands\PICCommand_INCFSZ.cs" />
     <Compile Include="Model\Events\Incoming\BreakPointChangedEvent.cs" />
     <Compile Include="Model\Events\Incoming\ChangePICModeEvent.cs" />
+    <Compile Include="Model\Events\Incoming\ManuallyRegisterChangedEvent.cs" />
     <Compile Include="Model\Events\Outgoing\WRegisterChangedEvent.cs" />
     <Compile Include="Model\Events\PICEvent.cs" />
     <Compile Include="Model\Events\Outgoing\RegisterChangedEvent.cs" />

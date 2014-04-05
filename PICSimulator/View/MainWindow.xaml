@@ -88,13 +88,19 @@
         <GridSplitter Grid.Row="2" Grid.Column="1" Grid.RowSpan="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" ShowsPreview="False" Width="3" />
         <GridSplitter Grid.Row="2" Grid.Column="3" Grid.RowSpan="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" ShowsPreview="False" Width="3" />
 
-        <StackPanel Grid.Row="2" Grid.Column="0" Grid.RowSpan="3" Orientation="Vertical" Margin="5">
-            <self:IORegisterGrid Margin="0, 0, 0, 10" Caption="RA"/>
-            <self:IORegisterGrid Margin="0, 0, 0, 10" Caption="RB"/>
-            <self:IORegisterGrid Margin="0, 0, 0, 10" Caption="RC"/>
-            <self:IORegisterGrid Margin="0, 0, 0, 10" Caption="RD"/>
+        <Grid Grid.Row="2" Grid.Column="0" Grid.RowSpan="3" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-            <DockPanel >
+            <StackPanel Orientation="Vertical" Grid.Row="0">
+                <self:IORegisterGrid x:Name="iogridA" Margin="0, 0, 0, 10" Caption="RA" />
+                <self:IORegisterGrid x:Name="iogridB" Margin="0, 0, 0, 10" Caption="RB"/>
+            </StackPanel>
+
+            <DockPanel Grid.Row="2" Margin="0, 0, 0, 25">
                 <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Width="115">
                     <TextBlock TextAlignment="Right" Text="W-Register"/>
                     <TextBlock TextAlignment="Right" Text="PCL"/>
@@ -108,7 +114,7 @@
                     <TextBlock Name="lblFreqModel"  Text="0"/>
                 </StackPanel>
             </DockPanel>
-        </StackPanel>
+        </Grid>
 
         <ScrollViewer Grid.Row="2" Grid.Column="4" Grid.RowSpan="3" Margin="5">
             <self:RegisterGrid x:Name="rgridMain"/>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PICSimulator.Model.Events;
+using System;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,6 +27,11 @@ namespace PICSimulator.View
 
 		private uint[] _values = new uint[CELL_COUNT_X * CELL_COUNT_Y];
 		private TextBox[] textboxes = new TextBox[CELL_COUNT_X * CELL_COUNT_Y];
+
+		public event RegisterChangedEvent RegisterChanged;
+		public delegate void RegisterChangedEvent(uint pos, uint val);
+
+		public MainWindow Parent;
 
 		public RegisterGrid()
 		{
@@ -222,7 +228,7 @@ namespace PICSimulator.View
 
 			if (!string.IsNullOrWhiteSpace(t.Text))
 			{
-				_values[pos] = Convert.ToUInt32(t.Text, 16);
+				Set((uint)pos, Convert.ToUInt32(t.Text, 16), false);
 			}
 		}
 
@@ -235,21 +241,29 @@ namespace PICSimulator.View
 			e.Handled = !Regex.Match(e.Text, @"^[0-9A-Fa-f]$").Success;
 		}
 
-		public uint get(int pos)
+		public uint get(uint pos)
 		{
 			return _values[pos];
 		}
 
-		public void Set(uint pos, uint val)
+		public void Set(uint pos, uint val, bool updateBoxes = true)
 		{
-			val = Math.Min(val, 0xFF);
+			//val = Math.Min(val, 0xFF);
 
-			if (_values[pos] != val)
-			{
-				_values[pos] = val;
+			_values[pos] = val;
 
+			if (updateBoxes)
 				textboxes[pos].Text = String.Format("{0:X02}", val);
-			}
+
+			if (RegisterChanged != null)
+				RegisterChanged(pos, val);
+		}
+
+		public void SetWithPICEvent(uint pos, uint val)
+		{
+			Set(pos, val);
+
+			Parent.SendEventToController(new ManuallyRegisterChangedEvent() { RegisterPos = pos, NewValue = val });
 		}
 	}
 }

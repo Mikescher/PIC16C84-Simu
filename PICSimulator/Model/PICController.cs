@@ -13,6 +13,12 @@ namespace PICSimulator.Model
 	{
 		public const uint ADDR_PC = 0x02;
 
+		public const uint PORT_A = 0x05;
+		public const uint TRIS_A = 0x85;
+
+		public const uint PORT_B = 0x06;
+		public const uint TRIS_B = 0x86;
+
 		public FrequencyCounter Frequency = new FrequencyCounter();
 
 		private Thread thread;
@@ -183,8 +189,8 @@ namespace PICSimulator.Model
 
 			SetRegisterWithEvent(0x03, 0x18);
 			SetRegisterWithEvent(0x81, 0xFF);
-			SetRegisterWithEvent(0x85, 0x1F);
-			SetRegisterWithEvent(0x86, 0xFF);
+			SetRegisterWithEvent(TRIS_A, 0x1F);
+			SetRegisterWithEvent(TRIS_B, 0xFF);
 		}
 
 		public void Start()
