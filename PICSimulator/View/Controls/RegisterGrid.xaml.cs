@@ -26,7 +26,7 @@ namespace PICSimulator.View
 		};
 
 		private uint[] _values = new uint[CELL_COUNT_X * CELL_COUNT_Y];
-		private TextBox[] textboxes = new TextBox[CELL_COUNT_X * CELL_COUNT_Y];
+		private ChangeMarkTextBox[] textboxes = new ChangeMarkTextBox[CELL_COUNT_X * CELL_COUNT_Y];
 
 		public event RegisterChangedEvent RegisterChanged;
 		public delegate void RegisterChangedEvent(uint pos, uint val);
@@ -160,15 +160,11 @@ namespace PICSimulator.View
 						BorderThickness = new Thickness(0, 0, 1, 1)
 					};
 
-					TextBox t = new TextBox()
+					ChangeMarkTextBox t = new ChangeMarkTextBox()
 					{
-						Background = new SolidColorBrush(Colors.Transparent),
-						BorderThickness = new Thickness(0),
 						Text = "00",
 						FontFamily = new FontFamily("Courier New"),
 						FontSize = CELL_FONT_SIZE,
-						VerticalAlignment = VerticalAlignment.Center,
-						HorizontalAlignment = HorizontalAlignment.Center,
 						Tag = y * CELL_COUNT_X + x,
 						MaxLength = 2
 					};

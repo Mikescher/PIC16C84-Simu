@@ -111,6 +111,12 @@
     <Compile Include="Model\PICController.cs" />
     <Compile Include="Model\PICControllerMode.cs" />
     <Compile Include="Model\PICProgramLoader.cs" />
+    <Compile Include="View\Controls\ChangeMarkTextBox.xaml.cs">
+      <DependentUpon>ChangeMarkTextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Controls\ChangeMarkTextBlock.xaml.cs">
+      <DependentUpon>ChangeMarkTextBlock.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\IconBarMargin.cs" />
     <Compile Include="View\Controls\IORegisterGrid.xaml.cs">
       <DependentUpon>IORegisterGrid.xaml</DependentUpon>
@@ -169,6 +175,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="View\Controls\ChangeMarkTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Controls\ChangeMarkTextBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Controls\IORegisterGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -8,15 +8,13 @@ namespace PICSimulator.View
 	/// </summary>
 	public partial class IORegisterGrid : UserControl
 	{
-		private TextBlock[] txtTRIS;
-		private TextBlock[] txtPINS;
+		private ChangeMarkTextBlock[] txtTRIS;
+		private ChangeMarkTextBlock[] txtPINS;
 
 		public bool[] tris { get; private set; } // false = 'i' || true = 'o'
 		public bool[] pins { get; private set; }
 
 		public string Caption { get; set; }
-
-
 
 		private RegisterGrid ParentWindow;
 		private uint Position_PINS;
@@ -31,8 +29,8 @@ namespace PICSimulator.View
 			tris = new bool[8];
 			pins = new bool[8];
 
-			txtTRIS = new TextBlock[] { Tris0, Tris1, Tris2, Tris3, Tris4, Tris5, Tris6, Tris7 };
-			txtPINS = new TextBlock[] { Pin0, Pin1, Pin2, Pin3, Pin4, Pin5, Pin6, Pin7 };
+			txtTRIS = new ChangeMarkTextBlock[] { Tris0, Tris1, Tris2, Tris3, Tris4, Tris5, Tris6, Tris7 };
+			txtPINS = new ChangeMarkTextBlock[] { Pin0, Pin1, Pin2, Pin3, Pin4, Pin5, Pin6, Pin7 };
 
 			Caption = "XXX";
 		}
