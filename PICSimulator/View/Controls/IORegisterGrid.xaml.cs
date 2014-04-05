@@ -18,7 +18,7 @@ namespace PICSimulator.View
 
 
 
-		private RegisterGrid Parent;
+		private RegisterGrid ParentWindow;
 		private uint Position_PINS;
 		private uint Position_TRIS;
 
@@ -39,14 +39,14 @@ namespace PICSimulator.View
 
 		public void Initialize(RegisterGrid parent, uint pins_pos, uint tris_pos)
 		{
-			Parent = parent;
+			ParentWindow = parent;
 			Position_PINS = pins_pos;
 			Position_TRIS = tris_pos;
 
-			Parent.RegisterChanged += OnRegisterChanged;
+			ParentWindow.RegisterChanged += OnRegisterChanged;
 
-			setTRIS(Parent.get(Position_TRIS));
-			setPINS(Parent.get(Position_PINS));
+			setTRIS(ParentWindow.get(Position_TRIS));
+			setPINS(ParentWindow.get(Position_PINS));
 		}
 
 		private void OnRegisterChanged(uint pos, uint val)
@@ -94,13 +94,13 @@ namespace PICSimulator.View
 		private void Pin_MouseDown(int nmbr)
 		{
 			setPINS(nmbr, !pins[nmbr]);
-			Parent.Set(Position_PINS, GetValue_PINS());
+			ParentWindow.Set(Position_PINS, GetValue_PINS());
 		}
 
 		private void Tris_MouseDown(int nmbr)
 		{
 			setTRIS(nmbr, !tris[nmbr]);
-			Parent.Set(Position_TRIS, GetValue_TRIS());
+			ParentWindow.Set(Position_TRIS, GetValue_TRIS());
 		}
 
 		public uint GetValue_PINS()

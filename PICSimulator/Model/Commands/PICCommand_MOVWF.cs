@@ -1,4 +1,5 @@
-﻿namespace PICSimulator.Model.Commands
+﻿
+namespace PICSimulator.Model.Commands
 {
 	class PICCommand_MOVWF : PICCommand
 	{
@@ -20,6 +21,11 @@
 		public override string GetCommandCodeFormat()
 		{
 			return COMMANDCODE;
+		}
+
+		public override uint GetCycleCount()
+		{
+			return 1;
 		}
 	}
 }

@@ -63,7 +63,7 @@ namespace PICSimulator.View
 
 			//#####################
 
-			rgridMain.Parent = this;
+			rgridMain.ParentWindow = this;
 
 			iogridA.Initialize(rgridMain, PICController.PORT_A, PICController.TRIS_A);
 			iogridB.Initialize(rgridMain, PICController.PORT_B, PICController.TRIS_B);
@@ -199,7 +199,7 @@ namespace PICSimulator.View
 					return;
 				}
 
-				controller = new PICController(cmds);
+				controller = new PICController(cmds, getSimuSpeedFromComboBox());
 				controller.RaiseCompleteEventResetChain();
 				IconBar.Reset();
 			}
@@ -292,6 +292,7 @@ namespace PICSimulator.View
 
 			lblFreqView.Text = String.Format("{0:00000}", (int)IdleCounter.Frequency);
 			lblFreqModel.Text = String.Format("{0:00000}", controller == null ? 0 : (int)controller.Frequency.Frequency);
+			lblRunTime.Text = String.Format("{0:0000} \u00B5", controller == null ? 0 : controller.GetRunTime());
 
 			//#################################
 
@@ -357,6 +358,37 @@ namespace PICSimulator.View
 			if (controller != null)
 			{
 				controller.Incoming_Events.Enqueue(e);
+			}
+		}
+
+		private PICControllerSpeed getSimuSpeedFromComboBox()
+		{
+			switch (cbxSpeed.SelectedIndex)
+			{
+				case 0:
+					return PICControllerSpeed.Snail;
+				case 1:
+					return PICControllerSpeed.Very_Slow;
+				case 2:
+					return PICControllerSpeed.Slow;
+				case 3:
+					return PICControllerSpeed.Normal;
+				case 4:
+					return PICControllerSpeed.Fast;
+				case 5:
+					return PICControllerSpeed.Very_Fast;
+				case 6:
+					return PICControllerSpeed.Maximum;
+				default:
+					throw new Exception(); // TODO Change type to sth useful
+			}
+		}
+
+		private void cbxSpeed_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		{
+			if (controller != null)
+			{
+				controller.SimulationSpeed = getSimuSpeedFromComboBox();
 			}
 		}
 	}

@@ -1,4 +1,6 @@
-﻿namespace PICSimulator.Model.Commands
+﻿using System;
+
+namespace PICSimulator.Model.Commands
 {
 	class PICCommand_DECF : PICCommand
 	{
@@ -18,6 +20,11 @@
 		public override string GetCommandCodeFormat()
 		{
 			return COMMANDCODE;
+		}
+
+		public override uint GetCycleCount()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

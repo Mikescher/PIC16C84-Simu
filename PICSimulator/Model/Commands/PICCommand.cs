@@ -1,5 +1,4 @@
-﻿
-namespace PICSimulator.Model.Commands
+﻿namespace PICSimulator.Model.Commands
 {
 	abstract class PICCommand
 	{
@@ -28,5 +27,6 @@ namespace PICSimulator.Model.Commands
 
 		public abstract void Execute(PICController controller);
 		public abstract string GetCommandCodeFormat();
+		public abstract uint GetCycleCount();
 	}
 }

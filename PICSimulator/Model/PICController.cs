@@ -19,11 +19,14 @@ namespace PICSimulator.Model
 		public const uint PORT_B = 0x06;
 		public const uint TRIS_B = 0x86;
 
-		public FrequencyCounter Frequency = new FrequencyCounter();
+		public FrequencyCounter Frequency = new FrequencyCounter(); // Only to see the Performance
+		public uint EmulatedFrequency = 4000000; // In Hz
 
 		private Thread thread;
 
 		public PICControllerMode Mode { get; private set; } // Set to true while running - false when program ended (NOT WHEN PAUSED)
+		public PICControllerSpeed SimulationSpeed;
+		private bool[] breakpoints;
 
 		private PICCommand[] CommandList;
 
@@ -31,14 +34,14 @@ namespace PICSimulator.Model
 		public ConcurrentQueue<PICEvent> Incoming_Events = new ConcurrentQueue<PICEvent>();
 
 		private uint[] register = new uint[0xFF];
-
-		private bool[] breakpoints;
-
 		private uint register_W = 0x00;
 
-		public PICController(PICCommand[] cmds)
+		private uint Cycles = 0; // Passed Controller Cycles
+
+		public PICController(PICCommand[] cmds, PICControllerSpeed s)
 		{
 			Mode = PICControllerMode.WAITING;
+			SimulationSpeed = s;
 
 			CommandList = cmds;
 			breakpoints = new bool[cmds.Length];
@@ -46,8 +49,8 @@ namespace PICSimulator.Model
 
 		private void run()
 		{
+			Cycles = 0;
 			hardResetRegister();
-			//register[ADDR_PC] = 0;
 
 			while (Mode != PICControllerMode.FINISHED)
 			{
@@ -117,9 +120,8 @@ namespace PICSimulator.Model
 				//# INCREMENT PC #
 				//################
 
-				/* DEBUG */
-				Thread.Sleep(150);
-				/* DEBUG */
+				UnreleasedSleep((int)SimulationSpeed);
+
 				SetRegisterWithEvent(ADDR_PC, register[ADDR_PC] + 1);
 
 				//################
@@ -127,9 +129,16 @@ namespace PICSimulator.Model
 				//################
 
 				cmd.Execute(this);
+				Cycles += cmd.GetCycleCount();
 			}
 
 			Mode = PICControllerMode.WAITING;
+		}
+
+		private void UnreleasedSleep(int s)
+		{
+			if (s > 0)
+				Thread.Sleep(s);
 		}
 
 		private void HandleIncomingEvents()
@@ -225,6 +234,11 @@ namespace PICSimulator.Model
 			}
 
 			SetWRegisterWithEvent(GetWRegister());
+		}
+
+		public uint GetRunTime() // in us
+		{
+			return (uint)(Cycles / (EmulatedFrequency / 1000000.0));
 		}
 
 		public void Continue()

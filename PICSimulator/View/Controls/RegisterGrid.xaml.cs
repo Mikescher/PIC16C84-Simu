@@ -31,7 +31,7 @@ namespace PICSimulator.View
 		public event RegisterChangedEvent RegisterChanged;
 		public delegate void RegisterChangedEvent(uint pos, uint val);
 
-		public MainWindow Parent;
+		public MainWindow ParentWindow;
 
 		public RegisterGrid()
 		{
@@ -263,7 +263,7 @@ namespace PICSimulator.View
 		{
 			Set(pos, val);
 
-			Parent.SendEventToController(new ManuallyRegisterChangedEvent() { RegisterPos = pos, NewValue = val });
+			ParentWindow.SendEventToController(new ManuallyRegisterChangedEvent() { RegisterPos = pos, NewValue = val });
 		}
 	}
 }

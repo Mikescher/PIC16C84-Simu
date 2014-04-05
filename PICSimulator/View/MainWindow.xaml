@@ -74,6 +74,17 @@
             <self:SimpleToolbarSeparator />
 
             <self:SimpleToolbarButton BText="Run" BSource="../icons/control.png" BCommand="self:CustomCmds.Run"/>
+            
+            <ComboBox Name="cbxSpeed" SelectedIndex="0" MinWidth="75" Margin="5, 0, 5, 0" SelectionChanged="cbxSpeed_SelectionChanged">
+                <ComboBoxItem Content="Snail" />
+                <ComboBoxItem Content="Very Slow" />
+                <ComboBoxItem Content="Slow" />
+                <ComboBoxItem Content="Normal" />
+                <ComboBoxItem Content="Fast" />
+                <ComboBoxItem Content="Very Fast" />
+                <ComboBoxItem Content="Maximum" />
+            </ComboBox>
+            
             <self:SimpleToolbarButton BText="Stop" BSource="../icons/control-stop-square.png" BCommand="self:CustomCmds.Stop"/>
 
             <self:SimpleToolbarSeparator />
@@ -106,12 +117,14 @@
                     <TextBlock TextAlignment="Right" Text="PCL"/>
                     <TextBlock TextAlignment="Right" Text="Frequency Display"/>
                     <TextBlock TextAlignment="Right" Text="Frequency Controller"/>
+                    <TextBlock TextAlignment="Right" Text="Run Time"/>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Right" Orientation="Vertical" Margin="8, 0, 0, 0">
                     <TextBlock Name="lblRegW"  Text="0x00"/>
                     <TextBlock Name="lblRegPCL"  Text="0x00"/>
                     <TextBlock Name="lblFreqView"  Text="0"/>
                     <TextBlock Name="lblFreqModel"  Text="0"/>
+                    <TextBlock Name="lblRunTime"  Text="0"/>
                 </StackPanel>
             </DockPanel>
         </Grid>
