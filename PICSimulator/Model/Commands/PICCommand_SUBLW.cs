@@ -1,4 +1,4 @@
-﻿using System;
+﻿using PICSimulator.Helper;
 
 namespace PICSimulator.Model.Commands
 {
@@ -6,15 +6,37 @@ namespace PICSimulator.Model.Commands
 	{
 		public const string COMMANDCODE = "11 110x kkkk kkkk";
 
+		public readonly uint Literal;
+
 		public PICCommand_SUBLW(string sct, uint scl, uint pos, uint cmd)
 			: base(sct, scl, pos, cmd)
 		{
-
+			Literal = Parameter.GetParam('k').Value;
 		}
 
 		public override void Execute(PICController controller)
 		{
-			throw new System.NotImplementedException();
+			uint a = Literal;
+			uint b = controller.GetWRegister();
+
+			bool carry;
+
+			bool dc = BinaryHelper.getSubtractionDigitCarry(a, b);
+
+			if (carry = a < b)
+			{
+				a += 0xFF;
+			}
+
+			uint Result = a - b;
+
+			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, Result == 0);
+			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_DC, dc);
+			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_C, carry);
+
+			Result %= 0xFF;
+
+			controller.SetWRegister(Result);
 		}
 
 		public override string GetCommandCodeFormat()
@@ -24,7 +46,7 @@ namespace PICSimulator.Model.Commands
 
 		public override uint GetCycleCount(PICController controller)
 		{
-			throw new NotImplementedException();
+			return 1;
 		}
 	}
 }

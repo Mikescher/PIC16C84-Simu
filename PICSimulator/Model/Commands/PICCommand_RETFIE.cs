@@ -14,7 +14,7 @@ namespace PICSimulator.Model.Commands
 
 		public override void Execute(PICController controller)
 		{
-			throw new System.NotImplementedException();
+			throw new System.NotImplementedException(); //TODO Implement Interrupts
 		}
 
 		public override string GetCommandCodeFormat()

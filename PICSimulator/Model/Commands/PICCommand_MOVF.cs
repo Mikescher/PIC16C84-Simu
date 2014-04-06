@@ -1,20 +1,30 @@
-﻿using System;
-
+﻿
 namespace PICSimulator.Model.Commands
 {
 	class PICCommand_MOVF : PICCommand
 	{
 		public const string COMMANDCODE = "00 1000 dfff ffff";
 
+		public readonly bool Target;
+		public readonly uint Register;
+
 		public PICCommand_MOVF(string sct, uint scl, uint pos, uint cmd)
 			: base(sct, scl, pos, cmd)
 		{
-
+			Target = Parameter.GetBoolParam('d').Value;
+			Register = Parameter.GetParam('f').Value;
 		}
 
 		public override void Execute(PICController controller)
 		{
-			throw new System.NotImplementedException();
+			uint Result = controller.GetRegister(Register);
+
+			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, Result == 0);
+
+			if (Target)
+				controller.SetRegister(Register, Result);
+			else
+				controller.SetWRegister(Result);
 		}
 
 		public override string GetCommandCodeFormat()
@@ -24,7 +34,7 @@ namespace PICSimulator.Model.Commands
 
 		public override uint GetCycleCount(PICController controller)
 		{
-			throw new NotImplementedException();
+			return 1;
 		}
 	}
 }

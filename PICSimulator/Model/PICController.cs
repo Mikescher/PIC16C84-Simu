@@ -225,6 +225,11 @@ namespace PICSimulator.Model
 			SetRegister(p, BinaryHelper.SetBit(GetRegister(p), bitpos, newVal));
 		}
 
+		public bool GetRegisterBit(uint p, uint bitpos)
+		{
+			return BinaryHelper.GetBit(GetRegister(p), bitpos);
+		}
+
 		public uint GetRegister(uint p)
 		{
 			return register[p];

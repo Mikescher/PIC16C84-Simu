@@ -1,4 +1,4 @@
-﻿
+﻿using PICSimulator.Helper;
 
 namespace PICSimulator.Model.Commands
 {
@@ -16,21 +16,13 @@ namespace PICSimulator.Model.Commands
 			Target = Parameter.GetBoolParam('d').Value;
 		}
 
-		private bool getAdditionDigitCarry(uint a, uint b)
-		{
-			a %= 0x10;
-			b %= 0x10;
-
-			return (a + b) > 0x10;
-		}
-
 		public override void Execute(PICController controller)
 		{
 			uint a = controller.GetRegister(Register);
 			uint b = controller.GetWRegister();
 
 			uint Result = a + b;
-			bool dc = getAdditionDigitCarry(a, b);
+			bool dc = BinaryHelper.getAdditionDigitCarry(a, b);
 
 			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, Result == 0);
 			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_DC, dc);

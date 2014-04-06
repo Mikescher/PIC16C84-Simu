@@ -1,20 +1,24 @@
-﻿using System;
-
+﻿
 namespace PICSimulator.Model.Commands
 {
 	class PICCommand_XORLW : PICCommand
 	{
 		public const string COMMANDCODE = "11 1010 kkkk kkkk";
 
+		public readonly uint Literal;
+
 		public PICCommand_XORLW(string sct, uint scl, uint pos, uint cmd)
 			: base(sct, scl, pos, cmd)
 		{
-
+			Literal = Parameter.GetParam('k').Value;
 		}
 
 		public override void Execute(PICController controller)
 		{
-			throw new System.NotImplementedException();
+			uint Result = controller.GetWRegister() ^ Literal;
+
+			controller.SetWRegister(Result);
+			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, Result == 0);
 		}
 
 		public override string GetCommandCodeFormat()
@@ -24,7 +28,7 @@ namespace PICSimulator.Model.Commands
 
 		public override uint GetCycleCount(PICController controller)
 		{
-			throw new NotImplementedException();
+			return 1;
 		}
 	}
 }

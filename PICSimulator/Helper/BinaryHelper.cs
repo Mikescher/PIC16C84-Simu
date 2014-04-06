@@ -22,5 +22,20 @@ namespace PICSimulator.Helper
 		{
 			return bit ? (val | SHL(1, pos)) : (val & ~SHL(1, pos));
 		}
+
+		public static bool getAdditionDigitCarry(uint a, uint b)
+		{
+			a %= 0x10;
+			b %= 0x10;
+
+			return (a + b) > 0x10;
+		}
+
+		public static bool getSubtractionDigitCarry(uint a, uint b)
+		{
+			//TODO IMPLEMENT ME °!!!!!!!!!!!!!!!!!°
+
+			return false;
+		}
 	}
 }
