@@ -40,8 +40,8 @@ namespace PICSimulator.View
 			sc_document = new SourcecodeDocument( //TODO Remove Me - Only for ... reasons
 				this,
 				txtCode,
-				File.ReadAllText(@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata\test.src"),
-				@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata\test.src");
+				File.ReadAllText(@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata_2\test.src"),
+				@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata_2\test.src");
 
 			this.Dispatcher.BeginInvoke(new Action(onIdle), DispatcherPriority.ApplicationIdle);
 		}
@@ -201,6 +201,7 @@ namespace PICSimulator.View
 
 				controller = new PICController(cmds, getSimuSpeedFromComboBox());
 				controller.RaiseCompleteEventResetChain();
+				stackList.Reset();
 				IconBar.Reset();
 			}
 		}
@@ -280,7 +281,7 @@ namespace PICSimulator.View
 
 		#endregion
 
-		private void onIdle()
+		private void onIdle() // TODO App freezes if spped too high
 		{
 			IdleCounter.Inc();
 
@@ -328,6 +329,18 @@ namespace PICSimulator.View
 				WRegisterChangedEvent ce = e as WRegisterChangedEvent;
 
 				lblRegW.Text = "0x" + string.Format("{0:X02}", ce.Value);
+			}
+			else if (e is PushCallStackEvent)
+			{
+				stackList.HandleEvent(e, controller);
+			}
+			else if (e is PopCallStackEvent)
+			{
+				stackList.HandleEvent(e, controller);
+			}
+			else if (e is StackResetEvent)
+			{
+				stackList.HandleEvent(e, controller);
 			}
 			else
 			{

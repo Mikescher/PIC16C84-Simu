@@ -1,7 +1,7 @@
 ﻿
 namespace PICSimulator.Model
 {
-	enum PICControllerSpeed
+	public enum PICControllerSpeed
 	{
 		Snail = 1500,
 		Very_Slow = 500,

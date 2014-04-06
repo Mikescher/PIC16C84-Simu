@@ -1,0 +1,232 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="PICSimulator.View.CircularStackDisplay" 
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <Color x:Key="ColorBack_R">White</Color>
+        <Color x:Key="ColorBack_L">#DCDCDC</Color>
+        <Color x:Key="ColorFont_R">Black</Color>
+        <System:Double x:Key="FontSize_R">12</System:Double>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="16"/>
+            <ColumnDefinition Width="1*" MinWidth="100"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Row="0" Grid.Column="0" BorderThickness="1, 1, 0, 0">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Black"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource ColorBack_L}"/>
+            </Border.Background>
+            <TextBlock Text="" x:Name="Ind_8" Foreground="Red" FontFamily="Courier New" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="0" BorderThickness="1, 1, 0, 0">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Black"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource ColorBack_L}"/>
+            </Border.Background>
+            <TextBlock Text="" x:Name="Ind_7" Foreground="Red" FontFamily="Courier New" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="0" BorderThickness="1, 1, 0, 0">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Black"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource ColorBack_L}"/>
+            </Border.Background>
+            <TextBlock Text="" x:Name="Ind_6" Foreground="Red" FontFamily="Courier New" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
+        <Border Grid.Row="3" Grid.Column="0" BorderThickness="1, 1, 0, 0">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Black"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource ColorBack_L}"/>
+            </Border.Background>
+            <TextBlock Text="" x:Name="Ind_5" Foreground="Red" FontFamily="Courier New" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
+        <Border Grid.Row="4" Grid.Column="0" BorderThickness="1, 1, 0, 0">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Black"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource ColorBack_L}"/>
+            </Border.Background>
+            <TextBlock Text="" x:Name="Ind_4" Foreground="Red" FontFamily="Courier New" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
+        <Border Grid.Row="5" Grid.Column="0" BorderThickness="1, 1, 0, 0">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Black"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource ColorBack_L}"/>
+            </Border.Background>
+            <TextBlock Text="" x:Name="Ind_3" Foreground="Red" FontFamily="Courier New" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
+        <Border Grid.Row="6" Grid.Column="0" BorderThickness="1, 1, 0, 0">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Black"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource ColorBack_L}"/>
+            </Border.Background>
+            <TextBlock Text="" x:Name="Ind_2" Foreground="Red" FontFamily="Courier New" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
+        <Border Grid.Row="7" Grid.Column="0" BorderThickness="1, 1, 0, 0">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Black"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource ColorBack_L}"/>
+            </Border.Background>
+            <TextBlock Text="" x:Name="Ind_1" Foreground="Red" FontFamily="Courier New" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
+        <Border Grid.Row="8" Grid.Column="0" BorderThickness="1, 1, 0, 1">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Black"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource ColorBack_L}"/>
+            </Border.Background>
+            <TextBlock Text="" x:Name="Ind_0" Foreground="Red" FontFamily="Courier New" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
+
+        <Border Grid.Row="0" Grid.Column="1" BorderThickness="1, 1, 1, 0">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Black"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource ColorBack_R}"/>
+            </Border.Background>
+            <TextBlock Text="" x:Name="Txt_8" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5, 0, 0, 0" FontSize="{DynamicResource FontSize_R}">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{DynamicResource ColorFont_R}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="1" BorderThickness="1, 1, 1, 0">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Black"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource ColorBack_R}"/>
+            </Border.Background>
+            <TextBlock Text="" x:Name="Txt_7" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5, 0, 0, 0" FontSize="{DynamicResource FontSize_R}">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{DynamicResource ColorFont_R}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="1" BorderThickness="1, 1, 1, 0">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Black"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource ColorBack_R}"/>
+            </Border.Background>
+            <TextBlock Text="" x:Name="Txt_6" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5, 0, 0, 0" FontSize="{DynamicResource FontSize_R}">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{DynamicResource ColorFont_R}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+        </Border>
+        <Border Grid.Row="3" Grid.Column="1" BorderThickness="1, 1, 1, 0">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Black"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource ColorBack_R}"/>
+            </Border.Background>
+            <TextBlock Text="" x:Name="Txt_5" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5, 0, 0, 0" FontSize="{DynamicResource FontSize_R}">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{DynamicResource ColorFont_R}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+        </Border>
+        <Border Grid.Row="4" Grid.Column="1" BorderThickness="1, 1, 1, 0">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Black"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource ColorBack_R}"/>
+            </Border.Background>
+            <TextBlock Text="" x:Name="Txt_4" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5, 0, 0, 0" FontSize="{DynamicResource FontSize_R}">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{DynamicResource ColorFont_R}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+        </Border>
+        <Border Grid.Row="5" Grid.Column="1" BorderThickness="1, 1, 1, 0">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Black"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource ColorBack_R}"/>
+            </Border.Background>
+            <TextBlock Text="" x:Name="Txt_3" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5, 0, 0, 0" FontSize="{DynamicResource FontSize_R}">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{DynamicResource ColorFont_R}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+        </Border>
+        <Border Grid.Row="6" Grid.Column="1" BorderThickness="1, 1, 1, 0">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Black"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource ColorBack_R}"/>
+            </Border.Background>
+            <TextBlock Text="" x:Name="Txt_2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5, 0, 0, 0" FontSize="{DynamicResource FontSize_R}">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{DynamicResource ColorFont_R}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+        </Border>
+        <Border Grid.Row="7" Grid.Column="1" BorderThickness="1, 1, 1, 0">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Black"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource ColorBack_R}"/>
+            </Border.Background>
+            <TextBlock Text="" x:Name="Txt_1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5, 0, 0, 0" FontSize="{DynamicResource FontSize_R}">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{DynamicResource ColorFont_R}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+        </Border>
+        <Border Grid.Row="8" Grid.Column="1" BorderThickness="1, 1, 1, 1">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Black"/>
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush Color="{DynamicResource ColorBack_R}"/>
+            </Border.Background>
+            <TextBlock Text="" x:Name="Txt_0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5, 0, 0, 0" FontSize="{DynamicResource FontSize_R}">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{DynamicResource ColorFont_R}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+        </Border>
+
+    </Grid>
+</UserControl>

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace PICSimulator.Model.Commands
 {
-	class BinaryFormatParser
+	public class BinaryFormatParser
 	{
 		private Dictionary<char, uint> Parameter;
 

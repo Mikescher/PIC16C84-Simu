@@ -1,0 +1,66 @@
+                    00001           DEVICE    16F84
+                    00002           CONFIG    RBPU_ON
+                    00003           CONFIG    WDT_ON
+                    00004           CONFIG    ANSEL
+                    00005           CONFIG    ANSELH
+                    00006           
+                    00007           STATUS   EQU  03H
+                    00008           RP0    EQU  05H
+                    00009           RP1    EQU  06H
+                    00010           PA    EQU  05H
+                    00011           PB    EQU  06H
+                    00012           PCL    EQU  02H
+                    00013             
+                    00014           COUNTER   EQU  20H
+                    00015           
+                    00016           RA   EQU  05H
+                    00017           RB   EQU  06H
+                    00018           
+                    00019           
+                    00020             
+                    00021           org  0
+0000 1683           00022           BSF STATUS, RP0 ; Bank setzten --> Um die Pins zu konfiguri
+0001 3000           00023           MOVLW 00H ; 00000000 -> I/O (ins W) (gibt an ob input oder 
+0002 0085           00024           MOVWF PA  ; W dann in PA
+0003 3000           00025           MOVLW 0H ; 00000000 -> I/O (ins W) (gibt an ob input oder o
+0004 0086           00026           MOVWF PB  ; W dann in PB
+0005 1283           00027           BCF STATUS, RP0 ; Bank zurücksetzen
+                    00028           
+0006 3000           00029           MOVLW 0         ; W = 0
+0007 0085           00030           MOVWF RA        ; RA = 0
+0008 0086           00031           MOVWF RB        ; RB = 0
+0009 00A0           00032           MOVWF COUNTER   ; COUNTER = 0
+                    00033           
+                    00034           ;###  TEST RESET  ###
+                    00035  start    
+                    00036           
+000A 3003           00037           MOVLW 3
+000B 0086           00038           MOVWF RB
+                    00039            
+000C 2011           00040           CALL wait
+                    00041            
+000D 3005           00042           MOVLW 5
+000E 0086           00043           MOVWF RB
+                    00044            
+000F 2011           00045           CALL wait
+                    00046            
+0010 280A           00047           GOTO start
+                    00048            
+                    00049            
+                    00050           
+                    00051  wait     
+0011 3000           00052           MOVLW 0
+0012 00A0           00053           MOVWF COUNTER
+                    00054  loopa    
+0013 0AA0           00055           INCF COUNTER
+0014 1820           00056           BTFSC COUNTER, 0
+0015 2813           00057           GOTO loopa
+0016 18A0           00058           BTFSC COUNTER, 1
+0017 2813           00059           GOTO loopa
+0018 1920           00060           BTFSC COUNTER, 2
+0019 2813           00061           GOTO loopa
+001A 1DA0           00062           BTFSS COUNTER, 3
+001B 2813           00063           GOTO loopa
+001C 0008           00064           RETURN
+                    00065           
+                    00066           END

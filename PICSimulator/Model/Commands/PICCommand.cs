@@ -1,6 +1,6 @@
 ﻿namespace PICSimulator.Model.Commands
 {
-	abstract class PICCommand
+	public abstract class PICCommand
 	{
 		public readonly string SourceCodeText;	// Line in the src file
 		public readonly uint SourceCodeLine;	// LineNmbr in the src file

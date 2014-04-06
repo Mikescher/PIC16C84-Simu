@@ -63,6 +63,7 @@
     </Compile>
     <Compile Include="Helper\BinaryHelper.cs" />
     <Compile Include="Helper\FrequencyCounter.cs" />
+    <Compile Include="Model\CircularStack.cs" />
     <Compile Include="Model\Commands\BinaryFormatParser.cs" />
     <Compile Include="Model\Commands\PICCommand_XORLW.cs" />
     <Compile Include="Model\Commands\PICCommand_SUBLW.cs" />
@@ -101,6 +102,9 @@
     <Compile Include="Model\Commands\PICCommand_DECFSZ.cs" />
     <Compile Include="Model\Commands\PICCommand_INCF.cs" />
     <Compile Include="Model\Commands\PICCommand_INCFSZ.cs" />
+    <Compile Include="Model\Events\Outgoing\StackResetEvent.cs" />
+    <Compile Include="Model\Events\Outgoing\PopCallStackEvent.cs" />
+    <Compile Include="Model\Events\Outgoing\PushCallStackEvent.cs" />
     <Compile Include="Model\Events\Outgoing\PCChangedEvent.cs" />
     <Compile Include="Model\PICControllerSpeed.cs" />
     <Compile Include="Model\Events\Incoming\BreakPointChangedEvent.cs" />
@@ -112,6 +116,9 @@
     <Compile Include="Model\PICController.cs" />
     <Compile Include="Model\PICControllerMode.cs" />
     <Compile Include="Model\PICProgramLoader.cs" />
+    <Compile Include="View\Controls\CircularStackDisplay.xaml.cs">
+      <DependentUpon>CircularStackDisplay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Controls\ChangeMarkTextBox.xaml.cs">
       <DependentUpon>ChangeMarkTextBox.xaml</DependentUpon>
     </Compile>
@@ -176,6 +183,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="View\Controls\CircularStackDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Controls\ChangeMarkTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

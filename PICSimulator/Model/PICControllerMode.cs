@@ -1,7 +1,7 @@
 ﻿
 namespace PICSimulator.Model
 {
-	enum PICControllerMode
+	public enum PICControllerMode
 	{
 		WAITING, // Pre Running
 		PAUSED,  // Manually paused or by Breakpoint

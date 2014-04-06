@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace PICSimulator.Model
 {
-	class PICController
+	public class PICController
 	{
 		public const uint ADDR_INDF = 0x00;
 		public const uint ADDR_PCL = 0x02;
@@ -59,6 +59,7 @@ namespace PICSimulator.Model
 
 		private uint[] register = new uint[0xFF];
 		private uint register_W = 0x00;
+		private CircularStack CallStack = new CircularStack();
 
 		private uint Cycles = 0; // Passed Controller Cycles
 
@@ -77,6 +78,7 @@ namespace PICSimulator.Model
 		{
 			Cycles = 0;
 			hardResetRegister();
+			ResetStack();
 
 			SetPCWithEvent_13Bit(0);
 
@@ -90,11 +92,12 @@ namespace PICSimulator.Model
 
 				if (Outgoing_Events.Count > 128)
 				{
-					if (Outgoing_Events.Count > 0)
+					while (Outgoing_Events.Count > 0)
 					{
 						Thread.Sleep(0);
 						Debug.WriteLine("Event Queque too full ... waiting to clear");
 					}
+					Thread.Sleep(10);
 				}
 
 				if (GetPC() >= CommandList.Length) // PC > Commandcount
@@ -267,6 +270,12 @@ namespace PICSimulator.Model
 			SetRegisterWithEvent(ADDR_TRIS_B, 0xFF);
 		}
 
+		private void ResetStack()
+		{
+			CallStack = new CircularStack();
+			Outgoing_Events.Enqueue(new StackResetEvent());
+		}
+
 		public uint GetPC()
 		{
 			return (uint)((GetRegister(ADDR_PCLATH) & ~0x1F) << 8) | GetRegister(ADDR_PCL);
@@ -285,13 +294,23 @@ namespace PICSimulator.Model
 
 		public void SetPCWithEvent_11Bit(uint value)
 		{
-			uint Low = value & 0xFF;
-			uint High = (value >> 8) & 0x1F;
+			value |= (GetRegister(ADDR_PCLATH) & 0x18) << 8;
 
-			High |= (GetRegister(ADDR_PCLATH) & 0x18) << 8;
+			SetPCWithEvent_13Bit(value);
+		}
 
-			SetRegisterWithEvent(ADDR_PCL, Low);
-			SetRegisterWithEvent(ADDR_PCLATH, High);
+		public void PushCallStack(uint v)
+		{
+			Outgoing_Events.Enqueue(new PushCallStackEvent() { Value = v });
+
+			CallStack.Push(v);
+		}
+
+		public uint PopCallStack()
+		{
+			Outgoing_Events.Enqueue(new PopCallStackEvent());
+
+			return CallStack.Pop();
 		}
 
 		#endregion
@@ -343,6 +362,11 @@ namespace PICSimulator.Model
 		public long GetPCLineForSCLine(int sc)
 		{
 			return (CommandList.Count(p => p.SourceCodeLine == sc) == 1) ? CommandList.Single(p => p.SourceCodeLine == sc).Position : -1L;
+		}
+
+		public string GetSourceCodeForPC(uint pc)
+		{
+			return pc < CommandList.Length ? CommandList[pc].SourceCodeText : "";
 		}
 
 		public void RaiseCompleteEventResetChain()
