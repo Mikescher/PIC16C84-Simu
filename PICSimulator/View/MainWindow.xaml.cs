@@ -6,6 +6,7 @@ using PICSimulator.Model.Events;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -40,7 +41,7 @@ namespace PICSimulator.View
 			sc_document = new SourcecodeDocument( //TODO Remove Me - Only for ... reasons
 				this,
 				txtCode,
-				File.ReadAllText(@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata_2\test.src"),
+				File.ReadAllText(@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata_2\test.src", Encoding.Default),
 				@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata_2\test.src");
 
 			DispatcherTimer itimer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);

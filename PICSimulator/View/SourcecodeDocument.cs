@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.IO;
+using System.Text;
 using System.Windows;
 
 namespace PICSimulator.View
@@ -56,7 +57,7 @@ namespace PICSimulator.View
 			{
 				try
 				{
-					string s = File.ReadAllText(ofd.FileName);
+					string s = File.ReadAllText(ofd.FileName, Encoding.Default);
 
 					return new SourcecodeDocument(owner, handler, s, ofd.FileName);
 				}
