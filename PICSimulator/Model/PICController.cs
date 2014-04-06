@@ -3,6 +3,7 @@ using PICSimulator.Model.Commands;
 using PICSimulator.Model.Events;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -11,14 +12,16 @@ namespace PICSimulator.Model
 {
 	class PICController
 	{
-		public const uint _ADDR_PCL = 0x02;			//TODO 02H or 82H ????
-		public const uint ADDR_STATUS = 0x03;		//TODO Where is Status ?? 03H or 83H ??
-		public const uint _ADDR_PCLATH = 0x0A;		//TODO 0AH or 0AH ???? [CONFUSION INTENSIFIES]
-
+		public const uint ADDR_INDF = 0x00;
+		public const uint ADDR_PCL = 0x02;
+		public const uint ADDR_STATUS = 0x03;
+		public const uint ADDR_FSR = 0x04;
 		public const uint ADDR_PORT_A = 0x05;
-		public const uint ADDR_TRIS_A = 0x85;
-
 		public const uint ADDR_PORT_B = 0x06;
+		public const uint ADDR_PCLATH = 0x0A;
+		public const uint ADDR_INTCON = 0x0B;
+
+		public const uint ADDR_TRIS_A = 0x85;
 		public const uint ADDR_TRIS_B = 0x86;
 
 		public const uint STATUS_BIT_IRP = 7;	// Unused in PIC16C84
@@ -29,6 +32,16 @@ namespace PICSimulator.Model
 		public const uint STATUS_BIT_Z = 2;		// Zero Bit
 		public const uint STATUS_BIT_DC = 1;	// Digit Carry Bit
 		public const uint STATUS_BIT_C = 0;		// Carry Bit
+
+		public static readonly List<Tuple<uint, uint>> Linked_Register = new List<Tuple<uint, uint>>() 
+		{
+			Tuple.Create(ADDR_INDF, ADDR_INDF + 0x80),
+			Tuple.Create(ADDR_PCL, ADDR_PCL + 0x80),
+			Tuple.Create(ADDR_STATUS, ADDR_STATUS + 0x80),
+			Tuple.Create(ADDR_FSR, ADDR_FSR + 0x80),
+			Tuple.Create(ADDR_PCLATH, ADDR_PCLATH + 0x80),
+			Tuple.Create(ADDR_INTCON, ADDR_INTCON + 0x80),
+		};
 
 		public FrequencyCounter Frequency = new FrequencyCounter(); // Only to see the Performance
 		public uint EmulatedFrequency = 4000000; // In Hz
@@ -58,10 +71,14 @@ namespace PICSimulator.Model
 			breakpoints = new bool[cmds.Length];
 		}
 
+		#region Running
+
 		private void run()
 		{
 			Cycles = 0;
 			hardResetRegister();
+
+			SetPCWithEvent_13Bit(0);
 
 			while (Mode != PICControllerMode.FINISHED)
 			{
@@ -157,34 +174,56 @@ namespace PICSimulator.Model
 			PICEvent e;
 			while (Incoming_Events.TryDequeue(out e))
 			{
-				if (e is BreakPointChangedEvent)
-				{
-					BreakPointChangedEvent ce = e as BreakPointChangedEvent;
+				HandleEvent(e);
+			}
+		}
 
-					breakpoints[ce.Position] = ce.Value;
-				}
-				else if (e is ChangePICModeEvent)
-				{
-					ChangePICModeEvent ce = e as ChangePICModeEvent;
+		private void HandleEvent(PICEvent e)
+		{
+			Debug.WriteLine("[EVENT::FROM_VIEW] " + e);
 
-					Mode = ce.Value;
-				}
-				else
-				{
-					throw new ArgumentException(e.ToString());
-				}
+			if (e is BreakPointChangedEvent)
+			{
+				BreakPointChangedEvent ce = e as BreakPointChangedEvent;
+
+				breakpoints[ce.Position] = ce.Value;
+			}
+			else if (e is ChangePICModeEvent)
+			{
+				ChangePICModeEvent ce = e as ChangePICModeEvent;
+
+				Mode = ce.Value;
+			}
+			else if (e is ManuallyRegisterChangedEvent)
+			{
+				ManuallyRegisterChangedEvent ce = e as ManuallyRegisterChangedEvent;
+
+				SetRegisterWithEvent(ce.Position, ce.Value);
+			}
+			else
+			{
+				throw new ArgumentException(e.ToString());
 			}
 		}
 
 		public void SetRegisterWithEvent(uint p, uint n, bool forceEvent = false)
 		{
-
 			n %= 0xFF; // Just 4 Safety
 
 			if (GetRegister(p) != n || forceEvent)
 			{
 				register[p] = n;
-				Outgoing_Events.Enqueue(new RegisterChangedEvent() { RegisterPos = p, NewValue = n });
+				Outgoing_Events.Enqueue(new RegisterChangedEvent() { Position = p, Value = n });
+			}
+
+			uint? link;
+
+			if ((link = GetLinkedRegister(p)) != null)
+			{
+				if (register[link.Value] != n)
+				{
+					SetRegisterWithEvent(link.Value, n);  // NO FORCE !!
+				}
 			}
 		}
 
@@ -195,7 +234,7 @@ namespace PICSimulator.Model
 
 		public uint GetRegister(uint p)
 		{
-			return GetRegister(p);
+			return register[p];
 		}
 
 		public void SetWRegisterWithEvent(uint n, bool forceEvent = false)
@@ -205,7 +244,7 @@ namespace PICSimulator.Model
 			if (register_W != n || forceEvent)
 			{
 				register_W = n;
-				Outgoing_Events.Enqueue(new WRegisterChangedEvent() { NewValue = n });
+				Outgoing_Events.Enqueue(new WRegisterChangedEvent() { Value = n });
 			}
 
 		}
@@ -230,7 +269,7 @@ namespace PICSimulator.Model
 
 		public uint GetPC()
 		{
-			return (uint)((GetRegister(_ADDR_PCLATH) & ~0x1F) << 8) | GetRegister(_ADDR_PCL);
+			return (uint)((GetRegister(ADDR_PCLATH) & ~0x1F) << 8) | GetRegister(ADDR_PCL);
 		}
 
 		public void SetPCWithEvent_13Bit(uint value)
@@ -238,10 +277,10 @@ namespace PICSimulator.Model
 			uint Low = value & 0xFF;
 			uint High = (value >> 8) & 0x1F;
 
-			SetRegisterWithEvent(_ADDR_PCL, Low);
-			SetRegisterWithEvent(_ADDR_PCLATH, High);
+			SetRegisterWithEvent(ADDR_PCL, Low);
+			SetRegisterWithEvent(ADDR_PCLATH, High);
 
-			Outgoing_Events.Enqueue(new PCChangedEvent() { NewValue = value });
+			Outgoing_Events.Enqueue(new PCChangedEvent() { Value = value });
 		}
 
 		public void SetPCWithEvent_11Bit(uint value)
@@ -249,11 +288,15 @@ namespace PICSimulator.Model
 			uint Low = value & 0xFF;
 			uint High = (value >> 8) & 0x1F;
 
-			High |= (GetRegister(_ADDR_PCLATH) & 0x18) << 8;
+			High |= (GetRegister(ADDR_PCLATH) & 0x18) << 8;
 
-			SetRegisterWithEvent(_ADDR_PCL, Low);
-			SetRegisterWithEvent(_ADDR_PCLATH, High);
+			SetRegisterWithEvent(ADDR_PCL, Low);
+			SetRegisterWithEvent(ADDR_PCLATH, High);
 		}
+
+		#endregion
+
+		#region Control
 
 		public void Start()
 		{
@@ -264,10 +307,33 @@ namespace PICSimulator.Model
 			thread.Start();
 		}
 
+		public void StartPaused()
+		{
+			thread = new Thread(new ThreadStart(run));
+
+			Mode = PICControllerMode.PAUSED;
+
+			thread.Start();
+		}
+
 		public void Stop()
 		{
 			Incoming_Events.Enqueue(new ChangePICModeEvent() { Value = PICControllerMode.FINISHED });
 		}
+
+		public void Continue()
+		{
+			Incoming_Events.Enqueue(new ChangePICModeEvent() { Value = PICControllerMode.CONTINUE });
+		}
+
+		public void Step()
+		{
+			Incoming_Events.Enqueue(new ChangePICModeEvent() { Value = PICControllerMode.SKIPONE });
+		}
+
+		#endregion
+
+		#region Helper
 
 		public long GetSCLineForPC(uint pc)
 		{
@@ -294,14 +360,12 @@ namespace PICSimulator.Model
 			return (uint)(Cycles / (EmulatedFrequency / 1000000.0));
 		}
 
-		public void Continue()
+		public uint? GetLinkedRegister(uint r)
 		{
-			Incoming_Events.Enqueue(new ChangePICModeEvent() { Value = PICControllerMode.CONTINUE });
+			// One Expression to rule them all.
+			return Linked_Register.Count(p => (p.Item1 == r || p.Item2 == r)) == 1 ? (Linked_Register.Where(p => (p.Item1 == r || p.Item2 == r)).Select(p => p.Item1 + p.Item2).Single() - r) : ((uint?)null);
 		}
 
-		public void Step()
-		{
-			Incoming_Events.Enqueue(new ChangePICModeEvent() { Value = PICControllerMode.SKIPONE });
-		}
+		#endregion
 	}
 }

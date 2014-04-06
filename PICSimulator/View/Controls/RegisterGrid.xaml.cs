@@ -207,8 +207,12 @@ namespace PICSimulator.View
 			t.Text = String.Format("{0:X02}", _values[pos]);
 		}
 
+		private bool suppress_TC_Event = false;
+
 		private void cell_TextChanged(object sender, TextChangedEventArgs e)
 		{
+			if (suppress_TC_Event) return;
+
 			TextBox t = sender as TextBox;
 			if (t == null)
 				return;
@@ -224,7 +228,7 @@ namespace PICSimulator.View
 
 			if (!string.IsNullOrWhiteSpace(t.Text))
 			{
-				Set((uint)pos, Convert.ToUInt32(t.Text, 16), false);
+				Set((uint)pos, Convert.ToUInt32(t.Text, 16), false, true);
 			}
 		}
 
@@ -242,24 +246,31 @@ namespace PICSimulator.View
 			return _values[pos];
 		}
 
-		public void Set(uint pos, uint val, bool updateBoxes = true)
+		public void Set(uint pos, uint val, bool updateBoxes = true, bool raiseEvent = true)
 		{
 			//val = Math.Min(val, 0xFF);
 
 			_values[pos] = val;
 
 			if (updateBoxes)
-				textboxes[pos].Text = String.Format("{0:X02}", val);
+			{
+				if (!raiseEvent)
+				{
+					suppress_TC_Event = true;
+					textboxes[pos].Text = String.Format("{0:X02}", val);
+					suppress_TC_Event = false;
+				}
+				else
+				{
+					textboxes[pos].Text = String.Format("{0:X02}", val);
+				}
+			}
 
 			if (RegisterChanged != null)
 				RegisterChanged(pos, val);
-		}
 
-		public void SetWithPICEvent(uint pos, uint val)
-		{
-			Set(pos, val);
-
-			ParentWindow.SendEventToController(new ManuallyRegisterChangedEvent() { RegisterPos = pos, NewValue = val });
+			if (raiseEvent)
+				ParentWindow.SendEventToController(new ManuallyRegisterChangedEvent() { Position = pos, Value = val });
 		}
 	}
 }

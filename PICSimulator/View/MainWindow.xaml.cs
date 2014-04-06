@@ -259,14 +259,21 @@ namespace PICSimulator.View
 
 		private void StepEnabled(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.CanExecute = controller != null && controller.Mode == PICControllerMode.PAUSED;
+			e.CanExecute = controller != null && (controller.Mode == PICControllerMode.PAUSED || controller.Mode == PICControllerMode.WAITING);
 
 			e.Handled = true;
 		}
 
 		private void StepExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
-			controller.Step();
+			if (controller.Mode == PICControllerMode.PAUSED)
+			{
+				controller.Step();
+			}
+			else if (controller.Mode == PICControllerMode.WAITING)
+			{
+				controller.StartPaused();
+			}
 		}
 
 		#endregion
@@ -301,24 +308,26 @@ namespace PICSimulator.View
 
 		private void HandleEvent(PICEvent e)
 		{
+			Debug.WriteLine("[EVENT::FROM_MODEL] " + e);
+
 			if (e is RegisterChangedEvent)
 			{
 				RegisterChangedEvent ce = e as RegisterChangedEvent;
 
-				rgridMain.Set(ce.RegisterPos, ce.NewValue);
+				rgridMain.Set(ce.Position, ce.Value, true, false);
 			}
 			else if (e is PCChangedEvent)
 			{
 				PCChangedEvent ce = e as PCChangedEvent;
 
-				IconBar.SetPC(controller.GetSCLineForPC(ce.NewValue));
-				lblRegPC.Text = "0x" + string.Format("{0:X04}", ce.NewValue);
+				IconBar.SetPC(controller.GetSCLineForPC(ce.Value));
+				lblRegPC.Text = "0x" + string.Format("{0:X04}", ce.Value);
 			}
 			else if (e is WRegisterChangedEvent)
 			{
 				WRegisterChangedEvent ce = e as WRegisterChangedEvent;
 
-				lblRegW.Text = "0x" + string.Format("{0:X02}", ce.NewValue);
+				lblRegW.Text = "0x" + string.Format("{0:X02}", ce.Value);
 			}
 			else
 			{
