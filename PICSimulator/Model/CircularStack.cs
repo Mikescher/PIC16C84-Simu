@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 namespace PICSimulator.Model
 {
 	class CircularStack
@@ -8,23 +9,50 @@ namespace PICSimulator.Model
 
 		public void Push(uint v)
 		{
-			pos = (pos + 1) % 8; // pos++
+			lock (this)
+			{
+				pos = (pos + 1) % 8; // pos++
 
-			data[pos] = v;
+				data[pos] = v;
+			}
 		}
 
 		public uint Pop()
 		{
-			uint v = data[pos];
+			lock (this)
+			{
+				uint v = data[pos];
 
-			pos = (pos + 7) % 8; // pos--;
+				pos = (pos + 7) % 8; // pos--;
 
-			return v;
+				return v;
+			}
 		}
 
 		public uint Peek()
 		{
-			return data[(pos + 7) % 8];
+			lock (this)
+			{
+				return data[(pos + 7) % 8];
+			}
+		}
+
+		public Stack<uint> getAsNativeStack()
+		{
+			Stack<uint> a = new Stack<uint>();
+
+			lock (this)
+			{
+				if (pos < 7)
+				{
+					for (uint i = 0; i < pos; i++)
+					{
+						a.Push(data[i]);
+					}
+				}
+			}
+
+			return a;
 		}
 	}
 }

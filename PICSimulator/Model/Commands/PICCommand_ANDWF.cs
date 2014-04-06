@@ -19,12 +19,12 @@ namespace PICSimulator.Model.Commands
 		{
 			uint Result = controller.GetWRegister() & controller.GetRegister(Register);
 
-			controller.SetRegisterBitWithEvent(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, Result == 0);
+			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, Result == 0);
 
 			if (Target)
-				controller.SetRegisterWithEvent(Register, Result);
+				controller.SetRegister(Register, Result);
 			else
-				controller.SetWRegisterWithEvent(Result);
+				controller.SetWRegister(Result);
 		}
 
 		public override string GetCommandCodeFormat()

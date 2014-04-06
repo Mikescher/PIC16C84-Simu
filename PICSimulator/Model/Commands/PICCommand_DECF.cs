@@ -24,12 +24,12 @@ namespace PICSimulator.Model.Commands
 			else
 				Result -= 1;
 
-			controller.SetRegisterBitWithEvent(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, Result == 0);
+			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, Result == 0);
 
 			if (Target)
-				controller.SetRegisterWithEvent(Register, Result);
+				controller.SetRegister(Register, Result);
 			else
-				controller.SetWRegisterWithEvent(Result);
+				controller.SetWRegister(Result);
 
 		}
 

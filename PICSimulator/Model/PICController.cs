@@ -51,10 +51,11 @@ namespace PICSimulator.Model
 		public PICControllerMode Mode { get; private set; } // Set to true while running - false when program ended (NOT WHEN PAUSED)
 		public PICControllerSpeed SimulationSpeed;
 		private bool[] breakpoints;
+		private uint pc_cache; // For ThreadSafe PC Access
 
 		private PICCommand[] CommandList;
 
-		public ConcurrentQueue<PICEvent> Outgoing_Events = new ConcurrentQueue<PICEvent>();
+		//public ConcurrentQueue<PICEvent> Outgoing_Events = new ConcurrentQueue<PICEvent>();
 		public ConcurrentQueue<PICEvent> Incoming_Events = new ConcurrentQueue<PICEvent>();
 
 		private uint[] register = new uint[0xFF];
@@ -80,7 +81,7 @@ namespace PICSimulator.Model
 			hardResetRegister();
 			ResetStack();
 
-			SetPCWithEvent_13Bit(0);
+			SetPC_13Bit(0);
 
 			while (Mode != PICControllerMode.FINISHED)
 			{
@@ -89,16 +90,6 @@ namespace PICSimulator.Model
 				//################
 
 				Frequency.Inc();
-
-				if (Outgoing_Events.Count > 128)
-				{
-					while (Outgoing_Events.Count > 0)
-					{
-						Thread.Sleep(0);
-						Debug.WriteLine("Event Queque too full ... waiting to clear");
-					}
-					Thread.Sleep(10);
-				}
 
 				if (GetPC() >= CommandList.Length) // PC > Commandcount
 				{
@@ -153,7 +144,7 @@ namespace PICSimulator.Model
 
 				UnreleasedSleep((int)SimulationSpeed);
 
-				SetPCWithEvent_13Bit(GetPC() + 1);
+				SetPC_13Bit(GetPC() + 1);
 
 				//################
 				//#   EXECUTE    #
@@ -201,7 +192,7 @@ namespace PICSimulator.Model
 			{
 				ManuallyRegisterChangedEvent ce = e as ManuallyRegisterChangedEvent;
 
-				SetRegisterWithEvent(ce.Position, ce.Value);
+				SetRegister(ce.Position, ce.Value);
 			}
 			else
 			{
@@ -209,14 +200,13 @@ namespace PICSimulator.Model
 			}
 		}
 
-		public void SetRegisterWithEvent(uint p, uint n, bool forceEvent = false)
+		public void SetRegister(uint p, uint n, bool forceEvent = false)
 		{
 			n %= 0xFF; // Just 4 Safety
 
 			if (GetRegister(p) != n || forceEvent)
 			{
 				register[p] = n;
-				Outgoing_Events.Enqueue(new RegisterChangedEvent() { Position = p, Value = n });
 			}
 
 			uint? link;
@@ -225,14 +215,14 @@ namespace PICSimulator.Model
 			{
 				if (register[link.Value] != n)
 				{
-					SetRegisterWithEvent(link.Value, n);  // NO FORCE !!
+					SetRegister(link.Value, n);  // NO FORCE !!
 				}
 			}
 		}
 
-		public void SetRegisterBitWithEvent(uint p, uint bitpos, bool newVal)
+		public void SetRegisterBit(uint p, uint bitpos, bool newVal)
 		{
-			SetRegisterWithEvent(p, BinaryHelper.SetBit(GetRegister(p), bitpos, newVal));
+			SetRegister(p, BinaryHelper.SetBit(GetRegister(p), bitpos, newVal));
 		}
 
 		public uint GetRegister(uint p)
@@ -240,14 +230,13 @@ namespace PICSimulator.Model
 			return register[p];
 		}
 
-		public void SetWRegisterWithEvent(uint n, bool forceEvent = false)
+		public void SetWRegister(uint n, bool forceEvent = false)
 		{
 			n %= 0xFF; // Just 4 Safety
 
 			if (register_W != n || forceEvent)
 			{
 				register_W = n;
-				Outgoing_Events.Enqueue(new WRegisterChangedEvent() { Value = n });
 			}
 
 		}
@@ -261,55 +250,49 @@ namespace PICSimulator.Model
 		{
 			for (uint i = 0; i < 0xFF; i++)
 			{
-				SetRegisterWithEvent(i, 0x00);
+				SetRegister(i, 0x00);
 			}
 
-			SetRegisterWithEvent(0x03, 0x18);
-			SetRegisterWithEvent(0x81, 0xFF);
-			SetRegisterWithEvent(ADDR_TRIS_A, 0x1F);
-			SetRegisterWithEvent(ADDR_TRIS_B, 0xFF);
+			SetRegister(0x03, 0x18);
+			SetRegister(0x81, 0xFF);
+			SetRegister(ADDR_TRIS_A, 0x1F);
+			SetRegister(ADDR_TRIS_B, 0xFF);
 		}
 
 		private void ResetStack()
 		{
 			CallStack = new CircularStack();
-			Outgoing_Events.Enqueue(new StackResetEvent());
 		}
 
 		public uint GetPC()
 		{
-			return (uint)((GetRegister(ADDR_PCLATH) & ~0x1F) << 8) | GetRegister(ADDR_PCL);
+			pc_cache = (uint)((GetRegister(ADDR_PCLATH) & ~0x1F) << 8) | GetRegister(ADDR_PCL);
+			return pc_cache;
 		}
 
-		public void SetPCWithEvent_13Bit(uint value)
+		public void SetPC_13Bit(uint value)
 		{
 			uint Low = value & 0xFF;
 			uint High = (value >> 8) & 0x1F;
 
-			SetRegisterWithEvent(ADDR_PCL, Low);
-			SetRegisterWithEvent(ADDR_PCLATH, High);
-
-			Outgoing_Events.Enqueue(new PCChangedEvent() { Value = value });
+			SetRegister(ADDR_PCL, Low);
+			SetRegister(ADDR_PCLATH, High);
 		}
 
-		public void SetPCWithEvent_11Bit(uint value)
+		public void SetPC_11Bit(uint value)
 		{
 			value |= (GetRegister(ADDR_PCLATH) & 0x18) << 8;
 
-			SetPCWithEvent_13Bit(value);
+			SetPC_13Bit(value);
 		}
 
 		public void PushCallStack(uint v)
 		{
-			Outgoing_Events.Enqueue(new PushCallStackEvent() { Value = v });
-
 			CallStack.Push(v);
 		}
 
 		public uint PopCallStack()
 		{
-			Outgoing_Events.Enqueue(new PopCallStackEvent());
-
 			return CallStack.Pop();
 		}
 
@@ -354,6 +337,11 @@ namespace PICSimulator.Model
 
 		#region Helper
 
+		public uint GetThreadSafePC()
+		{
+			return pc_cache;
+		}
+
 		public long GetSCLineForPC(uint pc)
 		{
 			return pc < CommandList.Length ? CommandList[pc].SourceCodeLine : -1L;
@@ -373,10 +361,10 @@ namespace PICSimulator.Model
 		{
 			for (uint i = 0; i < 0xFF; i++)
 			{
-				SetRegisterWithEvent(i, GetRegister(i), true);
+				SetRegister(i, GetRegister(i), true);
 			}
 
-			SetWRegisterWithEvent(GetWRegister(), true);
+			SetWRegister(GetWRegister(), true);
 		}
 
 		public uint GetRunTime() // in us
@@ -388,6 +376,11 @@ namespace PICSimulator.Model
 		{
 			// One Expression to rule them all.
 			return Linked_Register.Count(p => (p.Item1 == r || p.Item2 == r)) == 1 ? (Linked_Register.Where(p => (p.Item1 == r || p.Item2 == r)).Select(p => p.Item1 + p.Item2).Single() - r) : ((uint?)null);
+		}
+
+		public Stack<uint> GetThreadSafeCallStack()
+		{
+			return CallStack.getAsNativeStack();
 		}
 
 		#endregion

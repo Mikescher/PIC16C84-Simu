@@ -13,8 +13,8 @@ namespace PICSimulator.Model.Commands
 
 		public override void Execute(PICController controller)
 		{
-			controller.SetWRegisterWithEvent(0x00);
-			controller.SetRegisterBitWithEvent(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, true);
+			controller.SetWRegister(0x00);
+			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, true);
 		}
 
 		public override string GetCommandCodeFormat()

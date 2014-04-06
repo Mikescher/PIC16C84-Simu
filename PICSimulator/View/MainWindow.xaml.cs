@@ -43,7 +43,9 @@ namespace PICSimulator.View
 				File.ReadAllText(@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata_2\test.src"),
 				@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata_2\test.src");
 
-			this.Dispatcher.BeginInvoke(new Action(onIdle), DispatcherPriority.ApplicationIdle);
+			DispatcherTimer itimer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);
+			itimer.Tick += (s, e) => onIdle();
+			itimer.Start();
 		}
 
 		private void Init()
@@ -281,72 +283,60 @@ namespace PICSimulator.View
 
 		#endregion
 
-		private void onIdle() // TODO App freezes if spped too high
+		#region IdleUpdate
+
+		private void onIdle()
 		{
 			IdleCounter.Inc();
 
-			//#################################
-
-			PICEvent e;
 			if (controller != null)
 			{
-				while (controller.Outgoing_Events.TryDequeue(out e))
-				{
-					HandleEvent(e);
-				}
+				UpdateRegister();
+				UpdateStackDisplay();
+
+				IconBar.SetPC(controller.GetSCLineForPC(controller.GetThreadSafePC()));
+
+				lblFreqModel.Text = FormatFreq((uint)controller.Frequency.Frequency);
+				lblFreqView.Text = FormatFreq((uint)IdleCounter.Frequency);
+				lblRunTime.Text = String.Format("{0:0000} \u00B5", controller.GetRunTime());
+				lblRegW.Text = "0x" + string.Format("{0:X02}", controller.GetWRegister());
 			}
-
-			//#################################
-
-			lblFreqView.Text = String.Format("{0:00000}", (int)IdleCounter.Frequency);
-			lblFreqModel.Text = String.Format("{0:00000}", controller == null ? 0 : (int)controller.Frequency.Frequency);
-			lblRunTime.Text = String.Format("{0:0000} \u00B5", controller == null ? 0 : controller.GetRunTime());
-
-			//#################################
-
-			this.Dispatcher.BeginInvoke(new Action(onIdle), DispatcherPriority.ApplicationIdle);
 		}
 
-		private void HandleEvent(PICEvent e)
+		private void UpdateStackDisplay()
 		{
-			Debug.WriteLine("[EVENT::FROM_MODEL] " + e);
+			stackList.UpdateValues(controller.GetThreadSafeCallStack(), controller);
+		}
 
-			if (e is RegisterChangedEvent)
+		private void UpdateRegister()
+		{
+			for (uint i = 0; i < 0xFF; i++)
 			{
-				RegisterChangedEvent ce = e as RegisterChangedEvent;
+				rgridMain.Set(i, controller.GetRegister(i), true, false); // Tests in Set if val has changed ....
+			}
+		}
 
-				rgridMain.Set(ce.Position, ce.Value, true, false);
-			}
-			else if (e is PCChangedEvent)
+		private string FormatFreq(uint f)
+		{
+			if (f < 2000)
 			{
-				PCChangedEvent ce = e as PCChangedEvent;
-
-				IconBar.SetPC(controller.GetSCLineForPC(ce.Value));
-				lblRegPC.Text = "0x" + string.Format("{0:X04}", ce.Value);
+				return string.Format("{0} Hz", f);
 			}
-			else if (e is WRegisterChangedEvent)
+			else if (f < 2000000)
 			{
-				WRegisterChangedEvent ce = e as WRegisterChangedEvent;
-
-				lblRegW.Text = "0x" + string.Format("{0:X02}", ce.Value);
+				return string.Format("{0} kHz", f / 1000);
 			}
-			else if (e is PushCallStackEvent)
+			else if (f < 2000000000)
 			{
-				stackList.HandleEvent(e, controller);
-			}
-			else if (e is PopCallStackEvent)
-			{
-				stackList.HandleEvent(e, controller);
-			}
-			else if (e is StackResetEvent)
-			{
-				stackList.HandleEvent(e, controller);
+				return string.Format("{0} MHz", f / 1000000);
 			}
 			else
 			{
-				throw new ArgumentException();
+				return string.Format("#NaN# ({0})", f);
 			}
 		}
+
+		#endregion
 
 		private void txtCode_PreviewTextInput(object sender, TextCompositionEventArgs e)
 		{
@@ -355,7 +345,7 @@ namespace PICSimulator.View
 
 		private void Window_Closed(object sender, EventArgs e)
 		{
-			if (controller != null)
+			if (controller != null) // TODO Wont work ?? --> Max Speed ??
 				controller.Stop(); // Kill 'em with fire
 		}
 

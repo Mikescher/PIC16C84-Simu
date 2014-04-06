@@ -211,7 +211,8 @@ namespace PICSimulator.View
 
 		private void cell_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			if (suppress_TC_Event) return;
+			if (suppress_TC_Event)
+				return;
 
 			TextBox t = sender as TextBox;
 			if (t == null)
@@ -248,29 +249,31 @@ namespace PICSimulator.View
 
 		public void Set(uint pos, uint val, bool updateBoxes = true, bool raiseEvent = true)
 		{
-			//val = Math.Min(val, 0xFF);
-
-			_values[pos] = val;
-
-			if (updateBoxes)
+			if (_values[pos] != val)
 			{
-				if (!raiseEvent)
+				_values[pos] = val;
+
+				if (updateBoxes)
 				{
-					suppress_TC_Event = true;
-					textboxes[pos].Text = String.Format("{0:X02}", val);
-					suppress_TC_Event = false;
+					if (!raiseEvent)
+					{
+						suppress_TC_Event = true;
+						textboxes[pos].Text = String.Format("{0:X02}", val);
+						suppress_TC_Event = false;
+					}
+					else
+					{
+						textboxes[pos].Text = String.Format("{0:X02}", val);
+					}
 				}
-				else
-				{
-					textboxes[pos].Text = String.Format("{0:X02}", val);
-				}
+
+				if (RegisterChanged != null)
+					RegisterChanged(pos, val);
+
+				if (raiseEvent)
+					ParentWindow.SendEventToController(new ManuallyRegisterChangedEvent() { Position = pos, Value = val });
+
 			}
-
-			if (RegisterChanged != null)
-				RegisterChanged(pos, val);
-
-			if (raiseEvent)
-				ParentWindow.SendEventToController(new ManuallyRegisterChangedEvent() { Position = pos, Value = val });
 		}
 	}
 }

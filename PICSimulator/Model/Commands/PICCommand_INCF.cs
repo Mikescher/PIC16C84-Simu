@@ -23,12 +23,12 @@ namespace PICSimulator.Model.Commands
 
 			Result %= 0xFF; // TODO Why does INCF not set the STATUS[C] Bit ???
 
-			controller.SetRegisterBitWithEvent(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, Result == 0);
+			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, Result == 0);
 
 			if (Target)
-				controller.SetRegisterWithEvent(Register, Result);
+				controller.SetRegister(Register, Result);
 			else
-				controller.SetWRegisterWithEvent(Result);
+				controller.SetWRegister(Result);
 		}
 
 		public override string GetCommandCodeFormat()

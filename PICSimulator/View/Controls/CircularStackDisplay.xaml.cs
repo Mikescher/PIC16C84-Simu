@@ -39,26 +39,25 @@ namespace PICSimulator.View
 		{
 			for (int i = 0; i < 9; i++)
 			{
-				IndicatorTextBlocks[i].Text = (Stack.Count - 1 == i) ? "\u25BA" : "";
-				LineTextBlocks[i].Text = (Stack.Count > i) ? string.Format(@"[0x{0:X04}] {1}", Stack[i].Item1, Stack[i].Item2) : "";
+				string ind = (Stack.Count - 1 == i) ? "\u25BA" : "";
+				string txt = (Stack.Count > i) ? string.Format(@"[0x{0:X04}] {1}", Stack[i].Item1, Stack[i].Item2) : "";
+
+				if (IndicatorTextBlocks[i].Text != ind)
+					IndicatorTextBlocks[i].Text = ind;
+
+				if (LineTextBlocks[i].Text != txt)
+					LineTextBlocks[i].Text = txt;
 			}
 		}
 
-		public void HandleEvent(PICEvent e, PICController controller)
+		public void UpdateValues(Stack<uint> v, PICController controller)
 		{
-			if (e is PushCallStackEvent)
+			Stack.Clear();
+
+			while (v.Count > 0)
 			{
-				PushCallStackEvent ce = e as PushCallStackEvent;
-				Stack.Add(Tuple.Create(ce.Value, controller.GetSourceCodeForPC(ce.Value)));
-			}
-			else if (e is PopCallStackEvent)
-			{
-				if (Stack.Count > 0)
-					Stack.RemoveAt(Stack.Count - 1);
-			}
-			else if (e is StackResetEvent)
-			{
-				Reset();
+				uint sv = v.Pop();
+				Stack.Insert(0, Tuple.Create(sv, controller.GetSourceCodeForPC(sv)));
 			}
 
 			Update();

@@ -15,7 +15,7 @@ namespace PICSimulator.Model.Commands
 
 		public override void Execute(PICController controller)
 		{
-			controller.SetWRegisterWithEvent(Literal);
+			controller.SetWRegister(Literal);
 		}
 
 		public override string GetCommandCodeFormat()

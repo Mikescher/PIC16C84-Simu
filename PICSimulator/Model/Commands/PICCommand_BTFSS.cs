@@ -25,7 +25,7 @@ namespace PICSimulator.Model.Commands
 		{
 			if (TestCondition(controller))
 			{
-				controller.SetPCWithEvent_13Bit(controller.GetPC() + 1);
+				controller.SetPC_13Bit(controller.GetPC() + 1);
 			}
 		}
 

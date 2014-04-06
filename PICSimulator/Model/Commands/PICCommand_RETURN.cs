@@ -13,7 +13,7 @@ namespace PICSimulator.Model.Commands
 
 		public override void Execute(PICController controller)
 		{
-			controller.SetPCWithEvent_13Bit(controller.PopCallStack());
+			controller.SetPC_13Bit(controller.PopCallStack());
 		}
 
 		public override string GetCommandCodeFormat()

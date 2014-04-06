@@ -17,8 +17,8 @@ namespace PICSimulator.Model.Commands
 		{
 			uint Result = controller.GetWRegister() & Literal;
 
-			controller.SetWRegisterWithEvent(Result);
-			controller.SetRegisterBitWithEvent(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, Result == 0);
+			controller.SetWRegister(Result);
+			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, Result == 0);
 		}
 
 		public override string GetCommandCodeFormat()

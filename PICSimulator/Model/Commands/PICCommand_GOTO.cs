@@ -15,7 +15,7 @@ namespace PICSimulator.Model.Commands
 
 		public override void Execute(PICController controller)
 		{
-			controller.SetPCWithEvent_11Bit(Address);
+			controller.SetPC_11Bit(Address);
 		}
 
 		public override string GetCommandCodeFormat()
