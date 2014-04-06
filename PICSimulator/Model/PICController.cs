@@ -11,13 +11,25 @@ namespace PICSimulator.Model
 {
 	class PICController
 	{
-		public const uint ADDR_PC = 0x02;
+		//TODO FIX PC --> FULL-DOKU PAGE 17
+		//TODO WHAT THE FAQ IS PCLATH (PC > 255 ??)
+		public const uint ADDR_PC = 0x02;		//TODO 02H or 82H ????
+		public const uint ADDR_STATUS = 0x03;	//TODO Where is Status ?? 03H or 83H ??
 
-		public const uint PORT_A = 0x05;
-		public const uint TRIS_A = 0x85;
+		public const uint ADDR_PORT_A = 0x05;
+		public const uint ADDR_TRIS_A = 0x85;
 
-		public const uint PORT_B = 0x06;
-		public const uint TRIS_B = 0x86;
+		public const uint ADDR_PORT_B = 0x06;
+		public const uint ADDR_TRIS_B = 0x86;
+
+		public const uint STATUS_BIT_IRP = 7;	// Unused in PIC16C84
+		public const uint STATUS_BIT_RP1 = 6;	// Unused in PIC16C84
+		public const uint STATUS_BIT_RP0 = 5;	// Register Bank Selection Bit
+		public const uint STATUS_BIT_TO = 4;	// Time Out Bit
+		public const uint STATUS_BIT_PD = 3;	// Power Down Bit
+		public const uint STATUS_BIT_Z = 2;		// Zero Bit
+		public const uint STATUS_BIT_DC = 1;	// Digit Carry Bit
+		public const uint STATUS_BIT_C = 0;		// Carry Bit
 
 		public FrequencyCounter Frequency = new FrequencyCounter(); // Only to see the Performance
 		public uint EmulatedFrequency = 4000000; // In Hz
@@ -129,7 +141,7 @@ namespace PICSimulator.Model
 				//################
 
 				cmd.Execute(this);
-				Cycles += cmd.GetCycleCount();
+				Cycles += cmd.GetCycleCount(this);
 			}
 
 			Mode = PICControllerMode.WAITING;
@@ -165,11 +177,21 @@ namespace PICSimulator.Model
 			}
 		}
 
-		public void SetRegisterWithEvent(uint p, uint n)
+		public void SetRegisterWithEvent(uint p, uint n, bool forceEvent = false)
 		{
-			register[p] = n % 0xFF; //TODO Interrupt @ Overflow ... oder so ?
 
-			Outgoing_Events.Enqueue(new RegisterChangedEvent() { RegisterPos = p, NewValue = n });
+			n %= 0xFF; // Just 4 Safety
+
+			if (register[p] != n || forceEvent)
+			{
+				register[p] = n;
+				Outgoing_Events.Enqueue(new RegisterChangedEvent() { RegisterPos = p, NewValue = n });
+			}
+		}
+
+		public void SetRegisterBitWithEvent(uint p, uint bitpos, bool newVal)
+		{
+			SetRegisterWithEvent(p, BinaryHelper.SetBit(GetRegister(p), bitpos, newVal));
 		}
 
 		public uint GetRegister(uint p)
@@ -177,11 +199,16 @@ namespace PICSimulator.Model
 			return register[p];
 		}
 
-		public void SetWRegisterWithEvent(uint n)
+		public void SetWRegisterWithEvent(uint n, bool forceEvent = false)
 		{
-			register_W = n % 0xFF; //TODO Interrupt @ Overflow ... oder so ?
+			n %= 0xFF; // Just 4 Safety
 
-			Outgoing_Events.Enqueue(new WRegisterChangedEvent() { NewValue = n }); //TODO Register W Changed Event
+			if (register_W != n || forceEvent)
+			{
+				register_W = n;
+				Outgoing_Events.Enqueue(new WRegisterChangedEvent() { NewValue = n });
+			}
+
 		}
 
 		public uint GetWRegister()
@@ -198,8 +225,8 @@ namespace PICSimulator.Model
 
 			SetRegisterWithEvent(0x03, 0x18);
 			SetRegisterWithEvent(0x81, 0xFF);
-			SetRegisterWithEvent(TRIS_A, 0x1F);
-			SetRegisterWithEvent(TRIS_B, 0xFF);
+			SetRegisterWithEvent(ADDR_TRIS_A, 0x1F);
+			SetRegisterWithEvent(ADDR_TRIS_B, 0xFF);
 		}
 
 		public void Start()
@@ -230,10 +257,10 @@ namespace PICSimulator.Model
 		{
 			for (uint i = 0; i < 0xFF; i++)
 			{
-				SetRegisterWithEvent(i, register[i]);
+				SetRegisterWithEvent(i, register[i], true);
 			}
 
-			SetWRegisterWithEvent(GetWRegister());
+			SetWRegisterWithEvent(GetWRegister(), true);
 		}
 
 		public uint GetRunTime() // in us

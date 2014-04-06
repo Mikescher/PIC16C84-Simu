@@ -65,8 +65,8 @@ namespace PICSimulator.View
 
 			rgridMain.ParentWindow = this;
 
-			iogridA.Initialize(rgridMain, PICController.PORT_A, PICController.TRIS_A);
-			iogridB.Initialize(rgridMain, PICController.PORT_B, PICController.TRIS_B);
+			iogridA.Initialize(rgridMain, PICController.ADDR_PORT_A, PICController.ADDR_TRIS_A);
+			iogridB.Initialize(rgridMain, PICController.ADDR_PORT_B, PICController.ADDR_TRIS_B);
 		}
 
 		#region Event Handler

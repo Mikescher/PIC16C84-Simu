@@ -27,6 +27,6 @@
 
 		public abstract void Execute(PICController controller);
 		public abstract string GetCommandCodeFormat();
-		public abstract uint GetCycleCount();
+		public abstract uint GetCycleCount(PICController controller);
 	}
 }

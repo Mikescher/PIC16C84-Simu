@@ -61,13 +61,13 @@ namespace PICSimulator.View
 
 		public void setTRIS(uint val)
 		{
-			for (int i = 0; i < 8; i++)
+			for (uint i = 0; i < 8; i++)
 			{
-				setTRIS(i, BinaryHelper.GetBit(i, val));
+				setTRIS(i, BinaryHelper.GetBit(val, i));
 			}
 		}
 
-		public void setTRIS(int pos, bool val)
+		public void setTRIS(uint pos, bool val)
 		{
 			tris[pos] = val;
 
@@ -76,26 +76,26 @@ namespace PICSimulator.View
 
 		public void setPINS(uint val)
 		{
-			for (int i = 0; i < 8; i++)
+			for (uint i = 0; i < 8; i++)
 			{
-				setPINS(i, BinaryHelper.GetBit(i, val));
+				setPINS(i, BinaryHelper.GetBit(val, i));
 			}
 		}
 
-		public void setPINS(int pos, bool val)
+		public void setPINS(uint pos, bool val)
 		{
 			pins[pos] = val;
 
 			txtPINS[pos].Text = val ? "1" : "0";
 		}
 
-		private void Pin_MouseDown(int nmbr)
+		private void Pin_MouseDown(uint nmbr)
 		{
 			setPINS(nmbr, !pins[nmbr]);
 			ParentWindow.Set(Position_PINS, GetValue_PINS());
 		}
 
-		private void Tris_MouseDown(int nmbr)
+		private void Tris_MouseDown(uint nmbr)
 		{
 			setTRIS(nmbr, !tris[nmbr]);
 			ParentWindow.Set(Position_TRIS, GetValue_TRIS());

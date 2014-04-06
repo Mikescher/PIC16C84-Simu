@@ -1,20 +1,22 @@
-﻿using System;
-
+﻿
 namespace PICSimulator.Model.Commands
 {
 	class PICCommand_CLRF : PICCommand
 	{
 		public const string COMMANDCODE = "00 0001 1fff ffff";
 
+		public readonly uint Register;
+
 		public PICCommand_CLRF(string sct, uint scl, uint pos, uint cmd)
 			: base(sct, scl, pos, cmd)
 		{
-
+			Register = Parameter.GetParam('f').Value;
 		}
 
 		public override void Execute(PICController controller)
 		{
-			throw new System.NotImplementedException();
+			controller.SetRegisterWithEvent(Register, 0x00);
+			controller.SetRegisterBitWithEvent(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, true);
 		}
 
 		public override string GetCommandCodeFormat()
@@ -22,9 +24,9 @@ namespace PICSimulator.Model.Commands
 			return COMMANDCODE;
 		}
 
-		public override uint GetCycleCount()
+		public override uint GetCycleCount(PICController controller)
 		{
-			throw new NotImplementedException();
+			return 1;
 		}
 	}
 }

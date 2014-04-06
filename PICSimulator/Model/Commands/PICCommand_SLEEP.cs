@@ -22,7 +22,7 @@ namespace PICSimulator.Model.Commands
 			return COMMANDCODE;
 		}
 
-		public override uint GetCycleCount()
+		public override uint GetCycleCount(PICController controller)
 		{
 			throw new NotImplementedException();
 		}

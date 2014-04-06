@@ -25,6 +25,18 @@ namespace PICSimulator.Model.Commands
 			}
 		}
 
+		public bool? GetBoolParam(char c)
+		{
+			if (Parameter.ContainsKey(c))
+			{
+				return Parameter[c] != 0;
+			}
+			else
+			{
+				return null;
+			}
+		}
+
 		public static BinaryFormatParser Parse(string fmt, uint val)
 		{
 			string format = fmt.Replace(" ", String.Empty);

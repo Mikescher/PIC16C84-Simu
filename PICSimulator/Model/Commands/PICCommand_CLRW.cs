@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace PICSimulator.Model.Commands
 {
 	class PICCommand_CLRW : PICCommand
@@ -14,7 +13,8 @@ namespace PICSimulator.Model.Commands
 
 		public override void Execute(PICController controller)
 		{
-			throw new System.NotImplementedException();
+			controller.SetWRegisterWithEvent(0x00);
+			controller.SetRegisterBitWithEvent(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, true);
 		}
 
 		public override string GetCommandCodeFormat()
@@ -22,9 +22,9 @@ namespace PICSimulator.Model.Commands
 			return COMMANDCODE;
 		}
 
-		public override uint GetCycleCount()
+		public override uint GetCycleCount(PICController controller)
 		{
-			throw new NotImplementedException();
+			return 1;
 		}
 	}
 }
