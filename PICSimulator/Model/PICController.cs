@@ -11,10 +11,9 @@ namespace PICSimulator.Model
 {
 	class PICController
 	{
-		//TODO FIX PC --> FULL-DOKU PAGE 17
-		//TODO WHAT THE FAQ IS PCLATH (PC > 255 ??)
-		public const uint ADDR_PC = 0x02;		//TODO 02H or 82H ????
-		public const uint ADDR_STATUS = 0x03;	//TODO Where is Status ?? 03H or 83H ??
+		public const uint _ADDR_PCL = 0x02;			//TODO 02H or 82H ????
+		public const uint ADDR_STATUS = 0x03;		//TODO Where is Status ?? 03H or 83H ??
+		public const uint _ADDR_PCLATH = 0x0A;		//TODO 0AH or 0AH ???? [CONFUSION INTENSIFIES]
 
 		public const uint ADDR_PORT_A = 0x05;
 		public const uint ADDR_TRIS_A = 0x85;
@@ -81,7 +80,7 @@ namespace PICSimulator.Model
 					}
 				}
 
-				if (register[ADDR_PC] >= CommandList.Length) // PC > Commandcount
+				if (GetPC() >= CommandList.Length) // PC > Commandcount
 				{
 					Mode = PICControllerMode.FINISHED;
 					continue;
@@ -115,7 +114,7 @@ namespace PICSimulator.Model
 				}
 				else
 				{
-					if (breakpoints[register[ADDR_PC]])
+					if (breakpoints[GetPC()])
 					{
 						Mode = PICControllerMode.PAUSED;
 						continue; // Continue so the current Cmd is NOT executed
@@ -126,7 +125,7 @@ namespace PICSimulator.Model
 				//#    FETCH     #
 				//################
 
-				PICCommand cmd = CommandList[register[ADDR_PC]];
+				PICCommand cmd = CommandList[GetPC()];
 
 				//################
 				//# INCREMENT PC #
@@ -134,7 +133,7 @@ namespace PICSimulator.Model
 
 				UnreleasedSleep((int)SimulationSpeed);
 
-				SetRegisterWithEvent(ADDR_PC, register[ADDR_PC] + 1);
+				SetPCWithEvent_13Bit(GetPC() + 1);
 
 				//################
 				//#   EXECUTE    #
@@ -182,7 +181,7 @@ namespace PICSimulator.Model
 
 			n %= 0xFF; // Just 4 Safety
 
-			if (register[p] != n || forceEvent)
+			if (GetRegister(p) != n || forceEvent)
 			{
 				register[p] = n;
 				Outgoing_Events.Enqueue(new RegisterChangedEvent() { RegisterPos = p, NewValue = n });
@@ -196,7 +195,7 @@ namespace PICSimulator.Model
 
 		public uint GetRegister(uint p)
 		{
-			return register[p];
+			return GetRegister(p);
 		}
 
 		public void SetWRegisterWithEvent(uint n, bool forceEvent = false)
@@ -229,6 +228,33 @@ namespace PICSimulator.Model
 			SetRegisterWithEvent(ADDR_TRIS_B, 0xFF);
 		}
 
+		public uint GetPC()
+		{
+			return (uint)((GetRegister(_ADDR_PCLATH) & ~0x1F) << 8) | GetRegister(_ADDR_PCL);
+		}
+
+		public void SetPCWithEvent_13Bit(uint value)
+		{
+			uint Low = value & 0xFF;
+			uint High = (value >> 8) & 0x1F;
+
+			SetRegisterWithEvent(_ADDR_PCL, Low);
+			SetRegisterWithEvent(_ADDR_PCLATH, High);
+
+			Outgoing_Events.Enqueue(new PCChangedEvent() { NewValue = value });
+		}
+
+		public void SetPCWithEvent_11Bit(uint value)
+		{
+			uint Low = value & 0xFF;
+			uint High = (value >> 8) & 0x1F;
+
+			High |= (GetRegister(_ADDR_PCLATH) & 0x18) << 8;
+
+			SetRegisterWithEvent(_ADDR_PCL, Low);
+			SetRegisterWithEvent(_ADDR_PCLATH, High);
+		}
+
 		public void Start()
 		{
 			thread = new Thread(new ThreadStart(run));
@@ -257,7 +283,7 @@ namespace PICSimulator.Model
 		{
 			for (uint i = 0; i < 0xFF; i++)
 			{
-				SetRegisterWithEvent(i, register[i], true);
+				SetRegisterWithEvent(i, GetRegister(i), true);
 			}
 
 			SetWRegisterWithEvent(GetWRegister(), true);

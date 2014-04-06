@@ -101,6 +101,7 @@
     <Compile Include="Model\Commands\PICCommand_DECFSZ.cs" />
     <Compile Include="Model\Commands\PICCommand_INCF.cs" />
     <Compile Include="Model\Commands\PICCommand_INCFSZ.cs" />
+    <Compile Include="Model\Events\Outgoing\PCChangedEvent.cs" />
     <Compile Include="Model\PICControllerSpeed.cs" />
     <Compile Include="Model\Events\Incoming\BreakPointChangedEvent.cs" />
     <Compile Include="Model\Events\Incoming\ChangePICModeEvent.cs" />

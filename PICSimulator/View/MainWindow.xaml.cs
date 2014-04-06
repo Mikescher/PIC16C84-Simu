@@ -306,12 +306,13 @@ namespace PICSimulator.View
 				RegisterChangedEvent ce = e as RegisterChangedEvent;
 
 				rgridMain.Set(ce.RegisterPos, ce.NewValue);
+			}
+			else if (e is PCChangedEvent)
+			{
+				PCChangedEvent ce = e as PCChangedEvent;
 
-				if (ce.RegisterPos == PICController.ADDR_PC)
-				{
-					IconBar.SetPC(controller.GetSCLineForPC(ce.NewValue));
-					lblRegPCL.Text = "0x" + string.Format("{0:X02}", ce.NewValue);
-				}
+				IconBar.SetPC(controller.GetSCLineForPC(ce.NewValue));
+				lblRegPC.Text = "0x" + string.Format("{0:X04}", ce.NewValue);
 			}
 			else if (e is WRegisterChangedEvent)
 			{

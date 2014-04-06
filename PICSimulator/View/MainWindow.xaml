@@ -114,14 +114,14 @@
             <DockPanel Grid.Row="2" Margin="0, 0, 0, 25">
                 <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Width="115">
                     <TextBlock TextAlignment="Right" Text="W-Register"/>
-                    <TextBlock TextAlignment="Right" Text="PCL"/>
+                    <TextBlock TextAlignment="Right" Text="PC"/>
                     <TextBlock TextAlignment="Right" Text="Frequency Display"/>
                     <TextBlock TextAlignment="Right" Text="Frequency Controller"/>
                     <TextBlock TextAlignment="Right" Text="Run Time"/>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Right" Orientation="Vertical" Margin="8, 0, 0, 0">
                     <TextBlock Name="lblRegW"  Text="0x00"/>
-                    <TextBlock Name="lblRegPCL"  Text="0x00"/>
+                    <TextBlock Name="lblRegPC"  Text="0x0000"/>
                     <TextBlock Name="lblFreqView"  Text="0"/>
                     <TextBlock Name="lblFreqModel"  Text="0"/>
                     <TextBlock Name="lblRunTime"  Text="0"/>
