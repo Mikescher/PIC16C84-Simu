@@ -274,7 +274,7 @@ namespace PICSimulator.Model
 			SetRegister(ADDR_OPT_REG, 0xFF);
 			SetRegister(ADDR_TRIS_A, 0x1F);
 			SetRegister(ADDR_TRIS_B, 0xFF);
-			// TODO Verfollständigen
+			SetRegister(ADDR_EECON1, (GetRegister(ADDR_EECON1) & 0x08));
 		}
 
 		private void ResetStack()
