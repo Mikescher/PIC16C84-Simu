@@ -74,6 +74,10 @@ namespace PICSimulator.View
 
 			iogridA.Initialize(rgridMain, PICController.ADDR_PORT_A, PICController.ADDR_TRIS_A);
 			iogridB.Initialize(rgridMain, PICController.ADDR_PORT_B, PICController.ADDR_TRIS_B);
+
+			sgridSTATUS.Initialize(rgridMain, PICController.ADDR_STATUS);
+			sgridINTCON.Initialize(rgridMain, PICController.ADDR_INTCON);
+			sgridOPTION.Initialize(rgridMain, PICController.ADDR_OPTION);
 		}
 
 		#region Event Handler
@@ -448,11 +452,11 @@ namespace PICSimulator.View
 			}
 		}
 
-        private void OnDataSheet(object sender, RoutedEventArgs e)
-        {
+		private void OnDataSheet(object sender, RoutedEventArgs e)
+		{
 			string path = @"res\DataSheet.pdf";
-			
+
 			Process.Start(path);
-        }
+		}
 	}
 }

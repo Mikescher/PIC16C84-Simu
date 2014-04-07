@@ -151,7 +151,21 @@
 
         <GridSplitter Grid.Row="3" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" ShowsPreview="False" Height="3" />
 
-        <Rectangle Grid.Row="4" Grid.Column="2" Fill="Salmon" Margin="5"></Rectangle>
+        <!--<Rectangle Grid.Row="4" Grid.Column="2" Fill="Salmon" Margin="5"></Rectangle>-->
+        <TabControl Grid.Row="4" Grid.Column="2" TabStripPlacement="Bottom">
+            <TabItem Header="Special Register" HorizontalAlignment="Left" Height="20" Margin="0" VerticalAlignment="Top" >
+                <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <self:SpecialRegisterGrid x:Name="sgridSTATUS" Margin="5, 0, 5, 0" Caption="STATUS" Title_0="C" Title_1="DC" Title_2="Z" Title_3="PD" Title_4="TO" Title_5="RP0" Title_6="RP1" Title_7="IRP"/>
+                        <self:SpecialRegisterGrid x:Name="sgridINTCON" Margin="5, 0, 5, 0" Caption="INTCON" Title_0="RBIF" Title_1="INTF" Title_2="T0IF" Title_3="RBIE" Title_4="INTE" Title_5="T0IE" Title_6="EEIE" Title_7="GIE"/>
+                        <self:SpecialRegisterGrid x:Name="sgridOPTION" Margin="5, 0, 5, 0" Caption="OPTION" Title_0="RBPU" Title_1="INTEDG" Title_2="T0CS" Title_3="T0SE" Title_4="PSA" Title_5="PS2" Title_6="PS1" Title_7="PS0"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="blub" HorizontalAlignment="Left" Height="20" Margin="0" VerticalAlignment="Top" Width="57">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
 
     </Grid>
 </Window>
