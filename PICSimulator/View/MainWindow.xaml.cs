@@ -448,18 +448,11 @@ namespace PICSimulator.View
 			}
 		}
 
-        private void OnShowpdf(object sender, RoutedEventArgs e)
+        private void OnDataSheet(object sender, RoutedEventArgs e)
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "HELP_PDF.pdf");
-/*            Process P = new Process
-            {
-                StartInfo = { FileName = "AcroRd32.exe", Arguments = path }
-            };
-            P.Start();
-*/
-            String openPDFFile = Path.Combine(Directory.GetCurrentDirectory(), "HELP_PDF.pdf"); ;
-            
-            System.Diagnostics.Process.Start(openPDFFile); 
+			string path = @"res\DataSheet.pdf";
+			
+			Process.Start(path);
         }
 	}
 }

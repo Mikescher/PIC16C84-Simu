@@ -59,7 +59,7 @@
             <MenuItem Header="Edit">
             </MenuItem>
             <MenuItem Header="Help">
-                <MenuItem Header="Show PDF" Click="OnShowpdf"/>
+                <MenuItem Header="Datasheet.pdf" Click="OnDataSheet"/>
             </MenuItem>
         </Menu>
 
