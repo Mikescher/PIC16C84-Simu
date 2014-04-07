@@ -21,11 +21,13 @@ namespace PICSimulator.Model
 		public const uint ADDR_PCLATH = 0x0A;
 		public const uint ADDR_INTCON = 0x0B;
 
+		public const uint ADDR_OPT_REG = 0x81;
 		public const uint ADDR_TRIS_A = 0x85;
 		public const uint ADDR_TRIS_B = 0x86;
+		public const uint ADDR_EECON1 = 0x88;
+		public const uint ADDR_EECON2 = 0x89;
 
 		public const uint STATUS_BIT_IRP = 7;	// Unused in PIC16C84
-		public const uint STATUS_BIT_RP1 = 6;	// Unused in PIC16C84
 		public const uint STATUS_BIT_RP0 = 5;	// Register Bank Selection Bit
 		public const uint STATUS_BIT_TO = 4;	// Time Out Bit
 		public const uint STATUS_BIT_PD = 3;	// Power Down Bit
@@ -78,7 +80,7 @@ namespace PICSimulator.Model
 		private void run()
 		{
 			Cycles = 0;
-			hardResetRegister();
+			HardResetRegister();
 			ResetStack();
 
 			SetPC_13Bit(0);
@@ -251,17 +253,28 @@ namespace PICSimulator.Model
 			return register_W;
 		}
 
-		private void hardResetRegister()
+		private void HardResetRegister()
 		{
 			for (uint i = 0; i < 0xFF; i++)
 			{
 				SetRegister(i, 0x00);
 			}
 
-			SetRegister(0x03, 0x18);
-			SetRegister(0x81, 0xFF);
+			SetRegister(ADDR_STATUS, 0x18);
+			SetRegister(ADDR_OPT_REG, 0xFF);
 			SetRegister(ADDR_TRIS_A, 0x1F);
 			SetRegister(ADDR_TRIS_B, 0xFF);
+		}
+
+		private void SoftResetRegister()
+		{
+			SetRegister(ADDR_PCL, 0x00);
+			SetRegister(ADDR_PCLATH, 0x00);
+			SetRegister(ADDR_INTCON, (GetRegister(ADDR_INTCON) & 0x01));
+			SetRegister(ADDR_OPT_REG, 0xFF);
+			SetRegister(ADDR_TRIS_A, 0x1F);
+			SetRegister(ADDR_TRIS_B, 0xFF);
+			// TODO Verfollständigen
 		}
 
 		private void ResetStack()
