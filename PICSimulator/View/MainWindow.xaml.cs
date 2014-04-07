@@ -38,12 +38,21 @@ namespace PICSimulator.View
 
 			sc_document = new SourcecodeDocument(this, txtCode);
 
+<<<<<<< HEAD
 /*			sc_document = new SourcecodeDocument( //TODO Remove Me - Only for ... reasons
 				this,
 				txtCode,
 				File.ReadAllText(@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata_2\test.src", Encoding.Default),
 				@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata_2\test.src");
 */
+=======
+			/*sc_document = new SourcecodeDocument( //TODO Remove Me - Only for ... reasons
+				this,
+				txtCode,
+				File.ReadAllText(@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata_2\test.src", Encoding.Default),
+				@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata_2\test.src");*/
+
+>>>>>>> 7705b2f54767040203acf92fcadb87af15f76431
 			DispatcherTimer itimer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);
 			itimer.Tick += (s, e) => onIdle();
 			itimer.Start();

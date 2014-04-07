@@ -1,5 +1,4 @@
 ﻿using PICSimulator.Model;
-using PICSimulator.Model.Events;
 using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
@@ -59,6 +58,8 @@ namespace PICSimulator.View
 				uint sv = v.Pop();
 				Stack.Insert(0, Tuple.Create(sv, controller.GetSourceCodeForPC(sv)));
 			}
+
+			Stack.Insert(0, Tuple.Create(0U, "MAIN"));
 
 			Update();
 		}
