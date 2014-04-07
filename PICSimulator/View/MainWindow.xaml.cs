@@ -38,12 +38,12 @@ namespace PICSimulator.View
 
 			sc_document = new SourcecodeDocument(this, txtCode);
 
-			sc_document = new SourcecodeDocument( //TODO Remove Me - Only for ... reasons
+/*			sc_document = new SourcecodeDocument( //TODO Remove Me - Only for ... reasons
 				this,
 				txtCode,
 				File.ReadAllText(@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata_2\test.src", Encoding.Default),
 				@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata_2\test.src");
-
+*/
 			DispatcherTimer itimer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);
 			itimer.Tick += (s, e) => onIdle();
 			itimer.Start();
@@ -405,5 +405,19 @@ namespace PICSimulator.View
 				controller.SimulationSpeed = getSimuSpeedFromComboBox();
 			}
 		}
+
+        private void OnShowpdf(object sender, RoutedEventArgs e)
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "HELP_PDF.pdf");
+/*            Process P = new Process
+            {
+                StartInfo = { FileName = "AcroRd32.exe", Arguments = path }
+            };
+            P.Start();
+*/
+            String openPDFFile = Path.Combine(Directory.GetCurrentDirectory(), "HELP_PDF.pdf"); ;
+            
+            System.Diagnostics.Process.Start(openPDFFile); 
+        }
 	}
 }

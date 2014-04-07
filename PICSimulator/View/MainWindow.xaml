@@ -58,6 +58,7 @@
             <MenuItem Header="Edit">
             </MenuItem>
             <MenuItem Header="Help">
+                <MenuItem Header="Show PDF" Click="OnShowpdf"/>
             </MenuItem>
         </Menu>
 
