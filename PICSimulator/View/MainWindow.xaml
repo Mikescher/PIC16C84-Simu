@@ -21,6 +21,7 @@
         <CommandBinding Command="Close" Executed="CloseExecuted" CanExecute="CloseEnabled"/>
         <CommandBinding Command="self:CustomCmds.Compile" CanExecute="CompileEnabled" Executed="CompileExecuted" />
         <CommandBinding Command="self:CustomCmds.Run" CanExecute="RunEnabled" Executed="RunExecuted" />
+        <CommandBinding Command="self:CustomCmds.Pause" CanExecute="PauseEnabled" Executed="PauseExecuted" />
         <CommandBinding Command="self:CustomCmds.Stop" CanExecute="StopEnabled" Executed="StopExecuted" />
         <CommandBinding Command="self:CustomCmds.Continue" CanExecute="ContinueEnabled" Executed="ContinueExecuted" />
         <CommandBinding Command="self:CustomCmds.Step" CanExecute="StepEnabled" Executed="StepExecuted" />

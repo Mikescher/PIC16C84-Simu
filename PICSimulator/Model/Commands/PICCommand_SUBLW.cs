@@ -32,7 +32,7 @@ namespace PICSimulator.Model.Commands
 
 			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, Result == 0);
 			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_DC, dc);
-			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_C, carry);
+			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_C, !carry);
 
 			Result %= 0xFF;
 

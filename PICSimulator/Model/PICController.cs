@@ -351,6 +351,11 @@ namespace PICSimulator.Model
 			Incoming_Events.Enqueue(new ChangePICModeEvent() { Value = PICControllerMode.SKIPONE });
 		}
 
+		public void Pause()
+		{
+			Incoming_Events.Enqueue(new ChangePICModeEvent() { Value = PICControllerMode.PAUSED });
+		}
+
 		#endregion
 
 		#region Helper

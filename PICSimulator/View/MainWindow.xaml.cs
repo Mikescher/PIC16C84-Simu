@@ -6,6 +6,7 @@ using PICSimulator.Model.Events;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -38,21 +39,15 @@ namespace PICSimulator.View
 
 			sc_document = new SourcecodeDocument(this, txtCode);
 
-<<<<<<< HEAD
-/*			sc_document = new SourcecodeDocument( //TODO Remove Me - Only for ... reasons
-				this,
-				txtCode,
-				File.ReadAllText(@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata_2\test.src", Encoding.Default),
-				@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata_2\test.src");
-*/
-=======
-			/*sc_document = new SourcecodeDocument( //TODO Remove Me - Only for ... reasons
-				this,
-				txtCode,
-				File.ReadAllText(@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata_2\test.src", Encoding.Default),
-				@"E:\Eigene Dateien\Dropbox\Eigene EDV\Visual Studio\Projects\PIC16C84-Simu\PICSimulator\Testdata_2\test.src");*/
+			string p = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\"));
+			p = Path.Combine(p, @"Testdata_2\test.src");
 
->>>>>>> 7705b2f54767040203acf92fcadb87af15f76431
+			sc_document = new SourcecodeDocument( //TODO Remove Me - Only for ... reasons
+				this,
+				txtCode,
+				File.ReadAllText(p, Encoding.Default),
+				p);
+
 			DispatcherTimer itimer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);
 			itimer.Tick += (s, e) => onIdle();
 			itimer.Start();
@@ -222,7 +217,7 @@ namespace PICSimulator.View
 
 		#region Run
 
-		private void RunEnabled(object sender, CanExecuteRoutedEventArgs e) //TODO WOnt change when Conditions change (test every idle (BUT HOW ????))
+		private void RunEnabled(object sender, CanExecuteRoutedEventArgs e)
 		{
 			e.CanExecute = controller != null && controller.Mode == PICControllerMode.WAITING;
 
@@ -232,6 +227,22 @@ namespace PICSimulator.View
 		private void RunExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
 			controller.Start();
+		}
+
+		#endregion
+
+		#region Pause
+
+		private void PauseEnabled(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = controller != null && controller.Mode == PICControllerMode.RUNNING;
+
+			e.Handled = true;
+		}
+
+		private void PauseExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			controller.Step();
 		}
 
 		#endregion
@@ -310,6 +321,8 @@ namespace PICSimulator.View
 				lblFreqView.Text = FormatFreq((uint)IdleCounter.Frequency);
 				lblRunTime.Text = String.Format("{0:0000} \u00B5", controller.GetRunTime());
 				lblRegW.Text = "0x" + string.Format("{0:X02}", controller.GetWRegister());
+
+				CommandManager.InvalidateRequerySuggested();
 			}
 		}
 
@@ -343,6 +356,26 @@ namespace PICSimulator.View
 			else
 			{
 				return string.Format("#NaN# ({0})", f);
+			}
+		}
+
+		private string FormatRuntime(uint us)
+		{
+			if (us < 2000)
+			{
+				return string.Format("{0} \u00B5", us);
+			}
+			else if (us < 2000000)
+			{
+				return string.Format("{0} ms", us / 1000.0);
+			}
+			else if (us < 2000000000)
+			{
+				return string.Format("{0} s", (us / 1000) / 1000.0);
+			}
+			else
+			{
+				return string.Format("#NaN# ({0})", us);
 			}
 		}
 
