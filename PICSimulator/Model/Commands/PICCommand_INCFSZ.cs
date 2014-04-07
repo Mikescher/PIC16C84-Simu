@@ -28,7 +28,7 @@ namespace PICSimulator.Model.Commands
 
 			Result += 1;
 
-			Result %= 0xFF;
+			Result %= 0x100;
 
 			if (Target)
 				controller.SetRegister(Register, Result);

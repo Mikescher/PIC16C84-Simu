@@ -110,6 +110,7 @@
     <Compile Include="Model\PICController.cs" />
     <Compile Include="Model\PICControllerMode.cs" />
     <Compile Include="Model\PICProgramLoader.cs" />
+    <Compile Include="Model\PICTimer.cs" />
     <Compile Include="View\Controls\CircularStackDisplay.xaml.cs">
       <DependentUpon>CircularStackDisplay.xaml</DependentUpon>
     </Compile>

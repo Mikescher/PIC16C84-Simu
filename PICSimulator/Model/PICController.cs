@@ -13,6 +13,7 @@ namespace PICSimulator.Model
 	public class PICController
 	{
 		public const uint ADDR_INDF = 0x00;
+		public const uint ADDR_TMR0 = 0x01;
 		public const uint ADDR_PCL = 0x02;
 		public const uint ADDR_STATUS = 0x03;
 		public const uint ADDR_FSR = 0x04;
@@ -21,19 +22,28 @@ namespace PICSimulator.Model
 		public const uint ADDR_PCLATH = 0x0A;
 		public const uint ADDR_INTCON = 0x0B;
 
-		public const uint ADDR_OPT_REG = 0x81;
+		public const uint ADDR_OPTION = 0x81;
 		public const uint ADDR_TRIS_A = 0x85;
 		public const uint ADDR_TRIS_B = 0x86;
 		public const uint ADDR_EECON1 = 0x88;
 		public const uint ADDR_EECON2 = 0x89;
 
-		public const uint STATUS_BIT_IRP = 7;	// Unused in PIC16C84
-		public const uint STATUS_BIT_RP0 = 5;	// Register Bank Selection Bit
-		public const uint STATUS_BIT_TO = 4;	// Time Out Bit
-		public const uint STATUS_BIT_PD = 3;	// Power Down Bit
-		public const uint STATUS_BIT_Z = 2;		// Zero Bit
-		public const uint STATUS_BIT_DC = 1;	// Digit Carry Bit
-		public const uint STATUS_BIT_C = 0;		// Carry Bit
+		public const uint STATUS_BIT_IRP = 7;		// Unused in PIC16C84
+		public const uint STATUS_BIT_RP0 = 5;		// Register Bank Selection Bit
+		public const uint STATUS_BIT_TO = 4;		// Time Out Bit
+		public const uint STATUS_BIT_PD = 3;		// Power Down Bit
+		public const uint STATUS_BIT_Z = 2;			// Zero Bit
+		public const uint STATUS_BIT_DC = 1;		// Digit Carry Bit
+		public const uint STATUS_BIT_C = 0;			// Carry Bit
+
+		public const uint OPTION_BIT_RBPU = 7;		// PORT-B Pull-Up Enable Bit
+		public const uint OPTION_BIT_INTEDG = 6;	// Interrupt Edge Select Bit
+		public const uint OPTION_BIT_T0CS = 5;		// TMR0 Clock Source Select Bit
+		public const uint OPTION_BIT_T0SE = 4;		// TMR0 Source Edge Select Bit
+		public const uint OPTION_BIT_PSA = 3;		// Prescaler Alignment Bit
+		public const uint OPTION_BIT_PS2 = 2;		// Prescaler Rate Select Bit [2]
+		public const uint OPTION_BIT_PS1 = 1;		// Prescaler Rate Select Bit [1]
+		public const uint OPTION_BIT_PS0 = 0;		// Prescaler Rate Select Bit [0]
 
 		public static readonly List<Tuple<uint, uint>> Linked_Register = new List<Tuple<uint, uint>>() 
 		{
@@ -65,6 +75,7 @@ namespace PICSimulator.Model
 		private CircularStack CallStack = new CircularStack();
 
 		private uint Cycles = 0; // Passed Controller Cycles
+		private PICTimer Tmr0 = new PICTimer();
 
 		public PICController(PICCommand[] cmds, PICControllerSpeed s)
 		{
@@ -140,6 +151,8 @@ namespace PICSimulator.Model
 
 				PICCommand cmd = CommandList[GetPC()];
 
+				Tmr0.Update(this);
+
 				//################
 				//# INCREMENT PC #
 				//################
@@ -204,7 +217,7 @@ namespace PICSimulator.Model
 
 		public void SetRegister(uint p, uint n, bool forceEvent = false)
 		{
-			n %= 0xFF; // Just 4 Safety
+			n %= 0x100; // Just 4 Safety
 
 			if (GetRegister(p) != n || forceEvent)
 			{
@@ -239,7 +252,7 @@ namespace PICSimulator.Model
 
 		public void SetWRegister(uint n, bool forceEvent = false)
 		{
-			n %= 0xFF; // Just 4 Safety
+			n %= 0x100; // Just 4 Safety
 
 			if (register_W != n || forceEvent)
 			{
@@ -261,7 +274,7 @@ namespace PICSimulator.Model
 			}
 
 			SetRegister(ADDR_STATUS, 0x18);
-			SetRegister(ADDR_OPT_REG, 0xFF);
+			SetRegister(ADDR_OPTION, 0xFF);
 			SetRegister(ADDR_TRIS_A, 0x1F);
 			SetRegister(ADDR_TRIS_B, 0xFF);
 		}
@@ -271,7 +284,7 @@ namespace PICSimulator.Model
 			SetRegister(ADDR_PCL, 0x00);
 			SetRegister(ADDR_PCLATH, 0x00);
 			SetRegister(ADDR_INTCON, (GetRegister(ADDR_INTCON) & 0x01));
-			SetRegister(ADDR_OPT_REG, 0xFF);
+			SetRegister(ADDR_OPTION, 0xFF);
 			SetRegister(ADDR_TRIS_A, 0x1F);
 			SetRegister(ADDR_TRIS_B, 0xFF);
 			SetRegister(ADDR_EECON1, (GetRegister(ADDR_EECON1) & 0x08));

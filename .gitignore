@@ -179,3 +179,5 @@ FakesAssemblies/
 
 PICSimulator/TestData/
 !PICSimulator/TestData/*.src
+*.ERR
+*.LST

@@ -33,9 +33,10 @@ namespace PICSimulator.Helper
 
 		public static bool getSubtractionDigitCarry(uint a, uint b)
 		{
-			//TODO IMPLEMENT ME °!!!!!!!!!!!!!!!!!°
+			a %= 0x10;
+			b %= 0x10;
 
-			return false;
+			return (a >= b);
 		}
 	}
 }

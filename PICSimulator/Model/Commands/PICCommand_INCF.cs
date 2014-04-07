@@ -21,7 +21,7 @@ namespace PICSimulator.Model.Commands
 
 			Result += 1;
 
-			Result %= 0xFF; // TODO Why does INCF not set the STATUS[C] Bit ???
+			Result %= 0x100;
 
 			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, Result == 0);
 

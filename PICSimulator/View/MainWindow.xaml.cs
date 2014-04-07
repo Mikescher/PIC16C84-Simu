@@ -319,7 +319,7 @@ namespace PICSimulator.View
 
 				lblFreqModel.Text = FormatFreq((uint)controller.Frequency.Frequency);
 				lblFreqView.Text = FormatFreq((uint)IdleCounter.Frequency);
-				lblRunTime.Text = String.Format("{0:0000} \u00B5", controller.GetRunTime());
+				lblRunTime.Text = FormatRuntime(controller.GetRunTime());
 				lblRegW.Text = "0x" + string.Format("{0:X02}", controller.GetWRegister());
 
 				CommandManager.InvalidateRequerySuggested();
@@ -363,15 +363,15 @@ namespace PICSimulator.View
 		{
 			if (us < 2000)
 			{
-				return string.Format("{0} \u00B5", us);
+				return string.Format("{0:0000000} \u00B5", us);
 			}
 			else if (us < 2000000)
 			{
-				return string.Format("{0} ms", us / 1000.0);
+				return string.Format("{0:0000,00} ms", us / 1000.0);
 			}
 			else if (us < 2000000000)
 			{
-				return string.Format("{0} s", (us / 1000) / 1000.0);
+				return string.Format("{00000,00} s", (us / 1000) / 1000.0);
 			}
 			else
 			{
