@@ -45,7 +45,7 @@ namespace PICSimulator.Model
 			{
 				if (pos < 7)
 				{
-					for (uint i = 0; i < pos; i++)
+					for (uint i = 0; i <= pos; i++)
 					{
 						a.Push(data[i]);
 					}
