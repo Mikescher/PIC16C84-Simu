@@ -13,12 +13,14 @@ namespace PICSimulator.Model
 		public const uint ADDR_FSR = 0x04;
 		public const uint ADDR_PORT_A = 0x05;
 		public const uint ADDR_PORT_B = 0x06;
+		public const uint ADDR_UNIMPL_A = 0x07;
 		public const uint ADDR_PCLATH = 0x0A;
 		public const uint ADDR_INTCON = 0x0B;
 
 		public const uint ADDR_OPTION = 0x81;
 		public const uint ADDR_TRIS_A = 0x85;
 		public const uint ADDR_TRIS_B = 0x86;
+		public const uint ADDR_UNIMPL_B = 0x87;
 		public const uint ADDR_EECON1 = 0x88;
 		public const uint ADDR_EECON2 = 0x89;
 
@@ -139,6 +141,24 @@ namespace PICSimulator.Model
 						GetRegisterDirect, 
 						(p, v) => { SetRegisterDirect(p, v); SetRegisterDirect(p-0x80, v); })
 				},
+
+				#endregion
+			
+				#region Unimplemented
+
+				{
+					ADDR_UNIMPL_A,	
+					Tuple.Create<RegisterRead, RegisterWrite>(
+						(p) => 0, 
+						(p, v) => { /* NOP */ })
+				}, 
+				{
+					ADDR_UNIMPL_B,	
+					Tuple.Create<RegisterRead, RegisterWrite>(
+						(p) => 0, 
+						(p, v) => { /* NOP */ })
+				}, 
+
 				#endregion
 			};
 		}
