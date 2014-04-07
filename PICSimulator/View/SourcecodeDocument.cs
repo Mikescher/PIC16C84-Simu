@@ -48,7 +48,7 @@ namespace PICSimulator.View
 		public static SourcecodeDocument OpenNew(Window owner, ICSharpCode.AvalonEdit.TextEditor handler)
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			ofd.Filter = "All Files|*|Source- and Programmcode|*.src,*.lst|Sourcecode|*.src|Programmcode|*.lst";
+			ofd.Filter = "All Files|*|Source- and Programmcode|*.src;*.lst|Sourcecode|*.src|Programmcode|*.lst";
 			ofd.FilterIndex = 2;
 			ofd.CheckFileExists = true;
 			ofd.CheckPathExists = true;
