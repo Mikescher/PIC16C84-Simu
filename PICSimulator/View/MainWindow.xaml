@@ -68,7 +68,11 @@
             <MenuItem Header="Edit">
             </MenuItem>
             <MenuItem Header="Help">
-                <MenuItem Header="Datasheet.pdf" Click="OnDataSheet"/>
+                <MenuItem Header="Datasheet" Click="OnDataSheet">
+                    <MenuItem.Icon>
+                        <Image Source="../icons/blue-document-pdf-text.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
         </Menu>
 

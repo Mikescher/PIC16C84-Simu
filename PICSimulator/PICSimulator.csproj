@@ -225,6 +225,7 @@
     <Content Include="Compiler\il_ass16.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="icons\blue-document-pdf-text.png" />
     <Resource Include="icons\arrow-curve-000-left.png" />
     <Resource Include="icons\sealing-arrow.png" />
     <Resource Include="icons\sealing-wax.png" />
