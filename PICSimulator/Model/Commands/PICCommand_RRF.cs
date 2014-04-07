@@ -19,7 +19,7 @@ namespace PICSimulator.Model.Commands
 		{
 			uint Result = controller.GetRegister(Register);
 
-			uint Carry_Old = controller.GetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_C) ? 0x80u : 0x00u;
+			uint Carry_Old = controller.GetRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_C) ? 0x80u : 0x00u;
 			uint Carry_New = Result & 0x01;
 
 			Result = Result >> 1;
@@ -27,7 +27,7 @@ namespace PICSimulator.Model.Commands
 
 			Result |= Carry_Old;
 
-			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_C, Carry_New != 0);
+			controller.SetRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_C, Carry_New != 0);
 
 			if (Target)
 				controller.SetRegister(Register, Result);

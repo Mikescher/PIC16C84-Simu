@@ -72,12 +72,12 @@ namespace PICSimulator.View
 
 			rgridMain.ParentWindow = this;
 
-			iogridA.Initialize(rgridMain, PICController.ADDR_PORT_A, PICController.ADDR_TRIS_A);
-			iogridB.Initialize(rgridMain, PICController.ADDR_PORT_B, PICController.ADDR_TRIS_B);
+			iogridA.Initialize(rgridMain, PICMemory.ADDR_PORT_A, PICMemory.ADDR_TRIS_A);
+			iogridB.Initialize(rgridMain, PICMemory.ADDR_PORT_B, PICMemory.ADDR_TRIS_B);
 
-			sgridSTATUS.Initialize(rgridMain, PICController.ADDR_STATUS);
-			sgridINTCON.Initialize(rgridMain, PICController.ADDR_INTCON);
-			sgridOPTION.Initialize(rgridMain, PICController.ADDR_OPTION);
+			sgridSTATUS.Initialize(rgridMain, PICMemory.ADDR_STATUS);
+			sgridINTCON.Initialize(rgridMain, PICMemory.ADDR_INTCON);
+			sgridOPTION.Initialize(rgridMain, PICMemory.ADDR_OPTION);
 		}
 
 		#region Event Handler
@@ -325,6 +325,22 @@ namespace PICSimulator.View
 				lblFreqView.Text = FormatFreq((uint)IdleCounter.Frequency);
 				lblRunTime.Text = FormatRuntime(controller.GetRunTime());
 				lblRegW.Text = "0x" + string.Format("{0:X02}", controller.GetWRegister());
+				lblRegPC.Text = "0x" + string.Format("{0:X04}", controller.GetThreadSafePC());
+
+				CommandManager.InvalidateRequerySuggested();
+			}
+			else
+			{
+				ClearRegister();
+				ClearStackDisplay();
+
+				IconBar.SetPC(0);
+
+				lblFreqModel.Text = FormatFreq(0);
+				lblFreqView.Text = FormatFreq(0);
+				lblRunTime.Text = FormatRuntime(0);
+				lblRegW.Text = "0x" + string.Format("{0:X02}", 0);
+				lblRegPC.Text = "0x" + string.Format("{0:X04}", 0);
 
 				CommandManager.InvalidateRequerySuggested();
 			}
@@ -335,11 +351,24 @@ namespace PICSimulator.View
 			stackList.UpdateValues(controller.GetThreadSafeCallStack(), controller);
 		}
 
+		private void ClearStackDisplay()
+		{
+			stackList.Reset();
+		}
+
 		private void UpdateRegister()
 		{
 			for (uint i = 0; i < 0xFF; i++)
 			{
 				rgridMain.Set(i, controller.GetRegister(i), true, false); // Tests in Set if val has changed ....
+			}
+		}
+
+		private void ClearRegister()
+		{
+			for (uint i = 0; i < 0xFF; i++)
+			{
+				rgridMain.Set(i, 0, true, false); // Tests in Set if val has changed ....
 			}
 		}
 
@@ -367,15 +396,15 @@ namespace PICSimulator.View
 		{
 			if (us < 2000)
 			{
-				return string.Format("{0:0000000} \u00B5", us);
+				return string.Format("{0:000000} \u00B5" + "s", us);
 			}
 			else if (us < 2000000)
 			{
-				return string.Format("{0:0000,00} ms", us / 1000.0);
+				return string.Format("{0:0000.0} ms", us / 1000.0);
 			}
 			else if (us < 2000000000)
 			{
-				return string.Format("{00000,00} s", (us / 1000) / 1000.0);
+				return string.Format("{0:00000.0} s", (us / 1000) / 1000.0);
 			}
 			else
 			{

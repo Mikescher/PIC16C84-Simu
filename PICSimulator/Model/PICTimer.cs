@@ -15,12 +15,12 @@ namespace PICSimulator.Model
 
 		public void Update(PICController controller)
 		{
-			bool tmr_mode = controller.GetRegisterBit(PICController.ADDR_OPTION, PICController.OPTION_BIT_T0CS);
-			bool edge_mode = controller.GetRegisterBit(PICController.ADDR_OPTION, PICController.OPTION_BIT_T0SE);
+			bool tmr_mode = controller.GetRegisterBit(PICMemory.ADDR_OPTION, PICMemory.OPTION_BIT_T0CS);
+			bool edge_mode = controller.GetRegisterBit(PICMemory.ADDR_OPTION, PICMemory.OPTION_BIT_T0SE);
 
 			if (tmr_mode)
 			{
-				bool curr_A4 = controller.GetRegisterBit(PICController.ADDR_PORT_A, 4);
+				bool curr_A4 = controller.GetRegisterBit(PICMemory.ADDR_PORT_A, 4);
 
 				if (edge_mode)
 				{
@@ -42,12 +42,12 @@ namespace PICSimulator.Model
 				Inc(controller);
 			}
 
-			prev_RA4 = controller.GetRegisterBit(PICController.ADDR_PORT_A, 4);
+			prev_RA4 = controller.GetRegisterBit(PICMemory.ADDR_PORT_A, 4);
 		}
 
 		private void Inc(PICController controller)
 		{
-			uint current = controller.GetRegister(PICController.ADDR_TMR0);
+			uint current = controller.GetRegister(PICMemory.ADDR_TMR0);
 			uint scale = GetPreScale(controller);
 
 			prescale_cntr++;
@@ -64,20 +64,20 @@ namespace PICSimulator.Model
 
 				Result %= 0x100;
 
-				controller.SetRegister(PICController.ADDR_TMR0, Result);
+				controller.SetRegister(PICMemory.ADDR_TMR0, Result);
 			}
 		}
 
 		private uint GetPreScale(PICController controller)
 		{
-			bool prescale_mode = controller.GetRegisterBit(PICController.ADDR_OPTION, PICController.OPTION_BIT_PSA);
+			bool prescale_mode = controller.GetRegisterBit(PICMemory.ADDR_OPTION, PICMemory.OPTION_BIT_PSA);
 
 			uint scale = 0;
-			scale += controller.GetRegisterBit(PICController.ADDR_OPTION, PICController.OPTION_BIT_PS2) ? 1U : 0U;
+			scale += controller.GetRegisterBit(PICMemory.ADDR_OPTION, PICMemory.OPTION_BIT_PS2) ? 1U : 0U;
 			scale *= 2;
-			scale += controller.GetRegisterBit(PICController.ADDR_OPTION, PICController.OPTION_BIT_PS1) ? 1U : 0U;
+			scale += controller.GetRegisterBit(PICMemory.ADDR_OPTION, PICMemory.OPTION_BIT_PS1) ? 1U : 0U;
 			scale *= 2;
-			scale += controller.GetRegisterBit(PICController.ADDR_OPTION, PICController.OPTION_BIT_PS0) ? 1U : 0U;
+			scale += controller.GetRegisterBit(PICMemory.ADDR_OPTION, PICMemory.OPTION_BIT_PS0) ? 1U : 0U;
 
 			return prescale_mode ? 1 : (BinaryHelper.SHL(2, scale));
 		}

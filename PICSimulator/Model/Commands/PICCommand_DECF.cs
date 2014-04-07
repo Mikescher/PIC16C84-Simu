@@ -24,7 +24,7 @@ namespace PICSimulator.Model.Commands
 			else
 				Result -= 1;
 
-			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, Result == 0);
+			controller.SetRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_Z, Result == 0);
 
 			if (Target)
 				controller.SetRegister(Register, Result);

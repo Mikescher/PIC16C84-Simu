@@ -12,7 +12,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    
+
     <Window.CommandBindings>
         <CommandBinding Command="Save" Executed="SaveExecuted" CanExecute="SaveEnabled"/>
         <CommandBinding Command="SaveAs" Executed="SaveAsExecuted" />
@@ -56,8 +56,8 @@
                     <MenuItem.Icon>
                         <Image Source="../icons/document.png" />
                     </MenuItem.Icon>
-            </MenuItem>   
-            <MenuItem Header="Open" Command="Open">
+                </MenuItem>
+                <MenuItem Header="Open" Command="Open">
                     <MenuItem.Icon>
                         <Image Source="../icons/folder-open.png" />
                     </MenuItem.Icon>
@@ -81,15 +81,15 @@
             <self:SimpleToolbarButton BText="Open" BSource="../icons/folder-open.png" BCommand="Open"/>
             <self:SimpleToolbarButton BText="Save" BSource="../icons/disk-return.png" BCommand="Save"/>
             <self:SimpleToolbarButton BText="Save As" BSource="../icons/disk-rename.png" BCommand="SaveAs"/>
-            
+
             <self:SimpleToolbarSeparator />
-            
+
             <self:SimpleToolbarButton BText="Compile" BSource="../icons/box.png" BCommand="self:CustomCmds.Compile"/>
 
             <self:SimpleToolbarSeparator />
 
             <self:SimpleToolbarButton BText="Run" BSource="../icons/control.png" BCommand="self:CustomCmds.Run"/>
-            
+
             <ComboBox Name="cbxSpeed" SelectedIndex="3" MinWidth="85" Margin="5, 0, 5, 0" SelectionChanged="cbxSpeed_SelectionChanged">
                 <ComboBoxItem Content="Snail" />
                 <ComboBoxItem Content="Very Slow" />
@@ -99,7 +99,7 @@
                 <ComboBoxItem Content="Very Fast" />
                 <ComboBoxItem Content="Maximum" />
             </ComboBox>
-            
+
             <self:SimpleToolbarButton BText="Stop" BSource="../icons/control-stop-square.png" BCommand="self:CustomCmds.Stop"/>
 
             <self:SimpleToolbarSeparator />
@@ -128,19 +128,19 @@
             </StackPanel>
 
             <DockPanel Grid.Row="2" Margin="0, 0, 0, 25">
-                <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Width="115">
-                    <TextBlock TextAlignment="Right" Text="W-Register"/>
-                    <TextBlock TextAlignment="Right" Text="PC"/>
-                    <TextBlock TextAlignment="Right" Text="Frequency Display"/>
-                    <TextBlock TextAlignment="Right" Text="Frequency Controller"/>
-                    <TextBlock TextAlignment="Right" Text="Run Time"/>
+                <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Width="85">
+                    <TextBlock TextAlignment="Right" FontFamily="Courier New" FontSize="14" Text="W-Register"/>
+                    <TextBlock TextAlignment="Right" FontFamily="Courier New" FontSize="14" Text="PC"/>
+                    <TextBlock TextAlignment="Right" FontFamily="Courier New" FontSize="14" Text="Freq Disp"/>
+                    <TextBlock TextAlignment="Right" FontFamily="Courier New" FontSize="14" Text="Freq PIC"/>
+                    <TextBlock TextAlignment="Right" FontFamily="Courier New" FontSize="14" Text="Run Time"/>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Right" Orientation="Vertical" Margin="8, 0, 0, 0">
-                    <TextBlock Name="lblRegW"  Text="0x00"/>
-                    <TextBlock Name="lblRegPC"  Text="0x0000"/>
-                    <TextBlock Name="lblFreqView"  Text="0"/>
-                    <TextBlock Name="lblFreqModel"  Text="0"/>
-                    <TextBlock Name="lblRunTime"  Text="0"/>
+                    <TextBlock FontFamily="Courier New" FontSize="14" Name="lblRegW"      Text="0x00"/>
+                    <TextBlock FontFamily="Courier New" FontSize="14" Name="lblRegPC"     Text="0x0000"/>
+                    <TextBlock FontFamily="Courier New" FontSize="14" Name="lblFreqView"  Text="0 Hz"/>
+                    <TextBlock FontFamily="Courier New" FontSize="14" Name="lblFreqModel" Text="0 Hz"/>
+                    <TextBlock FontFamily="Courier New" FontSize="14" Name="lblRunTime"   Text="0 s"/>
                 </StackPanel>
             </DockPanel>
         </Grid>

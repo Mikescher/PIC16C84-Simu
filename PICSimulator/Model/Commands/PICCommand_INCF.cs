@@ -23,7 +23,7 @@ namespace PICSimulator.Model.Commands
 
 			Result %= 0x100;
 
-			controller.SetRegisterBit(PICController.ADDR_STATUS, PICController.STATUS_BIT_Z, Result == 0);
+			controller.SetRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_Z, Result == 0);
 
 			if (Target)
 				controller.SetRegister(Register, Result);
