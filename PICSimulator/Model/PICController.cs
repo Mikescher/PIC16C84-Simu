@@ -26,7 +26,7 @@ namespace PICSimulator.Model
 
 		public ConcurrentQueue<PICEvent> Incoming_Events = new ConcurrentQueue<PICEvent>();
 
-		private PICMemory Memory = new PICMemory();
+		private PICMemory Memory;
 		private uint register_W = 0x00;
 		private CircularStack CallStack = new CircularStack();
 
@@ -39,6 +39,7 @@ namespace PICSimulator.Model
 		{
 			Tmr0 = new PICTimer();
 			Interrupt = new PICInterruptLogic(this);
+			Memory = new PICMemory(Tmr0, Interrupt);
 
 			Mode = PICControllerMode.WAITING;
 			SimulationSpeed = s;

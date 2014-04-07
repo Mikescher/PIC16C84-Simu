@@ -57,8 +57,14 @@ namespace PICSimulator.Model
 
 		private uint[] register = new uint[0xFF];
 
-		public PICMemory()
+		private PICTimer Timer;
+		private PICInterruptLogic Interrupt;
+
+		public PICMemory(PICTimer tmr, PICInterruptLogic il)
 		{
+			this.Timer = tmr;
+			this.Interrupt = il;
+
 			SpecialRegisterEvents = new Dictionary<uint, Tuple<RegisterRead, RegisterWrite>>() 
 			{
 				#region Linked Register
@@ -160,8 +166,40 @@ namespace PICSimulator.Model
 				}, 
 
 				#endregion
+			
+				#region RB0/INT Interrupt + Port RB Interrupt
+
+				{
+					ADDR_PORT_B,	
+					Tuple.Create<RegisterRead, RegisterWrite>(
+						GetRegisterDirect, 
+						(p, v) => { Do_Interrupt_ADDR_PORT_B(v); SetRegisterDirect(p, v); })
+				}, 
+
+				#endregion
 			};
 		}
+
+		#region Internal
+
+		private void Do_Interrupt_ADDR_PORT_B(uint val)
+		{
+			uint changes = (register[ADDR_PORT_B] ^ val) & 0xFF;
+
+			if (BinaryHelper.GetBit(changes, 0))
+			{
+				if (BinaryHelper.GetBit(register[ADDR_OPTION], OPTION_BIT_INTEDG) && BinaryHelper.GetBit(val, 0)) // Rising Edge
+				{
+					Interrupt.AddInterrupt(PICInterruptType.PIT_RB0INT);
+				}
+				else if (!BinaryHelper.GetBit(register[ADDR_OPTION], OPTION_BIT_INTEDG) && !BinaryHelper.GetBit(val, 0)) // Falling Edge
+				{
+					Interrupt.AddInterrupt(PICInterruptType.PIT_RB0INT);
+				}
+			}
+		}
+
+		#endregion
 
 		#region Getter/Setter
 
@@ -213,6 +251,8 @@ namespace PICSimulator.Model
 
 		#endregion
 
+		#region Helper
+
 		public void HardResetRegister()
 		{
 			for (uint i = 0; i < 0xFF; i++)
@@ -236,5 +276,7 @@ namespace PICSimulator.Model
 			SetRegister(ADDR_TRIS_B, 0xFF);
 			SetRegister(ADDR_EECON1, (GetRegister(ADDR_EECON1) & 0x08));
 		}
+
+		#endregion
 	}
 }
