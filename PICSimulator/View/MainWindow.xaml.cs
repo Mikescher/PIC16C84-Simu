@@ -385,7 +385,7 @@ namespace PICSimulator.View
 
 		#endregion
 
-		private void txtCode_PreviewTextInput(object sender, TextCompositionEventArgs e)
+		private void txtCode_PreviewTextInput(object sender, TextCompositionEventArgs e) //TODO Only edit when stopped && Edit Kills controller -> recompile
 		{
 			e.Handled = !(sc_document != null && (controller == null || controller.Mode == PICControllerMode.FINISHED));
 		}

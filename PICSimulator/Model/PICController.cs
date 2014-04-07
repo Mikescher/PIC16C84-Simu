@@ -12,7 +12,7 @@ namespace PICSimulator.Model
 {
 	public class PICController
 	{
-		public const uint ADDR_INDF = 0x00;
+		public const uint ADDR_INDF = 0x00;			// TODO Add indirect Adressing with INDF and FSR (Kap 4.5)
 		public const uint ADDR_TMR0 = 0x01;
 		public const uint ADDR_PCL = 0x02;
 		public const uint ADDR_STATUS = 0x03;
@@ -29,7 +29,7 @@ namespace PICSimulator.Model
 		public const uint ADDR_EECON2 = 0x89;
 
 		public const uint STATUS_BIT_IRP = 7;		// Unused in PIC16C84
-		public const uint STATUS_BIT_RP0 = 5;		// Register Bank Selection Bit
+		public const uint STATUS_BIT_RP0 = 5;		// Register Bank Selection Bit //TODO Bank Select
 		public const uint STATUS_BIT_TO = 4;		// Time Out Bit
 		public const uint STATUS_BIT_PD = 3;		// Power Down Bit
 		public const uint STATUS_BIT_Z = 2;			// Zero Bit
@@ -44,6 +44,15 @@ namespace PICSimulator.Model
 		public const uint OPTION_BIT_PS2 = 2;		// Prescaler Rate Select Bit [2]
 		public const uint OPTION_BIT_PS1 = 1;		// Prescaler Rate Select Bit [1]
 		public const uint OPTION_BIT_PS0 = 0;		// Prescaler Rate Select Bit [0]
+
+		public const uint INTCON_BIT_GIE = 7;		// Global Interrupt Enable Bit
+		public const uint INTCON_BIT_EEIE = 6;		// EE Write Complete Interrupt Enable Bit
+		public const uint INTCON_BIT_T0IE = 5;		// TMR0 Overflow Interrupt Enable Bit
+		public const uint INTCON_BIT_INTE = 4;		// RB0/INT Interrupt Bit
+		public const uint INTCON_BIT_RBIE = 3;		// RB Port Change Interrupt Enable Bit
+		public const uint INTCON_BIT_T0IF = 2;		// TMR0 Overflow Interrupt Flag Bit
+		public const uint INTCON_BIT_INTF = 1;		// RB0/INT Interrupt Flag Bit
+		public const uint INTCON_BIT_RBIF = 0;		// RB Port Change Interrupt Flag Bit
 
 		public static readonly List<Tuple<uint, uint>> Linked_Register = new List<Tuple<uint, uint>>() 
 		{
@@ -75,10 +84,15 @@ namespace PICSimulator.Model
 		private CircularStack CallStack = new CircularStack();
 
 		private uint Cycles = 0; // Passed Controller Cycles
-		private PICTimer Tmr0 = new PICTimer();
+
+		private PICTimer Tmr0;
+		private PICInterruptLogic Interrupt;
 
 		public PICController(PICCommand[] cmds, PICControllerSpeed s)
 		{
+			Tmr0 = new PICTimer();
+			Interrupt = new PICInterruptLogic(this);
+
 			Mode = PICControllerMode.WAITING;
 			SimulationSpeed = s;
 
@@ -92,7 +106,9 @@ namespace PICSimulator.Model
 		{
 			Cycles = 0;
 			HardResetRegister();
+
 			ResetStack();
+			ResetInterrupts();
 
 			SetPC_13Bit(0);
 
@@ -151,8 +167,6 @@ namespace PICSimulator.Model
 
 				PICCommand cmd = CommandList[GetPC()];
 
-				Tmr0.Update(this);
-
 				//################
 				//# INCREMENT PC #
 				//################
@@ -167,6 +181,13 @@ namespace PICSimulator.Model
 
 				cmd.Execute(this);
 				Cycles += cmd.GetCycleCount(this);
+
+				//################
+				//#   AFTERMATH  #
+				//################
+
+				Interrupt.Update();
+				Tmr0.Update(this);
 			}
 
 			Mode = PICControllerMode.WAITING;
@@ -295,6 +316,11 @@ namespace PICSimulator.Model
 			CallStack = new CircularStack();
 		}
 
+		private void ResetInterrupts()
+		{
+			Interrupt.Reset();
+		}
+
 		public uint GetPC()
 		{
 			pc_cache = (uint)((GetRegister(ADDR_PCLATH) & ~0x1F) << 8) | GetRegister(ADDR_PCL);
@@ -325,6 +351,11 @@ namespace PICSimulator.Model
 		public uint PopCallStack()
 		{
 			return CallStack.Pop();
+		}
+
+		public void DoInterrupt(PICInterruptType Type)
+		{
+			Interrupt.AddInterrupt(Type);
 		}
 
 		#endregion

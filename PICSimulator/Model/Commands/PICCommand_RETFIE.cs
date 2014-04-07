@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace PICSimulator.Model.Commands
 {
 	class PICCommand_RETFIE : PICCommand
@@ -14,7 +13,8 @@ namespace PICSimulator.Model.Commands
 
 		public override void Execute(PICController controller)
 		{
-			throw new System.NotImplementedException(); //TODO Implement Interrupts
+			controller.SetPC_13Bit(controller.PopCallStack());
+			controller.SetRegisterBit(PICController.ADDR_INTCON, PICController.INTCON_BIT_GIE, true);
 		}
 
 		public override string GetCommandCodeFormat()
@@ -24,7 +24,7 @@ namespace PICSimulator.Model.Commands
 
 		public override uint GetCycleCount(PICController controller)
 		{
-			throw new NotImplementedException();
+			return 2;
 		}
 	}
 }

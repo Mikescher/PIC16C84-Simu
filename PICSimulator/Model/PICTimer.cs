@@ -4,6 +4,8 @@ namespace PICSimulator.Model
 {
 	class PICTimer
 	{
+		private uint prescale_cntr = 0;
+
 		private bool prev_RA4 = false;
 
 		public PICTimer()
@@ -46,18 +48,24 @@ namespace PICSimulator.Model
 		private void Inc(PICController controller)
 		{
 			uint current = controller.GetRegister(PICController.ADDR_TMR0);
-
 			uint scale = GetPreScale(controller);
 
-			uint Result = current + scale;
-			if (Result > 0xFF)
+			prescale_cntr++;
+
+			if (prescale_cntr >= scale)
 			{
-				// TODO Interrupt
+				prescale_cntr = 0;
+
+				uint Result = current + 1;
+				if (Result > 0xFF)
+				{
+					controller.DoInterrupt(PICInterruptType.PIT_TIMER);
+				}
+
+				Result %= 0x100;
+
+				controller.SetRegister(PICController.ADDR_TMR0, Result);
 			}
-
-			Result %= 0x100;
-
-			controller.SetRegister(PICController.ADDR_TMR0, Result);
 		}
 
 		private uint GetPreScale(PICController controller)

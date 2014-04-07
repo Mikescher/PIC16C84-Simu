@@ -5,6 +5,7 @@
 		CONFIG    ANSELH
 
 STATUS			EQU		03H
+INTCON			EQU		0BH
 RP0				EQU		05H
 RP1				EQU		06H
 PA				EQU		05H
@@ -19,12 +20,34 @@ RB			EQU		06H
 
 		
 	org		0
+	
+	NOP
+	MOVLW 00H
+	BTFSC
+	GOTO run
+	
+	INCF PA
+	
+	RETFIE
+	
+	
+	
+	
+	
+run
+	
+	MOVLW 0F0H
+	MOVWF INTCON
+	
 	BSF STATUS, RP0 ; Bank setzten --> Um die Pins zu konfigurieren
 		MOVLW 00H ; 00000000 -> I/O (ins W) (gibt an ob input oder output)
 		MOVWF PA  ; W dann in PA
 		MOVLW 0H ; 00000000 -> I/O (ins W) (gibt an ob input oder output)
 		MOVWF PB  ; W dann in PB
-	BCF STATUS, RP0 ; Bank zur�cksetzen
+		
+		MOVLW 01H
+		MOVWF 0EFH
+	BCF STATUS, RP0 ; Bank zurÃ¼cksetzen
 
 	MOVLW 0         ; W = 0
 	MOVWF RA        ; RA = 0
