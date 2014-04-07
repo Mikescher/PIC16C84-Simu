@@ -186,6 +186,8 @@ namespace PICSimulator.Model
 		{
 			uint changes = (register[ADDR_PORT_B] ^ val) & 0xFF;
 
+			// RB0/INT
+
 			if (BinaryHelper.GetBit(changes, 0))
 			{
 				if (BinaryHelper.GetBit(register[ADDR_OPTION], OPTION_BIT_INTEDG) && BinaryHelper.GetBit(val, 0)) // Rising Edge
@@ -196,6 +198,13 @@ namespace PICSimulator.Model
 				{
 					Interrupt.AddInterrupt(PICInterruptType.PIT_RB0INT);
 				}
+			}
+
+			// PORT RB
+
+			if (BinaryHelper.GetBit(changes, 4) || BinaryHelper.GetBit(changes, 5) || BinaryHelper.GetBit(changes, 6) || BinaryHelper.GetBit(changes, 7))
+			{
+				Interrupt.AddInterrupt(PICInterruptType.PIT_PORTB);
 			}
 		}
 

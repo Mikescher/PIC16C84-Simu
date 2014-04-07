@@ -47,7 +47,7 @@
                     00047             
 000D 3001           00048           MOVLW 01H
 000E 00EF           00049           MOVWF 0EFH
-000F 1283           00050           BCF STATUS, RP0 ; Bank zurÃ¼cksetzen
+000F 1283           00050           BCF STATUS, RP0 ; Bank zurÃƒÂ¼cksetzen
                     00051           
 0010 3000           00052           MOVLW 0         ; W = 0
 0011 0085           00053           MOVWF RA        ; RA = 0
@@ -58,32 +58,32 @@
                     00058  start    
                     00059           
 0014 3003           00060           MOVLW 3
-0015 0086           00061           MOVWF RB
+                    00061           ; MOVWF RB
                     00062            
-0016 201B           00063           CALL wait
+0015 2019           00063           CALL wait
                     00064            
-0017 3005           00065           MOVLW 5
-0018 0086           00066           MOVWF RB
+0016 3005           00065           MOVLW 5
+                    00066           ; MOVWF RB
                     00067            
-0019 201B           00068           CALL wait
+0017 2019           00068           CALL wait
                     00069            
-001A 2814           00070           GOTO start
+0018 2814           00070           GOTO start
                     00071            
                     00072            
                     00073           
                     00074  wait     
-001B 3000           00075           MOVLW 0
-001C 00A0           00076           MOVWF COUNTER
+0019 3000           00075           MOVLW 0
+001A 00A0           00076           MOVWF COUNTER
                     00077  loopa    
-001D 0AA0           00078           INCF COUNTER
-001E 1820           00079           BTFSC COUNTER, 0
-001F 281D           00080           GOTO loopa
-0020 18A0           00081           BTFSC COUNTER, 1
-0021 281D           00082           GOTO loopa
-0022 1920           00083           BTFSC COUNTER, 2
-0023 281D           00084           GOTO loopa
-0024 1DA0           00085           BTFSS COUNTER, 3
-0025 281D           00086           GOTO loopa
-0026 0008           00087           RETURN
+001B 0AA0           00078           INCF COUNTER
+001C 1820           00079           BTFSC COUNTER, 0
+001D 281B           00080           GOTO loopa
+001E 18A0           00081           BTFSC COUNTER, 1
+001F 281B           00082           GOTO loopa
+0020 1920           00083           BTFSC COUNTER, 2
+0021 281B           00084           GOTO loopa
+0022 1DA0           00085           BTFSS COUNTER, 3
+0023 281B           00086           GOTO loopa
+0024 0008           00087           RETURN
                     00088           
                     00089           END

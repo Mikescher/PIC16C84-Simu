@@ -47,7 +47,7 @@ run
 		
 		MOVLW 01H
 		MOVWF 0EFH
-	BCF STATUS, RP0 ; Bank zurÃ¼cksetzen
+	BCF STATUS, RP0 ; Bank zurÃƒÂ¼cksetzen
 
 	MOVLW 0         ; W = 0
 	MOVWF RA        ; RA = 0
@@ -58,12 +58,12 @@ run
 start
 
 	MOVLW 3
-	MOVWF RB
+;	MOVWF RB
 	
 	CALL wait
 	
 	MOVLW 5
-	MOVWF RB
+;	MOVWF RB
 	
 	CALL wait
 	
