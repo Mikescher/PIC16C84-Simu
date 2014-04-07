@@ -1,4 +1,5 @@
 ﻿
+using PICSimulator.Helper;
 namespace PICSimulator.Model
 {
 	class PICTimer
@@ -63,16 +64,14 @@ namespace PICSimulator.Model
 		{
 			bool prescale_mode = controller.GetRegisterBit(PICController.ADDR_OPTION, PICController.OPTION_BIT_PSA);
 
-			uint scale;
-			scale = controller.GetRegisterBit(PICController.ADDR_OPTION, PICController.OPTION_BIT_PS2) ? 1U : 0U;
+			uint scale = 0;
+			scale += controller.GetRegisterBit(PICController.ADDR_OPTION, PICController.OPTION_BIT_PS2) ? 1U : 0U;
 			scale *= 2;
-			scale = controller.GetRegisterBit(PICController.ADDR_OPTION, PICController.OPTION_BIT_PS1) ? 1U : 0U;
+			scale += controller.GetRegisterBit(PICController.ADDR_OPTION, PICController.OPTION_BIT_PS1) ? 1U : 0U;
 			scale *= 2;
-			scale = controller.GetRegisterBit(PICController.ADDR_OPTION, PICController.OPTION_BIT_PS0) ? 1U : 0U;
+			scale += controller.GetRegisterBit(PICController.ADDR_OPTION, PICController.OPTION_BIT_PS0) ? 1U : 0U;
 
-			scale += 1;
-
-			return prescale_mode ? 1 : UIntPower(2, scale);
+			return prescale_mode ? 1 : (BinaryHelper.SHL(2, scale));
 		}
 
 		private uint UIntPower(uint x, uint power)
