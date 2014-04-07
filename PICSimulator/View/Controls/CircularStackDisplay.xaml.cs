@@ -39,7 +39,7 @@ namespace PICSimulator.View
 			for (int i = 0; i < 9; i++)
 			{
 				string ind = (Stack.Count - 1 == i) ? "\u25BA" : "";
-				string txt = (Stack.Count > i) ? string.Format(@"[0x{0:X04}] {1}", Stack[i].Item1, Stack[i].Item2) : "";
+				string txt = (Stack.Count > i) ? FormatLine(Stack[i].Item1, Stack[i].Item2) : "";
 
 				if (IndicatorTextBlocks[i].Text != ind)
 					IndicatorTextBlocks[i].Text = ind;
@@ -47,6 +47,23 @@ namespace PICSimulator.View
 				if (LineTextBlocks[i].Text != txt)
 					LineTextBlocks[i].Text = txt;
 			}
+		}
+
+		private string FormatLine(uint p, string line)
+		{
+			string t_pc = string.Format(@"[{0:X03}] ", p);
+			string t_line = line.Trim(' ', '\t', '\r', '\n');
+
+			t_line = t_line.Replace("\t", " ");
+
+			while (t_line != t_line.Replace("  ", " "))
+			{
+				t_line = t_line.Replace("  ", " ");
+			}
+
+			t_line = t_line.Substring(0, Math.Min(11, t_line.Length));
+
+			return t_pc + t_line;
 		}
 
 		public void UpdateValues(Stack<uint> v, PICController controller)
