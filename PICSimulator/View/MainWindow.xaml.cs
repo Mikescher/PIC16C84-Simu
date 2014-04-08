@@ -421,7 +421,7 @@ namespace PICSimulator.View
 
 		private void Window_Closed(object sender, EventArgs e)
 		{
-			if (controller != null) // TODO Wont work ?? --> Max Speed ??
+			if (controller != null)
 				controller.Stop(); // Kill 'em with fire
 		}
 
@@ -469,7 +469,7 @@ namespace PICSimulator.View
 				case 6:
 					return PICControllerSpeed.Maximum;
 				default:
-					throw new Exception(); // TODO Change type to sth useful
+					throw new Exception();
 			}
 		}
 

@@ -6,7 +6,7 @@ namespace PICSimulator.Model
 {
 	class PICMemory
 	{
-		public const uint ADDR_INDF = 0x00;			// TODO Add indirect Adressing with INDF and FSR (Kap 4.5)
+		public const uint ADDR_INDF = 0x00;
 		public const uint ADDR_TMR0 = 0x01;
 		public const uint ADDR_PCL = 0x02;
 		public const uint ADDR_STATUS = 0x03;
@@ -70,19 +70,6 @@ namespace PICSimulator.Model
 			{
 				#region Linked Register && PC
 
-				//##############################################################################
-				{
-					ADDR_INDF,	
-					Tuple.Create<RegisterRead, RegisterWrite>(
-						GetRegisterDirect, 
-						(p, v) => { SetRegisterDirect(p, v); SetRegisterDirect(p+0x80, v); })
-				}, 
-				{
-					ADDR_INDF+0x80,	
-					Tuple.Create<RegisterRead, RegisterWrite>(
-						GetRegisterDirect, 
-						(p, v) => { SetRegisterDirect(p, v); SetRegisterDirect(p-0x80, v); })
-				}, 
 				//##############################################################################
 				{
 					ADDR_PCL, 
@@ -178,6 +165,38 @@ namespace PICSimulator.Model
 				}, 
 
 				#endregion
+
+				#region Indirect Addressing
+
+				{
+					ADDR_INDF,	
+					Tuple.Create<RegisterRead, RegisterWrite>(
+						(p) => 
+						{
+							return (GetRegister(ADDR_FSR) % 0x80 == 0) ? (0) : (GetRegister(GetRegister(ADDR_FSR)));
+						}, 
+						(p, v) => 
+						{
+							if (GetRegister(ADDR_FSR) % 0x80 != 0) 
+								SetRegister(GetRegister(ADDR_FSR), v);
+						})
+				}, 
+
+				{
+					ADDR_INDF + 0x80,	
+					Tuple.Create<RegisterRead, RegisterWrite>(
+						(p) => 
+						{
+							return (GetRegister(ADDR_FSR) % 0x80 == 0) ? (0) : (GetRegister(GetRegister(ADDR_FSR)));
+						}, 
+						(p, v) => 
+						{
+							if (GetRegister(ADDR_FSR) % 0x80 != 0) 
+								SetRegister(GetRegister(ADDR_FSR), v);
+						})
+				}, 
+
+				#endregion
 			};
 		}
 
@@ -270,10 +289,17 @@ namespace PICSimulator.Model
 				SetRegister(i, 0x00);
 			}
 
+			SetRegister(ADDR_PCL, 0x00);
 			SetRegister(ADDR_STATUS, 0x18);
+			SetRegister(ADDR_PCLATH, 0x00);
+			SetRegister(ADDR_INTCON, 0x00);
+
 			SetRegister(ADDR_OPTION, 0xFF);
 			SetRegister(ADDR_TRIS_A, 0x1F);
 			SetRegister(ADDR_TRIS_B, 0xFF);
+
+			SetRegister(ADDR_EECON1, 0x00);
+			SetRegister(ADDR_EECON2, 0x00);
 		}
 
 		public void SoftResetRegister()

@@ -15,7 +15,7 @@ namespace PICSimulator.Model
 
 		private PICController controller;
 
-		private List<PICInterrupt> Queue = new List<PICInterrupt>(); //TODO WHAT HAPPENS WITH MORER THAN 1 INTERRUPT ??????
+		private List<PICInterrupt> Queue = new List<PICInterrupt>();
 
 		public PICInterruptLogic(PICController c)
 		{
