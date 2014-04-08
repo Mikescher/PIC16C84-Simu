@@ -24,9 +24,14 @@ namespace PICSimulator.View
 		private ImageSource img_Breakpoint;
 		private ImageSource img_Combined;
 
-		public IconBarMargin(MainWindow _owner)
+		private bool ScrollToNextPCChange = false;
+
+		private ICSharpCode.AvalonEdit.TextEditor Editor;
+
+		public IconBarMargin(MainWindow _owner, ICSharpCode.AvalonEdit.TextEditor _editor)
 		{
 			this.owner = _owner;
+			this.Editor = _editor;
 
 			BitmapImage b;
 
@@ -60,10 +65,11 @@ namespace PICSimulator.View
 			{
 				newTextView.VisualLinesChanged += OnRedrawRequested;
 			}
+
 			InvalidateVisual();
 		}
 
-		void OnRedrawRequested(object sender, EventArgs e)
+		private void OnRedrawRequested(object sender, EventArgs e)
 		{
 			if (this.TextView != null && this.TextView.VisualLinesValid)
 			{
@@ -127,11 +133,21 @@ namespace PICSimulator.View
 
 		public void SetPC(long p)
 		{
-			currPC = p;
-
-			if (this.TextView != null && this.TextView.VisualLinesValid)
+			if (currPC != p)
 			{
-				InvalidateVisual();
+				currPC = p;
+
+				if (ScrollToNextPCChange)
+				{
+					ScrollToNextPCChange = false;
+					MakePCVisible();
+				}
+
+				if (this.TextView != null && this.TextView.VisualLinesValid)
+				{
+					InvalidateVisual();
+				}
+
 			}
 		}
 
@@ -177,6 +193,30 @@ namespace PICSimulator.View
 			if (this.TextView != null && this.TextView.VisualLinesValid)
 			{
 				InvalidateVisual();
+			}
+		}
+
+		public void MakeNextPCVisible()
+		{
+			ScrollToNextPCChange = true;
+		}
+
+		public void MakePCVisible()
+		{
+			if (this.TextView != null)
+			{
+				try
+				{
+					int top = Math.Max((int)currPC - this.TextView.VisualLines.Count / 2, 0);
+
+					double visualTop = this.TextView.GetVisualTopByDocumentLine(top);
+
+					Editor.ScrollToVerticalOffset(visualTop);
+				}
+				catch
+				{
+					// Do nothing - can't scroll properly
+				}
 			}
 		}
 	}

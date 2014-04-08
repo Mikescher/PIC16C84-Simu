@@ -28,8 +28,6 @@ namespace PICSimulator.View
 
 		private IconBarMargin IconBar;
 
-		public bool CodeIsReadOnly { get { return false; } set { } }
-
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -66,7 +64,7 @@ namespace PICSimulator.View
 			txtCode.ShowLineNumbers = true;
 			txtCode.Options.CutCopyWholeLine = true;
 
-			txtCode.TextArea.LeftMargins.Insert(0, IconBar = new IconBarMargin(this));
+			txtCode.TextArea.LeftMargins.Insert(0, IconBar = new IconBarMargin(this, txtCode));
 
 			//#####################
 
@@ -80,7 +78,7 @@ namespace PICSimulator.View
 			sgridOPTION.Initialize(rgridMain, PICMemory.ADDR_OPTION);
 		}
 
-		#region Event Handler
+		#region UI Event Handler
 
 		#region New
 
@@ -246,6 +244,8 @@ namespace PICSimulator.View
 
 		private void PauseExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
+			IconBar.MakeNextPCVisible();
+
 			controller.Step();
 		}
 
@@ -294,6 +294,8 @@ namespace PICSimulator.View
 
 		private void StepExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
+			IconBar.MakeNextPCVisible();
+
 			if (controller.Mode == PICControllerMode.PAUSED)
 			{
 				controller.Step();
@@ -301,6 +303,39 @@ namespace PICSimulator.View
 			else if (controller.Mode == PICControllerMode.WAITING)
 			{
 				controller.StartPaused();
+			}
+		}
+
+		#endregion
+
+		#region Other
+
+		private void Window_Closed(object sender, EventArgs e)
+		{
+			if (controller != null)
+				controller.Stop(); // Kill 'em with fire
+		}
+
+		private void cbxSpeed_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		{
+			if (controller != null)
+			{
+				controller.SimulationSpeed = getSimuSpeedFromComboBox();
+			}
+		}
+
+		private void OnHelpClicked(object sender, RoutedEventArgs e)
+		{
+			string path = @"res\DataSheet.pdf";
+
+			Process.Start(path);
+		}
+
+		private void txtCode_TextChanged(object sender, EventArgs e)
+		{
+			if (controller != null && (controller.Mode == PICControllerMode.WAITING || controller.Mode == PICControllerMode.FINISHED))
+			{
+				controller = null;
 			}
 		}
 
@@ -326,8 +361,6 @@ namespace PICSimulator.View
 				lblRunTime.Text = FormatRuntime(controller.GetRunTime());
 				lblRegW.Text = "0x" + string.Format("{0:X02}", controller.GetWRegister());
 				lblRegPC.Text = "0x" + string.Format("{0:X04}", controller.GetPC());
-
-				CommandManager.InvalidateRequerySuggested();
 			}
 			else
 			{
@@ -342,8 +375,10 @@ namespace PICSimulator.View
 				lblRegW.Text = "0x" + string.Format("{0:X02}", 0);
 				lblRegPC.Text = "0x" + string.Format("{0:X04}", 0);
 
-				CommandManager.InvalidateRequerySuggested();
 			}
+
+			txtCode.IsReadOnly = controller != null && controller.Mode != PICControllerMode.WAITING;
+			CommandManager.InvalidateRequerySuggested();
 		}
 
 		private void UpdateStackDisplay()
@@ -414,17 +449,6 @@ namespace PICSimulator.View
 
 		#endregion
 
-		private void txtCode_PreviewTextInput(object sender, TextCompositionEventArgs e) //TODO Only edit when stopped && Edit Kills controller -> recompile
-		{
-			e.Handled = !(sc_document != null && (controller == null || controller.Mode == PICControllerMode.FINISHED));
-		}
-
-		private void Window_Closed(object sender, EventArgs e)
-		{
-			if (controller != null)
-				controller.Stop(); // Kill 'em with fire
-		}
-
 		public bool OnBreakPointChanged(int line, bool newVal)
 		{
 			if (controller == null)
@@ -471,21 +495,6 @@ namespace PICSimulator.View
 				default:
 					throw new Exception();
 			}
-		}
-
-		private void cbxSpeed_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-		{
-			if (controller != null)
-			{
-				controller.SimulationSpeed = getSimuSpeedFromComboBox();
-			}
-		}
-
-		private void OnDataSheet(object sender, RoutedEventArgs e)
-		{
-			string path = @"res\DataSheet.pdf";
-
-			Process.Start(path);
 		}
 	}
 }
