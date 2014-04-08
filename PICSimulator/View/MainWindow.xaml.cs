@@ -319,13 +319,13 @@ namespace PICSimulator.View
 				UpdateRegister();
 				UpdateStackDisplay();
 
-				IconBar.SetPC(controller.GetSCLineForPC(controller.GetThreadSafePC()));
+				IconBar.SetPC(controller.GetSCLineForPC(controller.GetPC()));
 
 				lblFreqModel.Text = FormatFreq((uint)controller.Frequency.Frequency);
 				lblFreqView.Text = FormatFreq((uint)IdleCounter.Frequency);
 				lblRunTime.Text = FormatRuntime(controller.GetRunTime());
 				lblRegW.Text = "0x" + string.Format("{0:X02}", controller.GetWRegister());
-				lblRegPC.Text = "0x" + string.Format("{0:X04}", controller.GetThreadSafePC());
+				lblRegPC.Text = "0x" + string.Format("{0:X04}", controller.GetPC());
 
 				CommandManager.InvalidateRequerySuggested();
 			}

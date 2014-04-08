@@ -20,7 +20,6 @@ namespace PICSimulator.Model
 		public PICControllerMode Mode { get; private set; } // Set to true while running - false when program ended (NOT WHEN PAUSED)
 		public PICControllerSpeed SimulationSpeed;
 		private bool[] breakpoints;
-		private uint pc_cache; // For ThreadSafe PC Access
 
 		private PICCommand[] CommandList;
 
@@ -229,26 +228,19 @@ namespace PICSimulator.Model
 			Interrupt.Reset();
 		}
 
-		public uint GetPC() // TODO FIX PC --> Move 2 Memory
+		public uint GetPC()
 		{
-			pc_cache = (uint)((GetRegister(PICMemory.ADDR_PCLATH) & ~0x1F) << 8) | GetRegister(PICMemory.ADDR_PCL);
-			return pc_cache;
+			return Memory.GetPC();
 		}
 
 		public void SetPC_13Bit(uint value)
 		{
-			uint Low = value & 0xFF;
-			uint High = (value >> 8) & 0x1F;
-
-			SetRegister(PICMemory.ADDR_PCL, Low);
-			SetRegister(PICMemory.ADDR_PCLATH, High);
+			Memory.SetPC(value);
 		}
 
 		public void SetPC_11Bit(uint value)
 		{
-			value |= (GetRegister(PICMemory.ADDR_PCLATH) & 0x18) << 8;
-
-			SetPC_13Bit(value);
+			Memory.SetPC_11Bit(value);
 		}
 
 		public void PushCallStack(uint v)
@@ -311,11 +303,6 @@ namespace PICSimulator.Model
 		#endregion
 
 		#region Helper
-
-		public uint GetThreadSafePC()
-		{
-			return pc_cache;
-		}
 
 		public long GetSCLineForPC(uint pc)
 		{

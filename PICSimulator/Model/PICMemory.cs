@@ -55,6 +55,7 @@ namespace PICSimulator.Model
 
 		private readonly Dictionary<uint, Tuple<RegisterRead, RegisterWrite>> SpecialRegisterEvents;
 
+		private uint pc = 0;
 		private uint[] register = new uint[0xFF];
 
 		private PICTimer Timer;
@@ -67,7 +68,7 @@ namespace PICSimulator.Model
 
 			SpecialRegisterEvents = new Dictionary<uint, Tuple<RegisterRead, RegisterWrite>>() 
 			{
-				#region Linked Register
+				#region Linked Register && PC
 
 				//##############################################################################
 				{
@@ -87,13 +88,13 @@ namespace PICSimulator.Model
 					ADDR_PCL, 
 					Tuple.Create<RegisterRead, RegisterWrite>(
 						GetRegisterDirect, 
-						(p, v) => { SetRegisterDirect(p, v); SetRegisterDirect(p+0x80, v); })
+						(p, v) => { SetRegisterDirect(p, v); SetRegisterDirect(p+0x80, v); UpdatePC(v); })
 				}, 
 				{
 					ADDR_PCL + 0x80, 
 					Tuple.Create<RegisterRead, RegisterWrite>(
 						GetRegisterDirect, 
-						(p, v) => { SetRegisterDirect(p, v); SetRegisterDirect(p-0x80, v); })
+						(p, v) => { SetRegisterDirect(p, v); SetRegisterDirect(p-0x80, v); UpdatePC(v); })
 				}, 
 				//##############################################################################
 				{
@@ -284,6 +285,53 @@ namespace PICSimulator.Model
 			SetRegister(ADDR_TRIS_A, 0x1F);
 			SetRegister(ADDR_TRIS_B, 0xFF);
 			SetRegister(ADDR_EECON1, (GetRegister(ADDR_EECON1) & 0x08));
+		}
+
+		#endregion
+
+		#region Program Counter
+
+		private void UpdatePC(uint value)
+		{
+			value &= 0xFF; // Only Low 8 Bit
+
+			uint high = GetRegister(ADDR_PCLATH);
+			high &= 0x1F; // Only Bit <0,1,2,3,4>
+			high <<= 8;
+
+			value = high | value;
+
+			pc = value;
+			SetRegisterDirect(ADDR_PCL, value & 0xFF);
+			SetRegisterDirect(ADDR_PCL + 0x80, value & 0xFF);
+		}
+
+		public uint GetPC()
+		{
+			return pc;
+		}
+
+		public void SetPC(uint value)
+		{
+			pc = value;
+
+			SetRegisterDirect(ADDR_PCL, value & 0xFF);
+			SetRegisterDirect(ADDR_PCL + 0x80, value & 0xFF);
+		}
+
+		public void SetPC_11Bit(uint value)
+		{
+			value &= 0x7FF; // Only Low 11 Bit
+
+			uint high = GetRegister(ADDR_PCLATH);
+			high &= 0x18; // Only Bit <3,4>
+			high <<= 8;
+
+			value = high | value;
+
+			pc = value;
+			SetRegisterDirect(ADDR_PCL, value & 0xFF);
+			SetRegisterDirect(ADDR_PCL + 0x80, value & 0xFF);
 		}
 
 		#endregion
