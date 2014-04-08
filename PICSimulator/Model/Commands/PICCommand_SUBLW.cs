@@ -30,9 +30,9 @@ namespace PICSimulator.Model.Commands
 
 			uint Result = a - b;
 
-			controller.SetRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_Z, Result == 0);
-			controller.SetRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_DC, dc);
-			controller.SetRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_C, !carry);
+			controller.SetUnbankedRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_Z, Result == 0);
+			controller.SetUnbankedRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_DC, dc);
+			controller.SetUnbankedRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_C, !carry);
 
 			Result %= 0x100;
 

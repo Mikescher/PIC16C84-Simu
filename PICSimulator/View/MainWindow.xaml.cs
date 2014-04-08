@@ -393,15 +393,15 @@ namespace PICSimulator.View
 
 		private void UpdateRegister()
 		{
-			for (uint i = 0; i < 0xFF; i++)
+			for (uint i = 0; i < 0x100; i++)
 			{
-				rgridMain.Set(i, controller.GetRegister(i), true, false); // Tests in Set if val has changed ....
+				rgridMain.Set(i, controller.GetUnbankedRegister(i), true, false); // Tests in Set if val has changed ....
 			}
 		}
 
 		private void ClearRegister()
 		{
-			for (uint i = 0; i < 0xFF; i++)
+			for (uint i = 0; i < 0x100; i++)
 			{
 				rgridMain.Set(i, 0, true, false); // Tests in Set if val has changed ....
 			}

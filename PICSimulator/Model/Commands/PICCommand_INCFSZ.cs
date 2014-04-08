@@ -17,21 +17,21 @@ namespace PICSimulator.Model.Commands
 
 		private bool TestCondition(PICController controller) // Returns True if Skip
 		{
-			return controller.GetRegister(Register) == 0xFF; // skip if 0xFF -> After DEC will be Zero
+			return controller.GetBankedRegister(Register) == 0xFF; // skip if 0xFF -> After DEC will be Zero
 		}
 
 		public override void Execute(PICController controller)
 		{
 			bool Cond = TestCondition(controller);
 
-			uint Result = controller.GetRegister(Register);
+			uint Result = controller.GetBankedRegister(Register);
 
 			Result += 1;
 
 			Result %= 0x100;
 
 			if (Target)
-				controller.SetRegister(Register, Result);
+				controller.SetBankedRegister(Register, Result);
 			else
 				controller.SetWRegister(Result);
 

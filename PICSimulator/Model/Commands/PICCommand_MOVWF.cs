@@ -15,7 +15,7 @@ namespace PICSimulator.Model.Commands
 
 		public override void Execute(PICController controller)
 		{
-			controller.SetRegister(Register, controller.GetWRegister());
+			controller.SetBankedRegister(Register, controller.GetWRegister());
 		}
 
 		public override string GetCommandCodeFormat()

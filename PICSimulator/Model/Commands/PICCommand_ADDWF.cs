@@ -18,20 +18,20 @@ namespace PICSimulator.Model.Commands
 
 		public override void Execute(PICController controller)
 		{
-			uint a = controller.GetRegister(Register);
+			uint a = controller.GetBankedRegister(Register);
 			uint b = controller.GetWRegister();
 
 			uint Result = a + b;
 			bool dc = BinaryHelper.getAdditionDigitCarry(a, b);
 
-			controller.SetRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_Z, Result == 0);
-			controller.SetRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_DC, dc);
-			controller.SetRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_C, Result > 0xFF);
+			controller.SetUnbankedRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_Z, Result == 0);
+			controller.SetUnbankedRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_DC, dc);
+			controller.SetUnbankedRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_C, Result > 0xFF);
 
 			Result %= 0x100;
 
 			if (Target)
-				controller.SetRegister(Register, Result);
+				controller.SetBankedRegister(Register, Result);
 			else
 				controller.SetWRegister(Result);
 		}

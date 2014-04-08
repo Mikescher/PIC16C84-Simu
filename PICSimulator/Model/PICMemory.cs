@@ -25,7 +25,8 @@ namespace PICSimulator.Model
 		public const uint ADDR_EECON2 = 0x89;
 
 		public const uint STATUS_BIT_IRP = 7;		// Unused in PIC16C84
-		public const uint STATUS_BIT_RP0 = 5;		// Register Bank Selection Bit //TODO Bank Select
+		public const uint STATUS_BIT_RP1 = 6;		// Register Bank Selection Bit [1] (Unused in PIC16C84)
+		public const uint STATUS_BIT_RP0 = 5;		// Register Bank Selection Bit [0]
 		public const uint STATUS_BIT_TO = 4;		// Time Out Bit
 		public const uint STATUS_BIT_PD = 3;		// Power Down Bit
 		public const uint STATUS_BIT_Z = 2;			// Zero Bit
@@ -56,7 +57,7 @@ namespace PICSimulator.Model
 		private readonly Dictionary<uint, Tuple<RegisterRead, RegisterWrite>> SpecialRegisterEvents;
 
 		private uint pc = 0;
-		private uint[] register = new uint[0xFF];
+		private uint[] register = new uint[0x100];
 
 		private PICTimer Timer;
 		private PICInterruptLogic Interrupt;
@@ -244,6 +245,11 @@ namespace PICSimulator.Model
 			}
 		}
 
+		public uint GetBankedRegister(uint p)
+		{
+			return GetRegister(p + GetBankOffset());
+		}
+
 		public void SetRegister(uint p, uint n)
 		{
 			if (SpecialRegisterEvents.ContainsKey(p))
@@ -254,6 +260,11 @@ namespace PICSimulator.Model
 			{
 				SetRegisterDirect(p, n);
 			}
+		}
+
+		public void SetBankedRegister(uint p, uint n)
+		{
+			SetRegister(p + GetBankOffset(), n);
 		}
 
 		protected uint GetRegisterDirect(uint p)
@@ -273,9 +284,19 @@ namespace PICSimulator.Model
 			SetRegister(p, BinaryHelper.SetBit(GetRegister(p), bitpos, newVal));
 		}
 
+		public void SetBankedRegisterBit(uint p, uint bitpos, bool newVal)
+		{
+			SetRegisterBit(p + GetBankOffset(), bitpos, newVal);
+		}
+
 		public bool GetRegisterBit(uint p, uint bitpos)
 		{
 			return BinaryHelper.GetBit(GetRegister(p), bitpos);
+		}
+
+		public bool GetBankedRegisterBit(uint p, uint bitpos)
+		{
+			return GetRegisterBit(p + GetBankOffset(), bitpos);
 		}
 
 		#endregion
@@ -311,6 +332,11 @@ namespace PICSimulator.Model
 			SetRegister(ADDR_TRIS_A, 0x1F);
 			SetRegister(ADDR_TRIS_B, 0xFF);
 			SetRegister(ADDR_EECON1, (GetRegister(ADDR_EECON1) & 0x08));
+		}
+
+		private uint GetBankOffset()
+		{
+			return GetRegisterBit(ADDR_STATUS, STATUS_BIT_RP0) ? 0x80u : 0x00u;
 		}
 
 		#endregion

@@ -17,7 +17,7 @@ namespace PICSimulator.Model.Commands
 
 		public override void Execute(PICController controller)
 		{
-			uint Result = controller.GetRegister(Register);
+			uint Result = controller.GetBankedRegister(Register);
 
 			uint Low = Register & 0x0F;
 			uint High = Register & 0xF0;
@@ -25,7 +25,7 @@ namespace PICSimulator.Model.Commands
 			Result = (Low << 4) | (High >> 4);
 
 			if (Target)
-				controller.SetRegister(Register, Result);
+				controller.SetBankedRegister(Register, Result);
 			else
 				controller.SetWRegister(Result);
 		}

@@ -17,16 +17,16 @@ namespace PICSimulator.Model.Commands
 
 		public override void Execute(PICController controller)
 		{
-			uint Result = controller.GetRegister(Register);
+			uint Result = controller.GetBankedRegister(Register);
 
 			Result += 1;
 
 			Result %= 0x100;
 
-			controller.SetRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_Z, Result == 0);
+			controller.SetUnbankedRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_Z, Result == 0);
 
 			if (Target)
-				controller.SetRegister(Register, Result);
+				controller.SetBankedRegister(Register, Result);
 			else
 				controller.SetWRegister(Result);
 		}

@@ -15,8 +15,8 @@ namespace PICSimulator.Model.Commands
 
 		public override void Execute(PICController controller)
 		{
-			controller.SetRegister(Register, 0x00);
-			controller.SetRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_Z, true);
+			controller.SetBankedRegister(Register, 0x00);
+			controller.SetUnbankedRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_Z, true);
 		}
 
 		public override string GetCommandCodeFormat()

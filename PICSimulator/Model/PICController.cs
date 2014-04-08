@@ -175,7 +175,7 @@ namespace PICSimulator.Model
 			{
 				ManuallyRegisterChangedEvent ce = e as ManuallyRegisterChangedEvent;
 
-				SetRegister(ce.Position, ce.Value);
+				SetUnbankedRegister(ce.Position, ce.Value);
 			}
 			else
 			{
@@ -183,22 +183,42 @@ namespace PICSimulator.Model
 			}
 		}
 
-		public uint GetRegister(uint p)
+		public uint GetBankedRegister(uint p)
+		{
+			return Memory.GetBankedRegister(p);
+		}
+
+		public void SetBankedRegister(uint p, uint n)
+		{
+			Memory.SetBankedRegister(p, n);
+		}
+
+		public void SetBankedRegisterBit(uint p, uint bitpos, bool newVal)
+		{
+			Memory.SetBankedRegisterBit(p, bitpos, newVal);
+		}
+
+		public bool GetBankedRegisterBit(uint p, uint bitpos)
+		{
+			return Memory.GetBankedRegisterBit(p, bitpos);
+		}
+
+		public uint GetUnbankedRegister(uint p)
 		{
 			return Memory.GetRegister(p);
 		}
 
-		public void SetRegister(uint p, uint n)
+		public void SetUnbankedRegister(uint p, uint n)
 		{
 			Memory.SetRegister(p, n);
 		}
 
-		public void SetRegisterBit(uint p, uint bitpos, bool newVal)
+		public void SetUnbankedRegisterBit(uint p, uint bitpos, bool newVal)
 		{
 			Memory.SetRegisterBit(p, bitpos, newVal);
 		}
 
-		public bool GetRegisterBit(uint p, uint bitpos)
+		public bool GetUnbankedRegisterBit(uint p, uint bitpos)
 		{
 			return Memory.GetRegisterBit(p, bitpos);
 		}
@@ -321,9 +341,9 @@ namespace PICSimulator.Model
 
 		public void RaiseCompleteEventResetChain()
 		{
-			for (uint i = 0; i < 0xFF; i++)
+			for (uint i = 0; i < 0x100; i++)
 			{
-				SetRegister(i, GetRegister(i));
+				SetUnbankedRegister(i, GetUnbankedRegister(i));
 			}
 
 			SetWRegister(GetWRegister());

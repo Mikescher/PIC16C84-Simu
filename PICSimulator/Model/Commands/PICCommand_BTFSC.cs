@@ -18,7 +18,7 @@ namespace PICSimulator.Model.Commands
 
 		private bool TestCondition(PICController controller) // Returns True if Skip
 		{
-			return !BinaryHelper.GetBit(controller.GetRegister(Register), Bit);
+			return !BinaryHelper.GetBit(controller.GetBankedRegister(Register), Bit);
 		}
 
 		public override void Execute(PICController controller)
