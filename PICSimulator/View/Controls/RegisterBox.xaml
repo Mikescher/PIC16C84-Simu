@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" Height="22">
     <Grid>
         <ComboBox x:Name="box" Width="Auto" SelectedIndex="6">
@@ -17,6 +18,8 @@
             <ComboBoxItem Tag="81" Content="OPTION" HorizontalAlignment="Left" />
             <ComboBoxItem Tag="85" Content="TRISA" HorizontalAlignment="Left" />
             <ComboBoxItem Tag="86" Content="TRISB" HorizontalAlignment="Left" />
+            
+            <TextBox x:Name="cstmBox" Tag="00" Text="00" PreviewTextInput="TextBox_PreviewTextInput" TextChanged="TextBox_TextChanged" Width="30"/>
         </ComboBox>
 
     </Grid>

@@ -19,8 +19,8 @@ namespace PICSimulator.Model.Commands
 		{
 			uint Result = controller.GetBankedRegister(Register);
 
-			uint Low = Register & 0x0F;
-			uint High = Register & 0xF0;
+			uint Low = Result & 0x0F;
+			uint High = Result & 0xF0;
 
 			Result = (Low << 4) | (High >> 4);
 

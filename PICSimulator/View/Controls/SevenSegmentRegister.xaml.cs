@@ -12,9 +12,9 @@ namespace PICSimulator.View
 			InitializeComponent();
 		}
 
-		public void SourceChanged(object sender, SelectionChangedEventArgs e)
+		public void SourceChanged(uint reg)
 		{
-			display.ChangeSource(box.Value);
+			display.ChangeSource(reg);
 		}
 
 		public void Initialize(RegisterGrid parent)
