@@ -51,6 +51,24 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.AvalonDock">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.1.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.1.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.1.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.1.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.DataGrid">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.1.0\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.1.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -114,6 +132,9 @@
     <Compile Include="Model\PICMemory.cs" />
     <Compile Include="Model\PICProgramLoader.cs" />
     <Compile Include="Model\PICTimer.cs" />
+    <Compile Include="View\Controls\7SegmentDisplay.xaml.cs">
+      <DependentUpon>7SegmentDisplay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Controls\CircularStackDisplay.xaml.cs">
       <DependentUpon>CircularStackDisplay.xaml</DependentUpon>
     </Compile>
@@ -125,6 +146,9 @@
     </Compile>
     <Compile Include="View\Controls\SpecialRegisterGrid.xaml.cs">
       <DependentUpon>SpecialRegisterGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\FrequencyInputDialog.xaml.cs">
+      <DependentUpon>FrequencyInputDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\IconBarMargin.cs" />
     <Compile Include="View\Controls\IORegisterGrid.xaml.cs">
@@ -142,6 +166,12 @@
     </Compile>
     <Compile Include="View\Controls\SimpleToolbarSeparator.xaml.cs">
       <DependentUpon>SimpleToolbarSeparator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Controls\SevenSegmentRegister.xaml.cs">
+      <DependentUpon>SevenSegmentRegister.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Controls\RegisterBox.xaml.cs">
+      <DependentUpon>RegisterBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SourcecodeDocument.cs" />
   </ItemGroup>
@@ -187,6 +217,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="View\Controls\7SegmentDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Controls\CircularStackDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -211,6 +245,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\FrequencyInputDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -220,6 +258,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Controls\SimpleToolbarSeparator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Controls\SevenSegmentRegister.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Controls\RegisterBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -249,6 +295,9 @@
     <Resource Include="icons\document.png" />
     <Resource Include="icons\folder-open.png" />
     <Resource Include="icons\arrow-left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="View\Dialogs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

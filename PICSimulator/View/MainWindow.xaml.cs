@@ -76,6 +76,13 @@ namespace PICSimulator.View
 			sgridSTATUS.Initialize(rgridMain, PICMemory.ADDR_STATUS);
 			sgridINTCON.Initialize(rgridMain, PICMemory.ADDR_INTCON);
 			sgridOPTION.Initialize(rgridMain, PICMemory.ADDR_OPTION);
+
+			sevSeg_0.Initialize(rgridMain);
+			sevSeg_1.Initialize(rgridMain);
+			sevSeg_2.Initialize(rgridMain);
+			sevSeg_3.Initialize(rgridMain);
+			sevSeg_4.Initialize(rgridMain);
+			sevSeg_5.Initialize(rgridMain);
 		}
 
 		#region UI Event Handler
@@ -361,6 +368,7 @@ namespace PICSimulator.View
 				lblRunTime.Text = FormatRuntime(controller.GetRunTime());
 				lblRegW.Text = "0x" + string.Format("{0:X02}", controller.GetWRegister());
 				lblRegPC.Text = "0x" + string.Format("{0:X04}", controller.GetPC());
+				lblQuartzFreq.Text = FormatFreq(controller.EmulatedFrequency);
 			}
 			else
 			{
@@ -374,6 +382,7 @@ namespace PICSimulator.View
 				lblRunTime.Text = FormatRuntime(0);
 				lblRegW.Text = "0x" + string.Format("{0:X02}", 0);
 				lblRegPC.Text = "0x" + string.Format("{0:X04}", 0);
+				lblQuartzFreq.Text = FormatFreq(0);
 
 			}
 
@@ -494,6 +503,18 @@ namespace PICSimulator.View
 					return PICControllerSpeed.Maximum;
 				default:
 					throw new Exception();
+			}
+		}
+
+		private void btnSetQuartzFreq_Click(object sender, RoutedEventArgs e)
+		{
+			if (controller != null)
+			{
+				FrequencyInputDialog.Show(controller.EmulatedFrequency, (p) =>
+				{
+					if (controller != null)
+						controller.EmulatedFrequency = (uint)p;
+				});
 			}
 		}
 	}

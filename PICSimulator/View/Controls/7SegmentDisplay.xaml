@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="PICSimulator.View._7SegmentDisplay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" Width="75" Height="105">
+
+    <UserControl.Resources>
+        <Style x:Key="Style_SegNorm" TargetType="Polygon">
+            <Setter Property="Stroke" Value="Black"/>
+            <Setter Property="StrokeThickness" Value="1"/>
+            <Setter Property="Fill" Value="Transparent"/>
+
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <TransformGroup>
+                        <TranslateTransform X="7.5" Y="7.5"/>
+                    </TransformGroup>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="Style_DepNorm" TargetType="Ellipse">
+            <Setter Property="Stroke" Value="Black"/>
+            <Setter Property="StrokeThickness" Value="1"/>
+            <Setter Property="Fill" Value="Transparent"/>
+
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <TransformGroup>
+                        <TranslateTransform X="7.5" Y="7.5"/>
+                    </TransformGroup>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="Style_SegBlur" TargetType="Polygon">
+            <Setter Property="StrokeThickness" Value="0"/>
+            <Setter Property="Fill" Value="Transparent"/>
+
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <BlurEffect Radius="10"/>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <TransformGroup>
+                        <TranslateTransform X="7.5" Y="7.5"/>
+                    </TransformGroup>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="Style_DepBlur" TargetType="Ellipse">
+            <Setter Property="StrokeThickness" Value="0"/>
+            <Setter Property="Fill" Value="Transparent"/>
+
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <BlurEffect Radius="10"/>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <TransformGroup>
+                        <TranslateTransform X="7.5" Y="7.5"/>
+                    </TransformGroup>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Canvas>
+        <Polygon x:Name="o1seg_0" Points="5,5     15,0     35,0     45,5    35,10    15,10"  Style="{StaticResource Style_SegBlur}"/>
+        <Polygon x:Name="o1seg_1" Points="45,5    50,15    50,35    45,45   40,35    40,15"  Style="{StaticResource Style_SegBlur}"/>
+        <Polygon x:Name="o1seg_2" Points="45,45   50,55    50,75    45,85   40,75    40,55"  Style="{StaticResource Style_SegBlur}"/>
+        <Polygon x:Name="o1seg_3" Points="5,85    15,80    35,80    45,85   35,90    15,90"  Style="{StaticResource Style_SegBlur}"/>
+        <Polygon x:Name="o1seg_4" Points="5,45    10,55    10,75    5,85    0,75     0,55"   Style="{StaticResource Style_SegBlur}"/>
+        <Polygon x:Name="o1seg_5" Points="5,5     10,15    10,35    5,45    0,35     0,15"   Style="{StaticResource Style_SegBlur}"/>
+        <Polygon x:Name="o1seg_6" Points="5,45    15,40    35,40    45,45   35,50    15,50"  Style="{StaticResource Style_SegBlur}"/>
+        <Ellipse x:Name="o1seg_7" Canvas.Top="80" Canvas.Left="50" Width="10" Height="10"    Style="{StaticResource Style_DepBlur}"/>
+
+        <Polygon x:Name="o2seg_0" Points="5,5     15,0     35,0     45,5    35,10    15,10"  Style="{StaticResource Style_SegBlur}"/>
+        <Polygon x:Name="o2seg_1" Points="45,5    50,15    50,35    45,45   40,35    40,15"  Style="{StaticResource Style_SegBlur}"/>
+        <Polygon x:Name="o2seg_2" Points="45,45   50,55    50,75    45,85   40,75    40,55"  Style="{StaticResource Style_SegBlur}"/>
+        <Polygon x:Name="o2seg_3" Points="5,85    15,80    35,80    45,85   35,90    15,90"  Style="{StaticResource Style_SegBlur}"/>
+        <Polygon x:Name="o2seg_4" Points="5,45    10,55    10,75    5,85    0,75     0,55"   Style="{StaticResource Style_SegBlur}"/>
+        <Polygon x:Name="o2seg_5" Points="5,5     10,15    10,35    5,45    0,35     0,15"   Style="{StaticResource Style_SegBlur}"/>
+        <Polygon x:Name="o2seg_6" Points="5,45    15,40    35,40    45,45   35,50    15,50"  Style="{StaticResource Style_SegBlur}"/>
+        <Ellipse x:Name="o2seg_7" Canvas.Top="80" Canvas.Left="50" Width="10" Height="10"    Style="{StaticResource Style_DepBlur}"/>
+
+        <Polygon x:Name="seg_0"   Points="5,5     15,0     35,0     45,5    35,10    15,10"  Style="{StaticResource Style_SegNorm}"/>
+        <Polygon x:Name="seg_1"   Points="45,5    50,15    50,35    45,45   40,35    40,15"  Style="{StaticResource Style_SegNorm}"/>
+        <Polygon x:Name="seg_2"   Points="45,45   50,55    50,75    45,85   40,75    40,55"  Style="{StaticResource Style_SegNorm}"/>
+        <Polygon x:Name="seg_3"   Points="5,85    15,80    35,80    45,85   35,90    15,90"  Style="{StaticResource Style_SegNorm}"/>
+        <Polygon x:Name="seg_4"   Points="5,45    10,55    10,75    5,85    0,75     0,55"   Style="{StaticResource Style_SegNorm}"/>
+        <Polygon x:Name="seg_5"   Points="5,5     10,15    10,35    5,45    0,35     0,15"   Style="{StaticResource Style_SegNorm}"/>
+        <Polygon x:Name="seg_6"   Points="5,45    15,40    35,40    45,45   35,50    15,50"  Style="{StaticResource Style_SegNorm}"/>
+        <Ellipse x:Name="seg_7" Canvas.Top="80" Canvas.Left="50" Width="10" Height="10"      Style="{StaticResource Style_DepNorm}"/>
+    </Canvas>
+</UserControl>

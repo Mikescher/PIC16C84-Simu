@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:self="clr-namespace:PICSimulator.View"
         xmlns:avEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
-        Title="MainWindow" Height="550" Width="900" Closed="Window_Closed">
+        Title="MainWindow" Height="594" Width="950" Closed="Window_Closed">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -40,7 +40,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="195"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -132,8 +132,9 @@
                     <TextBlock TextAlignment="Right" FontFamily="Courier New" FontSize="14" Text="W-Register"/>
                     <TextBlock TextAlignment="Right" FontFamily="Courier New" FontSize="14" Text="PC"/>
                     <TextBlock TextAlignment="Right" FontFamily="Courier New" FontSize="14" Text="Freq Disp"/>
-                    <TextBlock TextAlignment="Right" FontFamily="Courier New" FontSize="14" Text="Freq PIC"/>
+                    <TextBlock TextAlignment="Right" FontFamily="Courier New" FontSize="14" Text="Freq Simu"/>
                     <TextBlock TextAlignment="Right" FontFamily="Courier New" FontSize="14" Text="Run Time"/>
+                    <TextBlock TextAlignment="Right" FontFamily="Courier New" FontSize="14" Text="Quartzfreq"/>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Right" Orientation="Vertical" Margin="8, 0, 0, 0">
                     <TextBlock FontFamily="Courier New" FontSize="14" Name="lblRegW"      Text="0x00"/>
@@ -141,6 +142,15 @@
                     <TextBlock FontFamily="Courier New" FontSize="14" Name="lblFreqView"  Text="0 Hz"/>
                     <TextBlock FontFamily="Courier New" FontSize="14" Name="lblFreqModel" Text="0 Hz"/>
                     <TextBlock FontFamily="Courier New" FontSize="14" Name="lblRunTime"   Text="0 s"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" FontFamily="Courier New" FontSize="14" Name="lblQuartzFreq" Text="4 MHz"/>
+                        <Button x:Name="btnSetQuartzFreq" Grid.Column="2" Content="Set" FontSize="10" Padding="0" Margin="0, 0, 0, 0" Click="btnSetQuartzFreq_Click" />
+                    </Grid>
                 </StackPanel>
             </DockPanel>
         </Grid>
@@ -155,15 +165,24 @@
         <TabControl Grid.Row="4" Grid.Column="2" TabStripPlacement="Bottom">
             <TabItem Header="Special Register" HorizontalAlignment="Left" Height="20" Margin="0" VerticalAlignment="Top" >
                 <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <self:SpecialRegisterGrid x:Name="sgridSTATUS" Margin="5, 0, 5, 0" Caption="STATUS" Title_0="C" Title_1="DC" Title_2="Z" Title_3="PD" Title_4="TO" Title_5="RP0" Title_6="RP1" Title_7="IRP"/>
-                        <self:SpecialRegisterGrid x:Name="sgridINTCON" Margin="5, 0, 5, 0" Caption="INTCON" Title_0="RBIF" Title_1="INTF" Title_2="T0IF" Title_3="RBIE" Title_4="INTE" Title_5="T0IE" Title_6="EEIE" Title_7="GIE"/>
-                        <self:SpecialRegisterGrid x:Name="sgridOPTION" Margin="5, 0, 5, 0" Caption="OPTION" Title_0="PS0" Title_1="PS1" Title_2="PS2" Title_3="PSA" Title_4="T0SE" Title_5="T0CS" Title_6="INTEDG" Title_7="RBPU"/>
-                    </StackPanel>
+                    <WrapPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <self:SpecialRegisterGrid x:Name="sgridSTATUS" Margin="5" Caption="STATUS" Title_0="C" Title_1="DC" Title_2="Z" Title_3="PD" Title_4="TO" Title_5="RP0" Title_6="RP1" Title_7="IRP"/>
+                        <self:SpecialRegisterGrid x:Name="sgridINTCON" Margin="5" Caption="INTCON" Title_0="RBIF" Title_1="INTF" Title_2="T0IF" Title_3="RBIE" Title_4="INTE" Title_5="T0IE" Title_6="EEIE" Title_7="GIE"/>
+                        <self:SpecialRegisterGrid x:Name="sgridOPTION" Margin="5" Caption="OPTION" Title_0="PS0" Title_1="PS1" Title_2="PS2" Title_3="PSA" Title_4="T0SE" Title_5="T0CS" Title_6="INTEDG" Title_7="RBPU"/>
+                    </WrapPanel>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="blub" HorizontalAlignment="Left" Height="20" Margin="0" VerticalAlignment="Top" Width="57">
-                <Grid Background="#FFE5E5E5"/>
+            <TabItem Header="7-Segment" HorizontalAlignment="Left" Height="20" Margin="0" VerticalAlignment="Top">
+                <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+                    <WrapPanel Orientation="Vertical" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+                        <self:SevenSegmentRegister x:Name="sevSeg_0" Margin="2, 0"/>
+                        <self:SevenSegmentRegister x:Name="sevSeg_1" Margin="2, 0"/>
+                        <self:SevenSegmentRegister x:Name="sevSeg_2" Margin="2, 0"/>
+                        <self:SevenSegmentRegister x:Name="sevSeg_3" Margin="2, 0"/>
+                        <self:SevenSegmentRegister x:Name="sevSeg_4" Margin="2, 0"/>
+                        <self:SevenSegmentRegister x:Name="sevSeg_5" Margin="2, 0"/>
+                    </WrapPanel>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
 
