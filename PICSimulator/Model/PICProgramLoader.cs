@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace PICSimulator.Model
 {
@@ -61,6 +62,16 @@ namespace PICSimulator.Model
 			}
 
 			return result;
+		}
+
+		public static string LoadSourceCodeFromText(string file)
+		{
+			List<PICCommand> lst = LoadListFromFile(file);
+
+			if (lst == null)
+				return null;
+
+			return String.Join(Environment.NewLine, lst.Select(p => p.SourceCodeText.Trim()));
 		}
 
 		private static Tuple<string, string, string, string> splitLine(string line)

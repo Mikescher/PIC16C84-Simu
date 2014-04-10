@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using PICSimulator.Model;
 using System;
 using System.IO;
 using System.Text;
@@ -55,20 +56,68 @@ namespace PICSimulator.View
 
 			if (ofd.ShowDialog().GetValueOrDefault(false))
 			{
-				try
+				if (System.IO.Path.GetExtension(ofd.FileName).ToLower() == ".src")
 				{
-					string s = File.ReadAllText(ofd.FileName, Encoding.Default);
-
-					return new SourcecodeDocument(owner, handler, s, ofd.FileName);
+					return OpenSRCDocument(owner, handler, ofd.FileName);
 				}
-				catch (IOException)
+				else if (System.IO.Path.GetExtension(ofd.FileName).ToLower() == ".lst")
 				{
-					MessageBox.Show("Error: Could not load File.");
+					return OpenLSTDocument(owner, handler, ofd.FileName);
+				}
+				else
+				{
 					return null;
 				}
 			}
 			else
 			{
+				return null;
+			}
+		}
+
+		private static SourcecodeDocument OpenSRCDocument(Window owner, ICSharpCode.AvalonEdit.TextEditor handler, string FileName)
+		{
+			try
+			{
+				string s = File.ReadAllText(FileName, Encoding.Default);
+
+				return new SourcecodeDocument(owner, handler, s, FileName);
+			}
+			catch (IOException)
+			{
+				MessageBox.Show("Error: Could not load File.");
+				return null;
+			}
+		}
+
+		private static SourcecodeDocument OpenLSTDocument(Window owner, ICSharpCode.AvalonEdit.TextEditor handler, string FileName)
+		{
+			try
+			{
+				string s = PICProgramLoader.LoadSourceCodeFromText(FileName);
+
+				if (s == null)
+				{
+					return null;
+				}
+
+				string FileNameSrc = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(FileName), System.IO.Path.GetFileNameWithoutExtension(FileName) + ".src");
+
+				if (File.Exists(FileNameSrc))
+				{
+					if (MessageBox.Show("File \r\n" + FileNameSrc + "\r\nalready exists. Override ?", "Overwrite?", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
+					{
+						return null;
+					}
+				}
+
+				File.WriteAllText(FileNameSrc, s, Encoding.Default);
+
+				return new SourcecodeDocument(owner, handler, s, FileNameSrc);
+			}
+			catch (IOException)
+			{
+				MessageBox.Show("Error: Could not load File.");
 				return null;
 			}
 		}
