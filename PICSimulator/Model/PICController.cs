@@ -30,6 +30,7 @@ namespace PICSimulator.Model
 		private CircularStack CallStack = new CircularStack();
 
 		private uint Cycles = 0; // Passed Controller Cycles
+		public bool IsInSleep { get; private set; }
 
 		private PICWatchDogTimer WatchDog;
 		private PICTimer Tmr0;
@@ -44,6 +45,7 @@ namespace PICSimulator.Model
 
 			Mode = PICControllerMode.WAITING;
 			SimulationSpeed = s;
+			IsInSleep = false;
 
 			CommandList = cmds;
 			breakpoints = new bool[cmds.Length];
@@ -57,7 +59,7 @@ namespace PICSimulator.Model
 
 			while (Mode != PICControllerMode.FINISHED)
 			{
-				uint currCmdCycleCount = 0;
+				uint currCmdCycleCount = 1;
 
 				//################
 				//#     MISC     #
@@ -106,35 +108,46 @@ namespace PICSimulator.Model
 					}
 				}
 
+
+
 				//################
 				//#    FETCH     #
 				//################
 
 				PICCommand cmd = CommandList[GetPC()];
 
-				//################
-				//# INCREMENT PC #
-				//################
-
 				UnreleasedSleep((int)SimulationSpeed);
 
-				SetPC_13Bit(GetPC() + 1);
+				if (!IsInSleep)
+				{
+					//################
+					//# INCREMENT PC #
+					//################
+
+					SetPC_13Bit(GetPC() + 1);
+
+					//################
+					//#   EXECUTE    #
+					//################
+
+					cmd.Execute(this);
+					currCmdCycleCount = cmd.GetCycleCount(this);
+
+
+					//################
+					//#   AFTERMATH  #
+					//################
+
+					Tmr0.Update(this);
+
+				}
 
 				//################
-				//#   EXECUTE    #
-				//################
-
-				cmd.Execute(this);
-				currCmdCycleCount = cmd.GetCycleCount(this);
-
-				Cycles += currCmdCycleCount;
-
-				//################
-				//#   AFTERMATH  #
+				//#    OTHERS    #
 				//################
 
 				Interrupt.Update();
-				Tmr0.Update(this);
+				Cycles += currCmdCycleCount;
 				WatchDog.Update(this, currCmdCycleCount);
 			}
 
@@ -237,6 +250,7 @@ namespace PICSimulator.Model
 		private void HardReset()
 		{
 			Cycles = 0;
+			IsInSleep = false;
 			Memory.HardResetRegister();
 
 			ResetStack();
@@ -293,6 +307,7 @@ namespace PICSimulator.Model
 
 		public void DoInterrupt(PICInterruptType Type)
 		{
+			WakeUp();
 			Interrupt.AddInterrupt(Type);
 		}
 
@@ -342,9 +357,24 @@ namespace PICSimulator.Model
 
 		#region Helper
 
+		public void StartSleep()
+		{
+			IsInSleep = true;
+		}
+
+		public void WakeUp()
+		{
+			IsInSleep = false;
+		}
+
 		public double GetWatchDogPerc()
 		{
 			return WatchDog.GetPerc();
+		}
+
+		public PICWatchDogTimer GetWatchDog()
+		{
+			return WatchDog;
 		}
 
 		public long GetSCLineForPC(uint pc)

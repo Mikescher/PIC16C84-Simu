@@ -184,3 +184,5 @@ PICSimulator/TestData/
 *.SRX
 *.SYM
 */Test*/*.bin
+*/Test*/*.tdg
+*/Test*/*.ini

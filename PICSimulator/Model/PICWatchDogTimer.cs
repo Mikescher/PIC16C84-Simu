@@ -2,7 +2,7 @@
 using PICSimulator.Helper;
 namespace PICSimulator.Model
 {
-	class PICWatchDogTimer
+	public class PICWatchDogTimer
 	{
 		private const double TIME_OUT = 0.018; // 18ms;
 
@@ -25,15 +25,33 @@ namespace PICSimulator.Model
 
 				if (time > TIME_OUT * GetPreScale(controller))
 				{
-					// >> WATCHDOG RESET <<
-
-					controller.SoftReset();
-					controller.SetUnbankedRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_TO, false);
+					WDReset(controller);
 				}
 			}
 			else
 			{
 				time = 0;
+			}
+		}
+
+		private void WDReset(PICController controller)
+		{
+			if (!controller.IsInSleep)
+			{
+				// >> WATCHDOG RESET <<
+
+				time = 0;
+
+				controller.SoftReset();
+				controller.SetUnbankedRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_TO, false);
+			}
+			else
+			{
+				// >> Wake Up <<
+
+				time = 0;
+
+				controller.WakeUp();
 			}
 		}
 
