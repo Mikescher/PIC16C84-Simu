@@ -2,6 +2,11 @@
 
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// The W register is subtracted (2’s comple-
+	/// ment method) from the eight bit literal 'k'.
+	/// The result is placed in the W register.
+	/// </summary>
 	class PICCommand_SUBLW : PICCommand
 	{
 		public const string COMMANDCODE = "11 110x kkkk kkkk";

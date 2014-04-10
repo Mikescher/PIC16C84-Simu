@@ -1,7 +1,15 @@
-﻿
-using PICSimulator.Helper;
+﻿using PICSimulator.Helper;
+
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// If bit 'b' in register 'f' is '1' then the next
+	/// instruction is executed.
+	/// If bit 'b', in register 'f', is '0' then the next
+	/// instruction is discarded, and a NOP is
+	/// executed instead, making this a 2T CY
+	/// instruction .
+	/// </summary>
 	class PICCommand_BTFSC : PICCommand
 	{
 		public const string COMMANDCODE = "01 10bb bfff ffff";

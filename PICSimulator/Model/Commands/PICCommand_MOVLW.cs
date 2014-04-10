@@ -1,6 +1,14 @@
 ﻿
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// The contents of register f is moved to a
+	/// destination dependant upon the status
+	/// of d. If d = 0, destination is W register. If
+	/// d = 1, the destination is file register f
+	/// itself. d = 1 is useful to test a file regis-
+	/// ter since status flag Z is affected.
+	/// </summary>
 	class PICCommand_MOVLW : PICCommand
 	{
 		public const string COMMANDCODE = "11 00xx kkkk kkkk";

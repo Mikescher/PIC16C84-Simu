@@ -1,6 +1,16 @@
 ﻿
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// The contents of register 'f' are incre-
+	/// mented. If 'd' is 0 the result is placed in
+	/// the W register. If 'd' is 1 the result is
+	/// placed back in register 'f'.
+	/// If the result is 1, the next instruction is
+	/// executed. If the result is 0, a NOP is exe-
+	/// cuted instead making it a 2T CY instruc-
+	/// tion .
+	/// </summary>
 	class PICCommand_INCFSZ : PICCommand
 	{
 		public const string COMMANDCODE = "00 1111 dfff ffff";

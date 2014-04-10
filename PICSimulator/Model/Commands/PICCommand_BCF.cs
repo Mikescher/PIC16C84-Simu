@@ -1,6 +1,9 @@
 ﻿
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// Bit 'b' in register 'f' is cleared .
+	/// </summary>
 	class PICCommand_BCF : PICCommand
 	{
 		public const string COMMANDCODE = "01 00bb bfff ffff";

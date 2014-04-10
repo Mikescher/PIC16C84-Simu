@@ -1,6 +1,9 @@
 ﻿
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// No operation.
+	/// </summary>
 	class PICCommand_NOP : PICCommand
 	{
 		public const string COMMANDCODE = "00 0000 0xx0 0000";

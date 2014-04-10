@@ -1,6 +1,13 @@
 ﻿
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// The contents of register 'f' are comple-
+	/// mented. If 'd' is 0 the result is stored in
+	/// W. If 'd' is 1 the result is stored back in
+	/// register 'f'.
+	/// </summary>
+
 	class PICCommand_COMF : PICCommand
 	{
 		public const string COMMANDCODE = "00 1001 dfff ffff";

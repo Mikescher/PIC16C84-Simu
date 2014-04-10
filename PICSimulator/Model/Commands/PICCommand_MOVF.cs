@@ -1,6 +1,11 @@
 ﻿
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// The eight bit literal 'k' is loaded into W
+	/// register .  The don’t cares will assemble
+	/// as 0’s.
+	/// </summary>
 	class PICCommand_MOVF : PICCommand
 	{
 		public const string COMMANDCODE = "00 1000 dfff ffff";

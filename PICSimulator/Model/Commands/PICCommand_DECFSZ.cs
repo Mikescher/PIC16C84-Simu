@@ -1,6 +1,11 @@
 ﻿
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// Decrement register 'f'. If 'd' is 0 the
+	/// result is stored in the W register. If 'd' is
+	/// 1 the result is stored back in register 'f' .
+	/// </summary>
 	class PICCommand_DECFSZ : PICCommand
 	{
 		public const string COMMANDCODE = "00 1011 dfff fff";

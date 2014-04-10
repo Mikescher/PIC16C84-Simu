@@ -1,6 +1,10 @@
 ﻿
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// Move data from W register to register
+	/// 'f' .
+	/// </summary>
 	class PICCommand_MOVWF : PICCommand
 	{
 		public const string COMMANDCODE = "00 0000 1fff ffff";

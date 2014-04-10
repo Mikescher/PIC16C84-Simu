@@ -2,6 +2,13 @@
 
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// CLRWDT instruction resets the Watch-
+	/// dog Timer. It also resets the prescaler
+	/// of the WDT. Status bits TO and PD are
+	/// set.
+	/// </summary>
+
 	class PICCommand_CLRWDT : PICCommand
 	{
 		public const string COMMANDCODE = "00 0000 0110 0100";

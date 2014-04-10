@@ -1,6 +1,12 @@
 ﻿
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// Return from subroutine. The stack is
+	/// POPed and the top of the stack (TOS)
+	/// is loaded into the program counter. This
+	/// is a two cycle instruction.
+	/// </summary>
 	class PICCommand_RETURN : PICCommand
 	{
 		public const string COMMANDCODE = "00 0000 0000 1000";

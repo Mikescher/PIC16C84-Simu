@@ -1,6 +1,12 @@
 ﻿
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// Inclusive OR the W register with regis-
+	/// ter 'f'. If 'd' is 0 the result is placed in the
+	/// W register. If 'd' is 1 the result is placed
+	/// back in register 'f'.
+	/// </summary>
 	class PICCommand_IORWF : PICCommand
 	{
 		public const string COMMANDCODE = "00 0100 dfff ffff";

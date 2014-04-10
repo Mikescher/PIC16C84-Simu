@@ -1,6 +1,12 @@
 ﻿
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// The contents of register 'f' are incre-
+	/// mented. If 'd' is 0 the result is placed in
+	/// the W register. If 'd' is 1 the result is
+	/// placed back in register 'f'.
+	/// </summary>
 	class PICCommand_INCF : PICCommand
 	{
 		public const string COMMANDCODE = "00 1010 dfff ffff";

@@ -2,6 +2,12 @@
 
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// Subtract (2’s complement method) W reg-
+	/// ister from register 'f'. If 'd' is 0 the result is
+	/// stored in the W register. If 'd' is 1 the
+	/// result is stored back in register 'f'.
+	/// </summary>
 	class PICCommand_SUBWF : PICCommand
 	{
 		public const string COMMANDCODE = "00 0010 dfff ffff";

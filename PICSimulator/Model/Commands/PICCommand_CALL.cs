@@ -1,6 +1,14 @@
 ﻿
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// Call Subroutine. First, return address
+	/// (PC+1) is pushed onto the stack. The
+	/// eleven bit immediate address is loaded
+	/// into PC bits <10:0>. The upper bits of
+	/// the PC are loaded from PCLATH. CALL
+	/// is a two cycle instruction.
+	/// </summary>
 	class PICCommand_CALL : PICCommand
 	{
 		public const string COMMANDCODE = "10 0kkk kkkk kkkk";

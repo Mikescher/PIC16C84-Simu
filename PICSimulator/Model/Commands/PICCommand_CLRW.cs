@@ -1,6 +1,10 @@
 ﻿
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// W register is cleared. Zero bit (Z) is
+	/// set.
+	/// </summary>
 	class PICCommand_CLRW : PICCommand
 	{
 		public const string COMMANDCODE = "00 0001 0xxx xxxx";

@@ -1,6 +1,12 @@
 ﻿
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// The upper and lower nibbles of register
+	/// 'f' are exchanged. If 'd' is 0 the result is
+	/// placed in W register. If 'd' is 1 the result
+	/// is placed in register 'f'.
+	/// </summary>
 	class PICCommand_SWAPF : PICCommand
 	{
 		public const string COMMANDCODE = "00 1110 dfff ffff";

@@ -1,6 +1,14 @@
 ﻿
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// Return from Interrupt. Stack is POPed
+	/// and Top of Stack (TOS) is loaded in the
+	/// PC. Interrupts are enabled by setting
+	/// Global Interrupt Enable bit, GIE
+	/// (INTCON<7>). This is a two cycle
+	/// instruction.
+	/// </summary>
 	class PICCommand_RETFIE : PICCommand
 	{
 		public const string COMMANDCODE = "00 0000 0000 1001";

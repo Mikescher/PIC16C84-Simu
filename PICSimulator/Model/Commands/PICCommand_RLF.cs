@@ -1,6 +1,13 @@
 ﻿
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// The contents of register 'f' are rotated
+	/// one bit to the left through the Carry
+	/// Flag. If 'd' is 0 the result is placed in the
+	/// W register. If 'd' is 1 the result is stored
+	/// back in register 'f'.
+	/// </summary>
 	class PICCommand_RLF : PICCommand
 	{
 		public const string COMMANDCODE = "00 1101 dfff ffff";

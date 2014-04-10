@@ -2,6 +2,15 @@
 
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// The power-down status bit, PD is
+	/// cleared. Time-out status bit, TO is
+	/// set. Watchdog Timer and its prescaler
+	/// are cleared.
+	/// The processor is put into SLEEP
+	/// mode with the oscillator stopped. See
+	/// Section 14.8 for more details.
+	/// </summary>
 	class PICCommand_SLEEP : PICCommand
 	{
 		public const string COMMANDCODE = "00 0000 0110 0011";

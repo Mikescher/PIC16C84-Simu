@@ -1,6 +1,11 @@
 ﻿
 namespace PICSimulator.Model.Commands
 {
+	/// <summary>
+	/// The contents of the W register is
+	/// OR’ed with the eight bit literal 'k'. The
+	/// result is placed in the W register .
+	/// </summary>
 	class PICCommand_IORLW : PICCommand
 	{
 		public const string COMMANDCODE = "11 1000 kkkk kkkk";
