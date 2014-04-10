@@ -135,13 +135,17 @@
                     <TextBlock TextAlignment="Right" FontFamily="Courier New" FontSize="14" Text="Freq Simu"/>
                     <TextBlock TextAlignment="Right" FontFamily="Courier New" FontSize="14" Text="Run Time"/>
                     <TextBlock TextAlignment="Right" FontFamily="Courier New" FontSize="14" Text="Quartzfreq"/>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox x:Name="chkbxWatchdog" Margin="0, 0, 5, 0" Checked="chkbxWatchdog_Checked"/>
+                        <TextBlock TextAlignment="Right" FontFamily="Courier New" FontSize="14" Text="Watchdog"/>
+                    </StackPanel>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Right" Orientation="Vertical" Margin="8, 0, 0, 0">
-                    <TextBlock FontFamily="Courier New" FontSize="14" Name="lblRegW"      Text="0x00"/>
-                    <TextBlock FontFamily="Courier New" FontSize="14" Name="lblRegPC"     Text="0x0000"/>
-                    <TextBlock FontFamily="Courier New" FontSize="14" Name="lblFreqView"  Text="0 Hz"/>
-                    <TextBlock FontFamily="Courier New" FontSize="14" Name="lblFreqModel" Text="0 Hz"/>
-                    <TextBlock FontFamily="Courier New" FontSize="14" Name="lblRunTime"   Text="0 s"/>
+                    <TextBlock FontFamily="Courier New" FontSize="14" Name="lblRegW"        Text="0x00"/>
+                    <TextBlock FontFamily="Courier New" FontSize="14" Name="lblRegPC"       Text="0x0000"/>
+                    <TextBlock FontFamily="Courier New" FontSize="14" Name="lblFreqView"    Text="0 Hz"/>
+                    <TextBlock FontFamily="Courier New" FontSize="14" Name="lblFreqModel"   Text="0 Hz"/>
+                    <TextBlock FontFamily="Courier New" FontSize="14" Name="lblRunTime"     Text="0 s"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -151,6 +155,7 @@
                         <TextBlock Grid.Column="0" FontFamily="Courier New" FontSize="14" Name="lblQuartzFreq" Text="4 MHz"/>
                         <Button x:Name="btnSetQuartzFreq" Grid.Column="2" Content="Set" FontSize="10" Padding="0" Margin="0, 0, 0, 0" Click="btnSetQuartzFreq_Click" />
                     </Grid>
+                    <TextBlock FontFamily="Courier New" FontSize="14" Name="lblWatchDogTmr" Text="0 %"/>
                 </StackPanel>
             </DockPanel>
         </Grid>

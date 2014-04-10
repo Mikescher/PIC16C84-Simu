@@ -97,7 +97,7 @@ namespace PICSimulator.View
 
 			try
 			{
-				File.WriteAllText(Path, Value);
+				File.WriteAllText(Path, Value, Encoding.Default);
 				LastSaved_Value = Value;
 
 				updateTitle();
@@ -130,7 +130,7 @@ namespace PICSimulator.View
 
 				try
 				{
-					File.WriteAllText(sfd.FileName, Value);
+					File.WriteAllText(sfd.FileName, Value, Encoding.Default);
 					Path = sfd.FileName;
 					LastSaved_Value = Value;
 

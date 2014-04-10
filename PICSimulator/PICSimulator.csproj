@@ -132,6 +132,7 @@
     <Compile Include="Model\PICMemory.cs" />
     <Compile Include="Model\PICProgramLoader.cs" />
     <Compile Include="Model\PICTimer.cs" />
+    <Compile Include="Model\PICWatchDogTimer.cs" />
     <Compile Include="View\Controls\7SegmentDisplay.xaml.cs">
       <DependentUpon>7SegmentDisplay.xaml</DependentUpon>
     </Compile>

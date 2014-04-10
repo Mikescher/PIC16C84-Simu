@@ -109,7 +109,7 @@ namespace PICSimulator.View
 
 		private void OpenEnabled(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.CanExecute = controller == null || controller.Mode == PICControllerMode.FINISHED;
+			e.CanExecute = controller == null || controller.Mode == PICControllerMode.FINISHED || controller.Mode == PICControllerMode.WAITING;
 
 			e.Handled = true;
 		}
@@ -118,8 +118,12 @@ namespace PICSimulator.View
 		{
 			sc_document.AskSaveIfDirty();
 
-
 			sc_document = SourcecodeDocument.OpenNew(this, txtCode) ?? sc_document;
+
+			if (controller != null && (controller.Mode == PICControllerMode.WAITING || controller.Mode == PICControllerMode.FINISHED))
+			{
+				controller = null;
+			}
 		}
 
 		#endregion
@@ -369,6 +373,10 @@ namespace PICSimulator.View
 				lblRegW.Text = "0x" + string.Format("{0:X02}", controller.GetWRegister());
 				lblRegPC.Text = "0x" + string.Format("{0:X04}", controller.GetPC());
 				lblQuartzFreq.Text = FormatFreq(controller.EmulatedFrequency);
+				btnSetQuartzFreq.IsEnabled = true;
+				lblWatchDogTmr.Text = string.Format("{0:000.000} %", controller.GetWatchDogPerc() * 100);
+				chkbxWatchdog.IsEnabled = true;
+				chkbxWatchdog.IsChecked = controller.IsWatchDogEnabled();
 			}
 			else
 			{
@@ -383,6 +391,9 @@ namespace PICSimulator.View
 				lblRegW.Text = "0x" + string.Format("{0:X02}", 0);
 				lblRegPC.Text = "0x" + string.Format("{0:X04}", 0);
 				lblQuartzFreq.Text = FormatFreq(0);
+				btnSetQuartzFreq.IsEnabled = false;
+				lblWatchDogTmr.Text = string.Format("{0:000,000} %", 0);
+				chkbxWatchdog.IsEnabled = false;
 
 			}
 
@@ -516,6 +527,11 @@ namespace PICSimulator.View
 						controller.EmulatedFrequency = (uint)p;
 				});
 			}
+		}
+
+		private void chkbxWatchdog_Checked(object sender, RoutedEventArgs e)
+		{
+			controller.SetWatchDogEnabled(!controller.IsWatchDogEnabled());
 		}
 	}
 }

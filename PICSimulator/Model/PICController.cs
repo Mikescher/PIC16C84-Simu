@@ -31,12 +31,14 @@ namespace PICSimulator.Model
 
 		private uint Cycles = 0; // Passed Controller Cycles
 
+		private PICWatchDogTimer WatchDog;
 		private PICTimer Tmr0;
 		private PICInterruptLogic Interrupt;
 
 		public PICController(PICCommand[] cmds, PICControllerSpeed s)
 		{
 			Tmr0 = new PICTimer();
+			WatchDog = new PICWatchDogTimer();
 			Interrupt = new PICInterruptLogic(this);
 			Memory = new PICMemory(Tmr0, Interrupt);
 
@@ -51,16 +53,12 @@ namespace PICSimulator.Model
 
 		private void run()
 		{
-			Cycles = 0;
-			Memory.HardResetRegister();
-
-			ResetStack();
-			ResetInterrupts();
-
-			SetPC_13Bit(0);
+			HardReset();
 
 			while (Mode != PICControllerMode.FINISHED)
 			{
+				uint currCmdCycleCount = 0;
+
 				//################
 				//#     MISC     #
 				//################
@@ -76,7 +74,7 @@ namespace PICSimulator.Model
 				HandleIncomingEvents();
 
 				//################
-				//#   CONTROL    #
+				//#  DEBUGGING   #
 				//################
 
 				if (Mode == PICControllerMode.FINISHED)
@@ -127,7 +125,9 @@ namespace PICSimulator.Model
 				//################
 
 				cmd.Execute(this);
-				Cycles += cmd.GetCycleCount(this);
+				currCmdCycleCount = cmd.GetCycleCount(this);
+
+				Cycles += currCmdCycleCount;
 
 				//################
 				//#   AFTERMATH  #
@@ -135,6 +135,7 @@ namespace PICSimulator.Model
 
 				Interrupt.Update();
 				Tmr0.Update(this);
+				WatchDog.Update(this, currCmdCycleCount);
 			}
 
 			Mode = PICControllerMode.WAITING;
@@ -233,6 +234,28 @@ namespace PICSimulator.Model
 			}
 		}
 
+		private void HardReset()
+		{
+			Cycles = 0;
+			Memory.HardResetRegister();
+
+			ResetStack();
+			Interrupt.Reset();
+			WatchDog.Reset();
+
+			SetPC_13Bit(0);
+		}
+
+		public void SoftReset()
+		{
+			Memory.SoftResetRegister();
+
+			ResetStack();
+			Interrupt.Reset();
+
+			SetPC_13Bit(0);
+		}
+
 		public uint GetWRegister()
 		{
 			return register_W;
@@ -241,11 +264,6 @@ namespace PICSimulator.Model
 		private void ResetStack()
 		{
 			CallStack = new CircularStack();
-		}
-
-		private void ResetInterrupts()
-		{
-			Interrupt.Reset();
 		}
 
 		public uint GetPC()
@@ -324,6 +342,11 @@ namespace PICSimulator.Model
 
 		#region Helper
 
+		public double GetWatchDogPerc()
+		{
+			return WatchDog.GetPerc();
+		}
+
 		public long GetSCLineForPC(uint pc)
 		{
 			return pc < CommandList.Length ? CommandList[pc].SourceCodeLine : -1L;
@@ -359,6 +382,17 @@ namespace PICSimulator.Model
 			return CallStack.getAsNativeStack();
 		}
 
+		public bool IsWatchDogEnabled()
+		{
+			return WatchDog.Enabled;
+		}
+
+		public void SetWatchDogEnabled(bool e)
+		{
+			WatchDog.Enabled = e;
+		}
+
 		#endregion
+
 	}
 }

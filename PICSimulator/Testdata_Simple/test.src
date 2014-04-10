@@ -47,7 +47,7 @@ run
 		
 		MOVLW 01H
 		MOVWF 0EFH
-	BCF STATUS, RP0 ; Bank zurÃƒÂ¼cksetzen
+	BCF STATUS, RP0 ; Bank zurüksetzen
 
 	MOVLW 0         ; W = 0
 	MOVWF RA        ; RA = 0
