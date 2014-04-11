@@ -35,12 +35,17 @@ namespace PICSimulator.Model
 		private PICWatchDogTimer WatchDog;
 		private PICTimer Tmr0;
 		private PICInterruptLogic Interrupt;
+		private PICClock[] Clocks = new PICClock[4];
 
 		public PICController(PICCommand[] cmds, PICControllerSpeed s)
 		{
 			Tmr0 = new PICTimer();
 			WatchDog = new PICWatchDogTimer();
 			Interrupt = new PICInterruptLogic(this);
+			Clocks[0] = new PICClock();
+			Clocks[1] = new PICClock();
+			Clocks[2] = new PICClock();
+			Clocks[3] = new PICClock();
 			Memory = new PICMemory(Tmr0, Interrupt);
 
 			Mode = PICControllerMode.WAITING;
@@ -140,6 +145,11 @@ namespace PICSimulator.Model
 
 					Tmr0.Update(this);
 
+					Clocks[0].Update(this);
+					Clocks[1].Update(this);
+					Clocks[2].Update(this);
+					Clocks[3].Update(this);
+
 				}
 
 				//################
@@ -190,6 +200,15 @@ namespace PICSimulator.Model
 				ManuallyRegisterChangedEvent ce = e as ManuallyRegisterChangedEvent;
 
 				SetUnbankedRegister(ce.Position, ce.Value);
+			}
+			else if (e is ExternalClockChangedEvent)
+			{
+				ExternalClockChangedEvent ce = e as ExternalClockChangedEvent;
+
+				if (ce.ClockID < 4)
+				{
+					Clocks[ce.ClockID].UpdateState(ce);
+				}
 			}
 			else
 			{
@@ -356,6 +375,11 @@ namespace PICSimulator.Model
 		#endregion
 
 		#region Helper
+
+		public PICClock GetExternalClock(uint id)
+		{
+			return Clocks[id];
+		}
 
 		public void StartSleep()
 		{

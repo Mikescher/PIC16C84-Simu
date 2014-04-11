@@ -120,6 +120,8 @@
     <Compile Include="Model\Commands\PICCommand_DECFSZ.cs" />
     <Compile Include="Model\Commands\PICCommand_INCF.cs" />
     <Compile Include="Model\Commands\PICCommand_INCFSZ.cs" />
+    <Compile Include="Model\Events\Incoming\ExternalClockChangedEvent.cs" />
+    <Compile Include="Model\PICClock.cs" />
     <Compile Include="Model\PICInterruptLogic.cs" />
     <Compile Include="Model\PICControllerSpeed.cs" />
     <Compile Include="Model\Events\Incoming\BreakPointChangedEvent.cs" />
@@ -148,7 +150,7 @@
     <Compile Include="View\Controls\SpecialRegisterGrid.xaml.cs">
       <DependentUpon>SpecialRegisterGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\FrequencyInputDialog.xaml.cs">
+    <Compile Include="View\Dialogs\FrequencyInputDialog.xaml.cs">
       <DependentUpon>FrequencyInputDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\IconBarMargin.cs" />
@@ -173,6 +175,9 @@
     </Compile>
     <Compile Include="View\Controls\RegisterBox.xaml.cs">
       <DependentUpon>RegisterBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Controls\RegisterClock.xaml.cs">
+      <DependentUpon>RegisterClock.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SourcecodeDocument.cs" />
   </ItemGroup>
@@ -246,7 +251,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\FrequencyInputDialog.xaml">
+    <Page Include="View\Dialogs\FrequencyInputDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -267,6 +272,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Controls\RegisterBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Controls\RegisterClock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -297,9 +306,7 @@
     <Resource Include="icons\folder-open.png" />
     <Resource Include="icons\arrow-left.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="View\Dialogs\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

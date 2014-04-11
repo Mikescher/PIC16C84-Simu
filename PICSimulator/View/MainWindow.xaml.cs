@@ -90,6 +90,11 @@ namespace PICSimulator.View
 			sevSeg_3.Initialize(rgridMain);
 			sevSeg_4.Initialize(rgridMain);
 			sevSeg_5.Initialize(rgridMain);
+
+			regClock_0.Intialize(this, 0);
+			regClock_1.Intialize(this, 1);
+			regClock_2.Intialize(this, 2);
+			regClock_3.Intialize(this, 3);
 		}
 
 		#region UI Event Handler
@@ -384,6 +389,11 @@ namespace PICSimulator.View
 				lblWatchDogTmr.Text = string.Format("{0:000.000} %", controller.GetWatchDogPerc() * 100);
 				chkbxWatchdog.IsEnabled = true;
 				chkbxWatchdog.IsChecked = controller.IsWatchDogEnabled();
+
+				regClock_0.UpdateUI(controller);
+				regClock_1.UpdateUI(controller);
+				regClock_2.UpdateUI(controller);
+				regClock_3.UpdateUI(controller);
 			}
 			else
 			{
@@ -402,6 +412,10 @@ namespace PICSimulator.View
 				lblWatchDogTmr.Text = string.Format("{0:000,000} %", 0);
 				chkbxWatchdog.IsEnabled = false;
 
+				regClock_0.ResetUI();
+				regClock_1.ResetUI();
+				regClock_2.ResetUI();
+				regClock_3.ResetUI();
 			}
 
 			txtCode.IsReadOnly = controller != null && controller.Mode != PICControllerMode.WAITING;

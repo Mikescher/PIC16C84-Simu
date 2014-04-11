@@ -14,11 +14,17 @@ namespace PICSimulator.View
 
 		public event RegisterSelChangedEvent RegisterChanged;
 
-		public uint Value //TODO Implement possibility for custom choosen register
+		public uint Value
 		{
 			get
 			{
 				return Convert.ToUInt32(((box.SelectedItem as FrameworkElement).Tag as string), 16);
+			}
+
+			set
+			{
+				cstmBox.Text = Convert.ToString(value, 16);
+				box.SelectedItem = cstmBox;
 			}
 		}
 
