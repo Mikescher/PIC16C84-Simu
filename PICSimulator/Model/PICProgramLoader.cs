@@ -66,12 +66,23 @@ namespace PICSimulator.Model
 
 		public static string LoadSourceCodeFromText(string file)
 		{
-			List<PICCommand> lst = LoadListFromFile(file);
+			string[] lines = File.ReadAllLines(file);
 
-			if (lst == null)
-				return null;
+			List<string> result = new List<string>();
 
-			return String.Join(Environment.NewLine, lst.Select(p => p.SourceCodeText.Trim()));
+			foreach (string line in lines)
+			{
+				if (String.IsNullOrWhiteSpace(line))
+					continue;
+
+				var v = splitLine(line);
+
+				string txt = v.Item4;
+
+				result.Add(txt);
+			}
+
+			return String.Join(Environment.NewLine, result.Select(p => p.Trim()));
 		}
 
 		private static Tuple<string, string, string, string> splitLine(string line)

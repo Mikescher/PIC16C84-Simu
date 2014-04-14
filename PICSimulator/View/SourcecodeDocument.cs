@@ -46,7 +46,7 @@ namespace PICSimulator.View
 			updateTitle();
 		}
 
-		public static SourcecodeDocument OpenNew(Window owner, ICSharpCode.AvalonEdit.TextEditor handler)
+		public static SourcecodeDocument OpenNew(Window owner, ICSharpCode.AvalonEdit.TextEditor handler, out bool isLST)
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
 			ofd.Filter = "All Files|*|Source- and Programmcode|*.src;*.lst|Sourcecode|*.src|Programmcode|*.lst";
@@ -58,19 +58,23 @@ namespace PICSimulator.View
 			{
 				if (System.IO.Path.GetExtension(ofd.FileName).ToLower() == ".src")
 				{
+					isLST = false;
 					return OpenSRCDocument(owner, handler, ofd.FileName);
 				}
 				else if (System.IO.Path.GetExtension(ofd.FileName).ToLower() == ".lst")
 				{
+					isLST = true;
 					return OpenLSTDocument(owner, handler, ofd.FileName);
 				}
 				else
 				{
+					isLST = false;
 					return null;
 				}
 			}
 			else
 			{
+				isLST = false;
 				return null;
 			}
 		}
@@ -207,6 +211,13 @@ namespace PICSimulator.View
 					Save();
 				}
 			}
+		}
+
+		public void MakeDirty()
+		{
+			LastSaved_Value = (Value ?? "") + "ERR ???";
+
+			updateTitle();
 		}
 	}
 }

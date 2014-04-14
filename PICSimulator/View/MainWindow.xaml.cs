@@ -128,13 +128,42 @@ namespace PICSimulator.View
 
 		private void OpenExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
-			sc_document.AskSaveIfDirty();
-
-			sc_document = SourcecodeDocument.OpenNew(this, txtCode) ?? sc_document;
-
 			if (controller != null && (controller.Mode == PICControllerMode.WAITING || controller.Mode == PICControllerMode.FINISHED))
 			{
 				controller = null;
+			}
+
+			bool isLST;
+
+			sc_document.AskSaveIfDirty();
+
+			sc_document = SourcecodeDocument.OpenNew(this, txtCode, out isLST) ?? sc_document;
+
+			if (isLST)
+			{
+				if (!sc_document.Save())
+				{
+					return;
+				}
+
+				string resultPath = Path.Combine(Path.GetDirectoryName(sc_document.Path), Path.GetFileNameWithoutExtension(sc_document.Path) + ".lst");
+
+				if (File.Exists(resultPath))
+				{
+					var cmds = PICProgramLoader.LoadFromFile(resultPath);
+
+					if (cmds == null)
+					{
+						MessageBox.Show("Error while reading compiled file.");
+						sc_document.MakeDirty();
+						return;
+					}
+
+					controller = new PICController(cmds, getSimuSpeedFromComboBox());
+					controller.RaiseCompleteEventResetChain();
+					stackList.Reset();
+					IconBar.Reset();
+				}
 			}
 		}
 
@@ -228,6 +257,7 @@ namespace PICSimulator.View
 				if (cmds == null)
 				{
 					MessageBox.Show("Error while reading compiled file.");
+					sc_document.MakeDirty();
 					return;
 				}
 
