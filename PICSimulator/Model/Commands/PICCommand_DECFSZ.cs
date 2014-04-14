@@ -8,7 +8,7 @@ namespace PICSimulator.Model.Commands
 	/// </summary>
 	class PICCommand_DECFSZ : PICCommand
 	{
-		public const string COMMANDCODE = "00 1011 dfff fff";
+		public const string COMMANDCODE = "00 1011 dfff ffff";
 
 		public readonly bool Target;
 		public readonly uint Register;
