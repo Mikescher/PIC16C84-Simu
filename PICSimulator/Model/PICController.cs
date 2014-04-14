@@ -13,7 +13,7 @@ namespace PICSimulator.Model
 	public sealed class PICController
 	{
 		public FrequencyCounter Frequency = new FrequencyCounter(); // Only to see the Performance
-		public uint EmulatedFrequency = 4000000; // In Hz
+		public uint EmulatedFrequency = 1000000; // In Hz
 
 		private Thread thread;
 

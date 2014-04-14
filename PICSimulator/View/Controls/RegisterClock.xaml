@@ -16,7 +16,7 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
-            <xctk:IntegerUpDown x:Name="freqCtrl" Grid.Row="0" Grid.Column="0"  Value="1000000" FormatString="N0" Minimum="1" Margin="5" />
+            <xctk:IntegerUpDown x:Name="freqCtrl" Grid.Row="0" Grid.Column="0"  Value="250000" FormatString="N0" Minimum="1" Margin="5" />
             <Label Grid.Row="0" Grid.Column="1" Content="Hz"/>
 
             <local:RegisterBox x:Name="regBox" HorizontalAlignment="Left" Margin="34,10,0,0" VerticalAlignment="Top" Grid.Row="1" Width="101"/>
