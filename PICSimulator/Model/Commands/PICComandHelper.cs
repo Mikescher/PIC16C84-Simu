@@ -15,6 +15,9 @@
 			else if (BinaryFormatParser.TryParse(PICCommand_CLRF.COMMANDCODE, cmd))
 				return new PICCommand_CLRF(sct, scl, pos, cmd);
 
+			else if (BinaryFormatParser.TryParse(PICCommand_CLRW.COMMANDCODE, cmd))
+				return new PICCommand_CLRW(sct, scl, pos, cmd);
+
 			else if (BinaryFormatParser.TryParse(PICCommand_COMF.COMMANDCODE, cmd))
 				return new PICCommand_COMF(sct, scl, pos, cmd);
 
