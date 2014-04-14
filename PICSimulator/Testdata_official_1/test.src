@@ -1,0 +1,79 @@
+;Programm zum Test des 16F84-Simulators.
+;Es werden einige wichtigen Befehle ?berpr?ft.
+;(c) St. Lehmann   Ersterstellung: 23.01.2003
+;14.01.2004 TRIS und OPTION ersetzt durch MOVWF
+;10.04.2014 ?berarbeitet (-> meherere Dateien)
+
+;Zuerst wird der Speicherbereich von 10H bis 1FH mit den Za
+;00, 01, 02, 03, usw. bis 0FH beschrieben. Danach werden di
+;aus diesen Speicherzellen addiert.
+;Nach weiteren Verkn?pfungen muss an 0EH der Wert 0FH und
+;an 0FH der Wert 87 stehen
+
+
+;Definition einiger Symbole
+indirect equ 0
+status   equ 03h
+fsr      equ 04h
+ra       equ 05h
+rb       equ 06h
+count    equ 0ch
+
+;Definition des Prozessors
+device 16F84
+;Festlegen des Codebeginns
+org 0
+start
+goto main           ;Unterprogramme ?berspringen
+;****** Hier liegen die gesamten Unterprogramme
+;der Speicherbereich 10h bis 1fh wird mit 00h bis 0fh gef?l
+fillinc
+movlw 16            ;Schleifenz?hler
+movwf count
+movlw 10h           ;Startzeiger initialisieren
+movwf fsr           ;Zeiger ins FSR
+clrw
+loop1
+movwf indirect      ;Wert indirekt abspeichern
+incf fsr            ;Zeiger erh?hen
+addlw 1             ;W-Register erh?hen (es gibt kein INC W
+decfsz count        ;Schleifenz?hler erniedrigen
+goto loop1          ;wiederholen bis F08 auf 0 ist
+retlw 0
+;Es wird die Summe aus den Inhalten von 10H bis 1Fh gebilde
+;(Quersumme, wird oft als einfache Pr?fsumme verwendet werd
+qsumme
+movlw 10h           ;Schleifenz?hler initialisieren
+movwf count
+movwf fsr           ;Startzeiger initialsieren
+clrw                ;Summenregister l?schen
+loop2
+addwf indirect,w    ;Speicherinhalt zu W addieren
+incf fsr
+decfsz count
+goto loop2
+movwf 0fh           ;Ergebnis abspeichern
+comf 0fh            ;Komplement bilden
+retlw 0             ;Unterprogrammende
+;****** Hier beginnt das Hauptprogramm  **************
+main
+call fillinc        ;Speicherbereich f?llen
+call qsumme         ;Quersumme berechnen
+comf 0fh,w          ;Ergebnis holen
+subwf 0fh,w         ;vom Orginalwert abziehen
+movwf 0eh           ;neues Ergebnis abspeichern.
+
+movlw 0ffh
+bsf status,5        ;auf Bank 1 umschalten
+movwf 6             ;=freg 86H  Port B alles Eingang
+bcf status,5        ;zur?ck auf Bank 0
+
+main1
+btfsc rb,0
+goto main1          ;warten bis RB0 auf 0
+main2
+btfss rb,0
+goto main2          ;warten bis rb0 wieder 1
+ende
+goto ende           ;Endlosschleife, verhindert Nirwana
+

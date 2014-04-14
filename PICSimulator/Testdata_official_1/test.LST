@@ -1,0 +1,80 @@
+﻿                    00001           ;Programm zum Test des 16F84-Simulators.
+                    00002           ;Es werden einige wichtigen Befehle uberpruft.
+                    00003           ;(c) St. Lehmann   Ersterstellung: 23.01.2003
+                    00004           ;14.01.2004 TRIS und OPTION ersetzt durch MOVWF
+                    00005           ;10.04.2014 uberarbeitet (-> meherere Dateien)
+                    00006           
+                    00007           ;Zuerst wird der Speicherbereich von 10H bis 1FH mit den Za
+                    00008           ;00, 01, 02, 03, usw. bis 0FH beschrieben. Danach werden di
+                    00009           ;aus diesen Speicherzellen addiert.
+                    00010           ;Nach weiteren Verknupfungen muss an 0EH der Wert 0FH und
+                    00011           ;an 0FH der Wert 87 stehen
+                    00012           
+                    00013           
+                    00014           ;Definition einiger Symbole
+                    00015           indirect equ 0
+                    00016           status   equ 03h
+                    00017           fsr      equ 04h
+                    00018           ra       equ 05h
+                    00019           rb       equ 06h
+                    00020           count    equ 0ch
+                    00021           
+                    00022           ;Definition des Prozessors
+                    00023           device 16F84
+                    00024           ;Festlegen des Codebeginns
+                    00025           org 0
+                    00026  start    
+0000 2817           00027           goto main           ;Unterprogramme uberspringen
+                    00028           ;****** Hier liegen die gesamten Unterprogramme
+                    00029           ;der Speicherbereich 10h bis 1fh wird mit 00h bis 0fh geful
+                    00030  fillinc  
+0001 3010           00031           movlw 16            ;Schleifenzhler
+0002 008C           00032           movwf count
+0003 3010           00033           movlw 10h           ;Startzeiger initialisieren
+0004 0084           00034           movwf fsr           ;Zeiger ins FSR
+0005 0100           00035           clrw
+                    00036  loop1    
+0006 0080           00037           movwf indirect      ;Wert indirekt abspeichern
+0007 0A84           00038           incf fsr            ;Zeiger erhhen
+0008 3E01           00039           addlw 1             ;W-Register erhhen (es gibt kein INC W
+0009 0B8C           00040           decfsz count        ;Schleifenzhler erniedrigen
+000A 2806           00041           goto loop1          ;wiederholen bis F08 auf 0 ist
+000B 3400           00042           retlw 0
+                    00043           ;Es wird die Summe aus den Inhalten von 10H bis 1Fh gebilde
+                    00044           ;(Quersumme, wird oft als einfache Prfsumme verwendet werd
+                    00045  qsumme   
+000C 3010           00046           movlw 10h           ;Schleifenzhler initialisieren
+000D 008C           00047           movwf count
+000E 0084           00048           movwf fsr           ;Startzeiger initialsieren
+000F 0100           00049           clrw                ;Summenregister lschen
+                    00050  loop2    
+0010 0700           00051           addwf indirect,w    ;Speicherinhalt zu W addieren
+0011 0A84           00052           incf fsr
+0012 0B8C           00053           decfsz count
+0013 2810           00054           goto loop2
+0014 008F           00055           movwf 0fh           ;Ergebnis abspeichern
+0015 098F           00056           comf 0fh            ;Komplement bilden
+0016 3400           00057           retlw 0             ;Unterprogrammende
+                    00058           ;****** Hier beginnt das Hauptprogramm  **************     
+                    00059  main       
+0017 2001           00060           call fillinc        ;Speicherbereich fllen
+0018 200C           00061           call qsumme         ;Quersumme berechnen
+0019 090F           00062           comf 0fh,w          ;Ergebnis holen
+001A 020F           00063           subwf 0fh,w         ;vom Orginalwert abziehen
+001B 008E           00064           movwf 0eh           ;neues Ergebnis abspeichern.
+                    00065           
+001C 30FF           00066           movlw 0ffh             
+001D 1683           00067           bsf status,5        ;auf Bank 1 umschalten
+001E 0086           00068           movwf 6             ;=freg 86H  Port B alles Eingang
+001F 1283           00069           bcf status,5        ;zurck auf Bank 0
+                    00070           
+                    00071  main1    
+0020 1806           00072           btfsc rb,0
+0021 2820           00073           goto main1          ;warten bis RB0 auf 0
+                    00074  main2    
+0022 1C06           00075           btfss rb,0
+0023 2822           00076           goto main2          ;warten bis rb0 wieder 1         
+                    00077  ende     
+0024 2824           00078           goto ende           ;Endlosschleife, verhindert Nirwana
+                    00079           
+                    00080             
