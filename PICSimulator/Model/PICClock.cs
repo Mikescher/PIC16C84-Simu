@@ -46,6 +46,7 @@ namespace PICSimulator.Model
 				{
 					controller.SetUnbankedRegisterBit(Register, Bit, !controller.GetUnbankedRegisterBit(Register, Bit));
 					time -= (1.0 / Frequency);
+					time = 0;
 				}
 			}
 			else

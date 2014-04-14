@@ -424,6 +424,11 @@ namespace PICSimulator.View
 				regClock_1.UpdateUI(controller);
 				regClock_2.UpdateUI(controller);
 				regClock_3.UpdateUI(controller);
+
+				regClock_0.IsEnabled = controller.Mode == PICControllerMode.WAITING || controller.Mode == PICControllerMode.PAUSED;
+				regClock_1.IsEnabled = controller.Mode == PICControllerMode.WAITING || controller.Mode == PICControllerMode.PAUSED;
+				regClock_2.IsEnabled = controller.Mode == PICControllerMode.WAITING || controller.Mode == PICControllerMode.PAUSED;
+				regClock_3.IsEnabled = controller.Mode == PICControllerMode.WAITING || controller.Mode == PICControllerMode.PAUSED;
 			}
 			else
 			{
@@ -446,6 +451,11 @@ namespace PICSimulator.View
 				regClock_1.ResetUI();
 				regClock_2.ResetUI();
 				regClock_3.ResetUI();
+
+				regClock_0.IsEnabled = false;
+				regClock_1.IsEnabled = false;
+				regClock_2.IsEnabled = false;
+				regClock_3.IsEnabled = false;
 			}
 
 			txtCode.IsReadOnly = controller != null && controller.Mode != PICControllerMode.WAITING;
