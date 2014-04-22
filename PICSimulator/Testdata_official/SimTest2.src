@@ -1,0 +1,182 @@
+;SimTest2
+;Programm zum Test des 16F84-Simulators.
+;Es werden alle Befehle ?berpr?ft.
+;(c) St. Lehmann   Ersterstellung: 23.01.2003
+;19.04.2014 ?berarbeitet
+
+list c=132          ;Zeilenl?nge im LST auf 132 Zeichen setzen
+
+;Definition einiger Symbole
+indirect equ 0
+status   equ 03h
+fsr      equ 04h
+ra       equ 05h
+rb       equ 06h
+count    equ 0ch
+
+;Definition des Prozessors
+device 16F84
+;Festlegen des Codebeginns
+org 0
+start
+;teste GOTO
+goto main           ;Unterprogramme ?berspringen
+;****** Hier liegen die gesamten Unterprogramme
+up1
+call up2
+addwf 20h
+retlw 1
+up2
+call up3
+addwf 20h
+retlw 2
+up3
+call up4
+addwf 20h
+retlw 3
+up4
+call up5
+addwf 20h
+retlw 4
+up5
+call up6
+addwf 20h
+retlw 5
+up6
+call up7
+addwf 20h
+retlw 6
+up7
+movlw 20h
+movwf 20h
+return
+;****** Hier beginnt das Hauptprogramm  **************
+main
+movlw 55h           ;Werte zur Verkn?fung mit INDIRECT
+movwf 0dh           ;55H an 0DH speichern
+movlw 0AAh
+movwf 0eh           ;0AAH an 0eh speichern
+movlw 3ch
+movwf 0fh           ;3ch an 0f speichern
+movlw 0dh
+movwf fsr           ;FSR zeigt auf Adresse 0DH
+
+;teste ADDWF
+movlw 10h
+movwf 10h
+movlw 1ah
+addwf 10h           ;2AH in 10H
+addwf indirect,w
+movwf 11h           ;6FH in 11H
+;teste C,DC und Z
+movlw 0A0h
+addwf 11h,w         ;W = 0FH
+;teste MOVF
+movf 3,w
+movwf 1dh           ;C=1, DC=0, Z=0
+;teste C,DC und Z
+movlw 91H
+addwf 11h,w          ;w = 00
+movf 3,w
+movwf 1eh           ;C=1, DC=1, Z=1
+;teste C,DC und Z
+movlw 81h
+addwf 11h,w         ;w = f0
+movf 3,w
+movwf 1fh           ;C=0, DC=1, Z=0
+;teste ANDWF
+movlw 0C7h
+andwf 11h,w
+movwf 12h           ;47H in 12H
+andwf indirect,w
+movwf 13h           ;45H in 13H
+movwf 14h,h          ;45H in 14H
+;teste CLRF
+movlw 14h
+movwf fsr
+clrf indirect       ;0 in 14H
+;teste IORWF
+iorwf 14h           ;14H in 14H
+;teste CLRW
+clrw                ;0 in W
+;teste COMF
+comf 14h,w           ;0EB in W
+movwf indirect      ;0EBH in 14H
+;teste DECF
+decf fsr            ;FSR = 13h
+;DECFSZ in SimTest1 getestet
+;teste INCF
+incf 11h,w
+movwf 15h           ;80H in 15H
+;teste INCFSZ, BSF und RLF
+clrf 16h            ;16h
+movlw 16h
+movwf fsr
+bsf status,0        ;Carry setzen
+rlf 16h
+loop1
+rlf indirect
+incfsz 15h
+goto loop1
+;teste RRF
+rrf 16h
+rrf indirect         ;80h in 16H
+;teste SUBWF
+movwf 10h
+subwf 13h,w         ;2FH in W
+movwf 17h           ;2FH in 17h
+movf 3,w            ;C=1, DC=0, Z=0,
+movwf 2dh
+movf 17,w
+subwf indirect      ;51H in 16h
+movlw 70h
+subwf 11h,w         ;w=0FFH
+movf 3,w            ;C=0, DC=0, Z=0,
+movwf 2eh
+movlw 06fh
+subwf 11h,w         ;w = 0
+movf 3,w            ;C=1, DC=1, Z=1,
+movwf 2fh
+;teste SWAPF
+swapf indirect      ;15H in 16h
+swapf 13h           ;54H in 13h
+
+movlw 0eh
+movwf fsr
+;teste XORWF
+xorwf indirect,w    ;0A4H in W
+movwf 18H           ;0A4H in 18H
+movlw 0ffh
+xorwf 18h           ;5BH in 18h
+;teste BCF
+bcf 18h,0           ;5AH in 18H
+movlw 18h
+movwf fsr
+bcf indirect,3      ;52H in 18h
+;teste ADDLW
+movlw 21h
+addlw 0afh          ;w=c0
+movf 3,w
+movwf 28h
+addlw 40h           ;w=0
+movf 3,w            ;C=1, DC=0, Z=1
+movwf 29h
+;teste ANDLW
+movlw 55h
+andlw 0aah          ;w=0
+movf 3,w            ;C=?, DC=?, Z=1
+movwf 2Ah
+;teste geschachtelte CALLs
+call up1
+subwf 20h           ;53h in 20h
+;teste IORLW
+iorlw 2             ;w=3
+;teste SUBLW
+sublw 2             ;w=0FFh, C=0,DC=0,Z=0
+;test xorlw
+xorlw 0f0h          ;W = 0F0h
+movwf 21h
+
+ende
+goto ende           ;Endlosschleife, verhindert Nirwana
+
