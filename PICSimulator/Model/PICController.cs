@@ -143,7 +143,7 @@ namespace PICSimulator.Model
 					//#   AFTERMATH  #
 					//################
 
-					Tmr0.Update(this);
+					Tmr0.Update(this, currCmdCycleCount);
 
 					Clocks[0].Update(this);
 					Clocks[1].Update(this);
@@ -450,3 +450,18 @@ namespace PICSimulator.Model
 
 	}
 }
+
+//TODO Officia Tests:
+/*
+
+[X] Test_1
+[X] Test_2
+[O] Test_3
+[O] Test_4
+[O] Test_5
+[O] Test_6
+[O] Test_7
+[O] Test_8
+[O] Test_9
+
+*/

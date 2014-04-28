@@ -198,6 +198,17 @@ namespace PICSimulator.Model
 				}, 
 
 				#endregion
+			
+				#region TMR0
+
+				{
+					ADDR_TMR0, 
+					Tuple.Create<RegisterRead, RegisterWrite>(
+						GetRegisterDirect, 
+						(p, v) => { SetRegisterDirect(p, v); Timer.clearPrescaler(); })
+				}, 
+
+				#endregion
 			};
 		}
 

@@ -6,8 +6,6 @@ using PICSimulator.Model.Events;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -38,20 +36,20 @@ namespace PICSimulator.View
 			sc_document = new SourcecodeDocument(this, txtCode);
 
 
-			//################################################################################################################################//
-			//################################################################################################################################//
+			////################################################################################################################################//
+			////################################################################################################################################//
 
-			string p = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\"));
-			p = Path.Combine(p, @"Testdata\test.src");
+			//string p = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\"));
+			//p = Path.Combine(p, @"Testdata\test.src");
 
-			sc_document = new SourcecodeDocument( //TODO Remove Me - Only for ... reasons										     
-				this,
-				txtCode,
-				File.ReadAllText(p, Encoding.Default),
-				p);
+			//sc_document = new SourcecodeDocument( //TODO Remove Me - Only for ... reasons										     
+			//	this,
+			//	txtCode,
+			//	File.ReadAllText(p, Encoding.Default),
+			//	p);
 
-			//################################################################################################################################//
-			//################################################################################################################################//
+			////################################################################################################################################//
+			////################################################################################################################################//
 
 			DispatcherTimer itimer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);
 			itimer.Tick += (s, e) => onIdle();

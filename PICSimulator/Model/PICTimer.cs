@@ -13,7 +13,7 @@ namespace PICSimulator.Model
 
 		}
 
-		public void Update(PICController controller)
+		public void Update(PICController controller, uint cycleCount)
 		{
 			bool tmr_mode = controller.GetUnbankedRegisterBit(PICMemory.ADDR_OPTION, PICMemory.OPTION_BIT_T0CS);
 			bool edge_mode = controller.GetUnbankedRegisterBit(PICMemory.ADDR_OPTION, PICMemory.OPTION_BIT_T0SE);
@@ -24,37 +24,37 @@ namespace PICSimulator.Model
 
 				if (edge_mode)
 				{
-					if (!prev_RA4 && curr_A4)
+					if (prev_RA4 && !curr_A4)
 					{
-						Inc(controller);
+						Inc(controller, 1);
 					}
 				}
 				else
 				{
-					if (prev_RA4 && !curr_A4)
+					if (!prev_RA4 && curr_A4)
 					{
-						Inc(controller);
+						Inc(controller, 1);
 					}
 				}
 			}
 			else
 			{
-				Inc(controller);
+				Inc(controller, cycleCount);
 			}
 
 			prev_RA4 = controller.GetUnbankedRegisterBit(PICMemory.ADDR_PORT_A, 4);
 		}
 
-		private void Inc(PICController controller)
+		private void Inc(PICController controller, uint cycleCount)
 		{
 			uint current = controller.GetUnbankedRegister(PICMemory.ADDR_TMR0);
 			uint scale = GetPreScale(controller);
 
-			prescale_cntr++;
+			prescale_cntr += cycleCount;
 
-			if (prescale_cntr >= scale)
+			while (prescale_cntr >= scale)
 			{
-				prescale_cntr = 0;
+				prescale_cntr -= scale;
 
 				uint Result = current + 1;
 				if (Result > 0xFF)
@@ -98,6 +98,11 @@ namespace PICSimulator.Model
 				tmp = tmp * tmp *
 					 (((power <<= 1) < 0) ? x : 1);
 			return tmp;
+		}
+
+		public void clearPrescaler()
+		{
+			prescale_cntr = 0;
 		}
 	}
 }

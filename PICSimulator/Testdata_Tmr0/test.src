@@ -1,0 +1,51 @@
+	DEVICE    16F84
+		CONFIG    RBPU_ON
+		CONFIG    WDT_ON
+		CONFIG    ANSEL
+		CONFIG    ANSELH
+
+STATUS			EQU		03H
+INTCON			EQU		0BH
+RP0				EQU		05H
+RP1				EQU		06H
+PA				EQU		05H
+PB				EQU		06H
+PCL				EQU		02H
+		
+COUNTER			EQU		20H
+
+RA			EQU		05H
+RB			EQU		06H
+
+
+		
+	org		0
+	
+	movlw 00000011B     ;Option-Register entsp. initialisieren
+	
+	bsf status,5        ;Bank umschalten
+		movwf 1             ;Option-Register
+	bcf status,5
+	
+	clrf 10h            ;z?hler
+	movlw 80H      ;Timer 1 auf 1
+	movwf 1
+	
+loop2
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		NOP
+		incf 10h
+		movf 1,w            ;lese Timerwert aus
+		btfss status,2      ;wenn Timer = 0, dann fertig
+	goto loop2
+
+	END

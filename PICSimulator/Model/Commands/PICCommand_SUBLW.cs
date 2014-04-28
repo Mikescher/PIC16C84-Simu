@@ -30,12 +30,12 @@ namespace PICSimulator.Model.Commands
 
 			if (carry = a < b)
 			{
-				a += 0xFF;
+				a += 0x100;
 			}
 
 			uint Result = a - b;
 
-			controller.SetUnbankedRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_Z, Result == 0);
+			controller.SetUnbankedRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_Z, (Result % 0x100) == 0);
 			controller.SetUnbankedRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_DC, dc);
 			controller.SetUnbankedRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_C, !carry);
 

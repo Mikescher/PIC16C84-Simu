@@ -1,0 +1,74 @@
+;Programm zum Test des 16F84-Simulators.
+;Funktion: Beschreiben und Lesen des EEPROMs
+;(c) St. Lehmann   Ersterstellung: 11.05.2011
+;Definition einiger Symbole
+
+indirect equ       0
+status   equ       03h
+fsr      equ       04h
+ra       equ       05h
+rb       equ       06h
+count    equ       0ch
+eedata   equ       08h
+eeaddr   equ       09h
+eecon1   equ       08h                 ;auf Bank 1
+eecon2   equ       09h                 ;auf Bank 1
+
+;Definition des Prozessors
+device    16F84
+
+;Festlegen des Codebeginns
+org       0
+start
+movlw     0                   ;der EEPROM-Speicher von 0 bi
+movwf     count
+schreiben
+movf      count,w
+movwf     eeaddr              ;diese Adresse soll beschrieb
+xorlw     255                 ;Adresse invertieren
+movwf     eedata              ;dieser Wert an obige Adresse
+
+bsf       status,5            ;auf Bank 1
+bcf       eecon1,4            ;EEIF zur?cksetzen, wird ?ber
+bsf       eecon1,2            ;WREN-Bit setzen, sonst kein
+bsf       eecon1,1            ;WR-Bit setzen
+
+movlw     55h                 ;State-Machine anwerfen
+movwf     eecon2
+movlw     0AAh
+movwf     eecon2              ;Schreibvorgang beginnt jetzt
+
+warte
+btfss     eecon1,4            ;warte bis EEIF auf 1 ist
+goto      warte
+
+bcf       eecon1,2            ;WREN auf 0
+
+bcf       status,5            ;zur?ck auf Bank 0
+
+incf      count
+movf      count,w             ;ist der Wert 40H erreicht
+sublw     40h
+btfss     status,2            ;wenn 0, dann fertig
+goto      schreiben
+
+
+clrf      count               ;jetzt gesamten Speicher lese
+lesen:
+movf      count,w
+movwf     eeaddr
+
+bsf       status,5            ;auf Bank 1
+bsf       eecon1,0            ;RD-Bit auf 1, wird vom PIC w
+bcf       status,5            ;zur?ck auf Bank 0
+
+movf      eedata,w            ;Wert ins W-Register
+
+incf      count
+movf      count,w             ;ist der Wert 40H erreicht
+sublw     40h
+btfss     status,2            ;wenn 0, dann fertig
+goto      lesen
+
+ende
+goto      ende

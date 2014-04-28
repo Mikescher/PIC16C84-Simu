@@ -27,7 +27,7 @@ namespace PICSimulator.Model.Commands
 			uint Result = a + b;
 			bool dc = BinaryHelper.getAdditionDigitCarry(a, b);
 
-			controller.SetUnbankedRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_Z, Result == 0);
+			controller.SetUnbankedRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_Z, (Result % 0x100) == 0);
 			controller.SetUnbankedRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_DC, dc);
 			controller.SetUnbankedRegisterBit(PICMemory.ADDR_STATUS, PICMemory.STATUS_BIT_C, Result > 0xFF);
 
