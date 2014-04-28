@@ -28,21 +28,13 @@ RB			EQU		06H
 	bcf status,5
 	
 	clrf 10h            ;z?hler
-	movlw 80H      ;Timer 1 auf 1
+	movlw 1H      ;Timer 1 auf 1
 	movwf 1
+	NOP
+	NOP
+	NOP
 	
 loop2
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
 		incf 10h
 		movf 1,w            ;lese Timerwert aus
 		btfss status,2      ;wenn Timer = 0, dann fertig

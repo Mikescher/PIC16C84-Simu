@@ -64,7 +64,9 @@ namespace PICSimulator.Model
 
 				Result %= 0x100;
 
+				uint tmp_psc = prescale_cntr;
 				controller.SetUnbankedRegister(PICMemory.ADDR_TMR0, Result);
+				prescale_cntr = tmp_psc;
 			}
 		}
 
