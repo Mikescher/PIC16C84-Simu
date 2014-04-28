@@ -6,6 +6,7 @@ using PICSimulator.Model.Events;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -239,6 +240,8 @@ namespace PICSimulator.View
 			{
 				File.Delete(resultPath);
 			}
+
+			Thread.Sleep(350);
 
 			Process proc = new Process()
 			{
