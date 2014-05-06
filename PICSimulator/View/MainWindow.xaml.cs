@@ -36,22 +36,6 @@ namespace PICSimulator.View
 
 			sc_document = new SourcecodeDocument(this, txtCode);
 
-
-			////################################################################################################################################//
-			////################################################################################################################################//
-
-			//string p = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\"));
-			//p = Path.Combine(p, @"Testdata\test.src");
-
-			//sc_document = new SourcecodeDocument( //TODO Remove Me - Only for ... reasons										     
-			//	this,
-			//	txtCode,
-			//	File.ReadAllText(p, Encoding.Default),
-			//	p);
-
-			////################################################################################################################################//
-			////################################################################################################################################//
-
 			DispatcherTimer itimer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);
 			itimer.Tick += (s, e) => onIdle();
 			itimer.Start();
@@ -94,6 +78,8 @@ namespace PICSimulator.View
 			regClock_1.Intialize(this, 1);
 			regClock_2.Intialize(this, 2);
 			regClock_3.Intialize(this, 3);
+
+			rs232_link.Intialize();
 		}
 
 		#region UI Event Handler
@@ -430,6 +416,8 @@ namespace PICSimulator.View
 				regClock_1.IsEnabled = controller.Mode == PICControllerMode.WAITING || controller.Mode == PICControllerMode.PAUSED;
 				regClock_2.IsEnabled = controller.Mode == PICControllerMode.WAITING || controller.Mode == PICControllerMode.PAUSED;
 				regClock_3.IsEnabled = controller.Mode == PICControllerMode.WAITING || controller.Mode == PICControllerMode.PAUSED;
+
+				rs232_link.Update(controller);
 			}
 			else
 			{
@@ -457,6 +445,8 @@ namespace PICSimulator.View
 				regClock_1.IsEnabled = false;
 				regClock_2.IsEnabled = false;
 				regClock_3.IsEnabled = false;
+
+				rs232_link.Update(controller);
 			}
 
 			txtCode.IsReadOnly = controller != null && controller.Mode != PICControllerMode.WAITING;

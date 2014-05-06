@@ -1,105 +1,105 @@
-	DEVICE    16F84
-		CONFIG    RBPU_ON
-		CONFIG    WDT_ON
-		CONFIG    ANSEL
-		CONFIG    ANSELH
+    DEVICE    16F84
+CONFIG    RBPU_ON
+CONFIG    WDT_ON
+CONFIG    ANSEL
+CONFIG    ANSELH
 
-STATUS			EQU		03H
-INTCON			EQU		0BH
-RP0				EQU		05H
-RP1				EQU		06H
-PA				EQU		05H
-PB				EQU		06H
-PCL				EQU		02H
-		
-COUNTER			EQU		20H
+STATUS   EQU  03H
+INTCON   EQU  0BH
+RP0    EQU  05H
+RP1    EQU  06H
+PA    EQU  05H
+PB    EQU  06H
+PCL    EQU  02H
 
-RA			EQU		05H
-RB			EQU		06H
+COUNTER   EQU  20H
+
+RA   EQU  05H
+RB   EQU  06H
 
 
-		
-	org		0
-	
-	NOP
-	MOVLW 00H
-	BTFSC
-	GOTO run
-	
-	INCF PA
-	
-	RETFIE
-	
-	
-	
-	
-	
+
+    org  0
+
+    NOP
+    MOVLW 00H
+    BTFSC
+    GOTO run
+
+    INCF PA
+
+    RETFIE
+
+
+
+
+
 run
-	
-	MOVLW 0F0H
-	MOVWF INTCON
-	
-	BSF STATUS, RP0 ; Bank setzten --> Um die Pins zu konfigurieren
-		MOVLW 00H ; 00000000 -> I/O (ins W) (gibt an ob input oder output)
-		MOVWF PA  ; W dann in PA
-		MOVLW 0H ; 00000000 -> I/O (ins W) (gibt an ob input oder output)
-		MOVWF PB  ; W dann in PB
-		
-		MOVLW 01H
-		MOVWF 0EFH
-	BCF STATUS, RP0 ; Bank zurÃ¼ksetzen
 
-	MOVLW 0         ; W = 0
-	MOVWF RA        ; RA = 0
-	MOVWF RB        ; RB = 0
-	MOVWF COUNTER   ; COUNTER = 0
+    MOVLW 0F0H
+    MOVWF INTCON
+
+    BSF STATUS, RP0 ; Bank setzten --> Um die Pins zu konfiguri
+    MOVLW 00H ; 00000000 -> I/O (ins W) (gibt an ob input oder
+    MOVWF PA  ; W dann in PA
+    MOVLW 0H ; 00000000 -> I/O (ins W) (gibt an ob input oder o
+    MOVWF PB  ; W dann in PB
+
+    MOVLW 01H
+    MOVWF 0EFH
+    BCF STATUS, RP0 ; Bank zurüksetzen
+
+    MOVLW 0         ; W = 0
+    MOVWF RA        ; RA = 0
+    MOVWF RB        ; RB = 0
+    MOVWF COUNTER   ; COUNTER = 0
 
 ;###  TEST RESET  ###
 start
 
-	MOVLW 3
-;	MOVWF RB
-	
-	CALL wait
-	
-	MOVLW 5
-;	MOVWF RB
-	
-	CALL wait
-	
-	GOTO start
-	
-	
+    MOVLW 3
+; MOVWF RB
+
+    CALL wait
+
+    MOVLW 5
+; MOVWF RB
+
+    CALL wait
+
+    GOTO start
+
+
 
 wait
-	MOVLW 2
-	MOVWF COUNTER
+    MOVLW 2
+    MOVWF COUNTER
 loopa
-	INCF COUNTER
-	DECF COUNTER
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	GOTO loopa
-	RETURN
+    INCF COUNTER
+    DECF COUNTER
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    GOTO loopa
+    RETURN
 
-	END
+END

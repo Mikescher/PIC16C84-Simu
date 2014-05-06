@@ -199,6 +199,13 @@
                     </WrapPanel>
                 </ScrollViewer>
             </TabItem>
+            <TabItem Header="RS232" HorizontalAlignment="Left" Height="20" Margin="0" VerticalAlignment="Top">
+                <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+                    <WrapPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <self:RS232RegisterLink x:Name="rs232_link" Margin="2"/>
+                    </WrapPanel>
+                </ScrollViewer>
+            </TabItem>
         </TabControl>
 
     </Grid>

@@ -459,7 +459,7 @@ namespace PICSimulator.Model
 [X] Test_3
 [O] Test_4
 [O] Test_5
-[O] Test_6
+[X] Test_6
 [O] Test_7
 [O] Test_8
 [O] Test_9
