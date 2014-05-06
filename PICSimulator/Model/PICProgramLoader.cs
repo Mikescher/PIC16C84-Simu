@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace PICSimulator.Model
 {
@@ -77,12 +76,28 @@ namespace PICSimulator.Model
 
 				var v = splitLine(line);
 
-				string txt = v.Item4;
+				string txt = v.Item4.Trim();
 
-				result.Add(txt);
+				if (!String.IsNullOrWhiteSpace(v.Item1))
+				{
+					txt = "    " + txt;
+				}
+				else if (String.IsNullOrWhiteSpace(v.Item1) && String.IsNullOrWhiteSpace(v.Item2) && txt.ToLower().StartsWith("org "))
+				{
+					txt = "    " + txt;
+				}
+				else if (String.IsNullOrWhiteSpace(v.Item1) && String.IsNullOrWhiteSpace(v.Item2) && txt.ToLower().StartsWith("device "))
+				{
+					txt = "    " + txt;
+				}
+
+				if (!txt.ToLower().StartsWith("list c="))
+				{
+					result.Add(txt);
+				}
 			}
 
-			return String.Join(Environment.NewLine, result.Select(p => p.Trim()));
+			return String.Join(Environment.NewLine, result);
 		}
 
 		private static Tuple<string, string, string, string> splitLine(string line)
