@@ -11,7 +11,7 @@ namespace PICSimulator.View
 		private ChangeMarkTextBlock[] txtTRIS;
 		private ChangeMarkTextBlock[] txtPINS;
 
-		public bool[] tris { get; private set; } // false = 'i' || true = 'o'
+		public bool[] tris { get; private set; } // false = 'o' || true = 'i'
 		public bool[] pins { get; private set; }
 
 		public string Caption { get; set; }
@@ -71,7 +71,7 @@ namespace PICSimulator.View
 		{
 			tris[pos] = val;
 
-			txtTRIS[pos].Text = val ? "o" : "i";
+			txtTRIS[pos].Text = val ? "i" : "o";
 		}
 
 		public void setPINS(uint val)

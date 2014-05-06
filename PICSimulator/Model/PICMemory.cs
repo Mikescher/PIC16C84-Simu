@@ -217,6 +217,7 @@ namespace PICSimulator.Model
 		private void Do_Interrupt_ADDR_PORT_B(uint val)
 		{
 			uint changes = (register[ADDR_PORT_B] ^ val) & 0xFF;
+			uint enabled = register[ADDR_TRIS_B];
 
 			// RB0/INT
 
@@ -234,7 +235,10 @@ namespace PICSimulator.Model
 
 			// PORT RB
 
-			if (BinaryHelper.GetBit(changes, 4) || BinaryHelper.GetBit(changes, 5) || BinaryHelper.GetBit(changes, 6) || BinaryHelper.GetBit(changes, 7))
+			if ((BinaryHelper.GetBit(changes, 4) && BinaryHelper.GetBit(enabled, 4)) ||
+				(BinaryHelper.GetBit(changes, 5) && BinaryHelper.GetBit(enabled, 5)) ||
+				(BinaryHelper.GetBit(changes, 6) && BinaryHelper.GetBit(enabled, 6)) ||
+				(BinaryHelper.GetBit(changes, 7) && BinaryHelper.GetBit(enabled, 7)))
 			{
 				Interrupt.AddInterrupt(PICInterruptType.PIT_PORTB);
 			}
