@@ -1,10 +1,9 @@
 ;SimTest6
 ;Programm zum Test des 16F84-Simulators.
-;Es werden die Interrupts f?r TMR0, RB0 (INT) und RB4-7 gepr?ft
+;Es werden die Interrupts f?r TMR0, RB0 (INT) und RB4-7 gep
 ;(c) St. Lehmann
 ;19.04.2014
 
-list c=132          ;Zeilenl?nge im LST auf 132 Zeichen setzen
 
 ;Definition einiger Symbole
 indirect equ 0
@@ -15,101 +14,100 @@ rb       equ 06h
 intcon   equ 0bh
 
 ;Definition des Prozessors
-device 16F84
+    device 16F84
 ;Festlegen des Codebeginns
-org 0
+    org 0
 start
-goto main
-nop
-nop
-nop
+    goto main
+    nop
+    nop
+    nop
 
-;Interrupt-Service-Routine muss an Adresse 4 stehen, deshalb die 3 NOPs
+;Interrupt-Service-Routine muss an Adresse 4 stehen, deshal
 ISR
-btfss intcon,2      ;war es ein Timer-Interrupt?
-goto isr1           ;nein
-movlw 54h           ;ja, 54h = T in 20h schreiben
-movwf 20h
-bcf intcon,5        ;Timer-Interrupt sperren
-bcf intcon,2        ;Interrupt-Flag zur?cksetzen
-goto isrend
+    btfss intcon,2      ;war es ein Timer-Interrupt?
+    goto isr1           ;nein
+    movlw 54h           ;ja, 54h = T in 20h schreiben
+    movwf 20h
+    bcf intcon,5        ;Timer-Interrupt sperren
+    bcf intcon,2        ;Interrupt-Flag zur?cksetzen
+    goto isrend
 ISR1
-btfss intcon,1      ;war es ein RB0-Interrupt?
-goto isr2           ;nein
-movlw 'I'           ;schreibe ein I an 21h
-movwf 21h
-bcf intcon,4        ;RB0-Interrupt sperren
-bcf intcon,1        ;RB0-Interrupt-Flag l?schen
-goto isrend
+    btfss intcon,1      ;war es ein RB0-Interrupt?
+    goto isr2           ;nein
+    movlw 'I'           ;schreibe ein I an 21h
+    movwf 21h
+    bcf intcon,4        ;RB0-Interrupt sperren
+    bcf intcon,1        ;RB0-Interrupt-Flag l?schen
+    goto isrend
 ISR2
-btfss intcon,0      ;war es ein RB4-7 Interrupt?
-goto isr3           ;d?rfte nie passieren
-movlw 'R'           ;schreibe ein R nach 22h
-movwf 22h
-bcf intcon,3        ;keine RB4-7 Interrupts erlauben
-bcf intcon,0        ;auch das Flag l?schen
-goto isrend
+    btfss intcon,0      ;war es ein RB4-7 Interrupt?
+    goto isr3           ;d?rfte nie passieren
+    movlw 'R'           ;schreibe ein R nach 22h
+    movwf 22h
+    bcf intcon,3        ;keine RB4-7 Interrupts erlauben
+    bcf intcon,0        ;auch das Flag l?schen
+    goto isrend
 ISR3
-movlw 'F'           ;Fehlermeldung
-movwf 23h
+    movlw 'F'           ;Fehlermeldung
+    movwf 23h
 
 isrend
-retfie              ;Ende der Inetrrupt-Service-Routine
+    retfie              ;Ende der Inetrrupt-Service-Routine
 
 
 main:
-;Der TMR0 wird vom Befehlstakt incrementiert. beim ?berlauf wird ein Interrupt ausgel?st
-movlw 00000001B     ;Option-Register entsp. initialisieren
-bsf status,5        ;Bank umschalten
-movwf 1             ;Option-Register
-bcf status,5
-movlw 20h           ;nur Timer-Interrupt erlauben
-movwf intcon
-bsf intcon,7        ;Globale Freigabe, ab jetzt kann ein Interrupt durchkommen
+;Der TMR0 wird vom Befehlstakt incrementiert. beim ?berlauf
+    movlw 00000001B     ;Option-Register entsp. initialisieren
+    bsf status,5        ;Bank umschalten
+    movwf 1             ;Option-Register
+    bcf status,5
+    movlw 20h           ;nur Timer-Interrupt erlauben
+    movwf intcon
+    bsf intcon,7        ;Globale Freigabe, ab jetzt kann ein In
 loop1
-btfsc intcon,5      ;fertig, wenn ISR dieses Bit zur?cksetzt
-goto loop1          ;bis Timer ?berl?uft
+    btfsc intcon,5      ;fertig, wenn ISR dieses Bit zur?cksetz
+    goto loop1          ;bis Timer ?berl?uft
 
-;zuerst die wirksame Flanke f?r RB0 festlegen (hier die fallende Flanke)
-movlw 00001111b
-bsf status,5
-movwf 1
-bcf status,5
+;zuerst die wirksame Flanke f?r RB0 festlegen (hier die fal
+    movlw 00001111b
+    bsf status,5
+    movwf 1
+    bcf status,5
 ;nun den RB0-Interrupt freigeben, Rest sperren
-movlw 10h
-movwf intcon
-bsf intcon,7
+    movlw 10h
+    movwf intcon
+    bsf intcon,7
 loop2
-btfsc intcon,4
-goto loop2
+    btfsc intcon,4
+    goto loop2
 
-;Beim RB4-7 Interrupts wird ein Flankenwechsel nur an den Pins die als Eingang arbeiten erkannt
-movlw 08h           ;RB4-7 Interrupt freigeben
-movwf intcon
-bsf intcon,7        ;GIE
+;Beim RB4-7 Interrupts wird ein Flankenwechsel nur an den P
+    movlw 08h           ;RB4-7 Interrupt freigeben
+    movwf intcon
+    bsf intcon,7        ;GIE
 loop3
-btfsc intcon,3      ;wird in ISR zur?ckgesetzt
-goto loop3
+    btfsc intcon,3      ;wird in ISR zur?ckgesetzt
+    goto loop3
 
-;das gleiche nochmals, nur sind RB4-6 Ausg?nge und werden deshalb ignoriert
-movlw 10001111B
-bsf status,5
-movwf 6             ;TRIS RB
-bcf status,5
-movlw 08h           ;RB4-7 Interrupt freigeben
-movwf intcon        ;aber nur RB7 ist aktiv
-bsf intcon,7        ;GIE
+;das gleiche nochmals, nur sind RB4-6 Ausg?nge und werden d
+    movlw 10001111B
+    bsf status,5
+    movwf 6             ;TRIS RB
+    bcf status,5
+    movlw 08h           ;RB4-7 Interrupt freigeben
+    movwf intcon        ;aber nur RB7 ist aktiv
+    bsf intcon,7        ;GIE
 loop4
-btfsc intcon,3      ;wird in ISR zur?ckgesetzt
-goto loop4
+    btfsc intcon,3      ;wird in ISR zur?ckgesetzt
+    goto loop4
 
 
-;******************************************************************
+;**********************************************************
 ;wenn alles richtig, dann
 ;in 20h steht 54H
 ;in 21H ein 49H
-;in 22H ein 53H
+;in 22H ein 52H
 
 ende
-goto ende           ;Endlosschleife, verhindert Nirwana
-
+    goto ende           ;Endlosschleife, verhindert Nirwana

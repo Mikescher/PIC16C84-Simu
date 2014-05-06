@@ -1,7 +1,7 @@
 ;Dieses Programm soll die ansteigende Flanke hochzählen
 ;Aufgabe im Mitschrieb
 
-DEVICE    16F84
+ DEVICE    16F84
 
 ;Definitionen
 RA    EQU 05H
@@ -21,71 +21,71 @@ ZEROBIT EQU 03H,2
 SPEICHER  EQU  0FH
 PCL   EQU  02H
 
-ORG 0
+ ORG 0
 
-BSF 3,5 ;Auf Bank 1 (Tris)
-MOVLW 0D6H
-MOVWF 01H
-BCF 3,5 ;Auf Bank 0 (I/O)
-
+ BSF 3,5 ;Auf Bank 1 (Tris)
+ MOVLW 0D6H
+ MOVWF 01H
+ BCF 3,5 ;Auf Bank 0 (I/O)
+ 
 tReset
-CLRF AUSGANG
-CLRF ZAEHLER
-CLRF MIRROR
-BCF  CARRY
-
+ CLRF AUSGANG
+ CLRF ZAEHLER
+ CLRF MIRROR
+ BCF  CARRY
+ 
 loop
-MOVF EINGANG,W
-MOVWF SPEICHER
-XORWF MIRROR,W
-BTFSC ZEROBIT
-goto  loop
-MOVF SPEICHER,W
-MOVWF MIRROR
-BTFSS SPEICHER,0
-goto  loop
-
-INCF ZAEHLER
-
-MOVLW 00001111B
-ANDWF ZAEHLER,W
-XORLW 10
-MOVLW 6
-BTFSC ZEROBIT
-ADDWF ZAEHLER
-MOVF ZAEHLER,W
-XORLW  0A0H
-BTFSC ZEROBIT
-CLRF ZAEHLER
-
-CALL ANZEIGE
-
-;BTFSC ZEROBIT
-;BSF  CARRY
-;BTFSS ZEROBIT
-;BCF  CARRY
-goto loop
-
+ MOVF EINGANG,W
+ MOVWF SPEICHER
+ XORWF MIRROR,W
+ BTFSC ZEROBIT
+ goto  loop
+ MOVF SPEICHER,W
+ MOVWF MIRROR
+ BTFSS SPEICHER,0
+ goto  loop
+ 
+ INCF ZAEHLER
+ 
+ MOVLW 00001111B
+ ANDWF ZAEHLER,W
+ XORLW 10
+ MOVLW 6
+ BTFSC ZEROBIT
+ ADDWF ZAEHLER
+ MOVF ZAEHLER,W
+ XORLW  0A0H
+ BTFSC ZEROBIT
+ CLRF ZAEHLER
+ 
+ CALL ANZEIGE
+ 
+ ;BTFSC ZEROBIT
+ ;BSF  CARRY
+ ;BTFSS ZEROBIT
+ ;BCF  CARRY
+ goto loop
+ 
 TABELLE  ;Anfang der Tabelle zur Definition der 7-Segment-Anzeige
-ANDLW 15   ;Der Zähler wird auf die unteren 4 Bit maskiert
-;auf die erste Dezimalstelle geachtet wird
-ADDWF PCL   ;Wert des Zählers wird auf den Programmcounter
-RETLW 00111111B  ;0
-RETLW 00000110B  ;1
-RETLW 01011011B  ;2
-RETLW 01001111B  ;3
-RETLW 01100110B  ;4
-RETLW 01101101B  ;5
-RETLW 01111101B  ;6
-RETLW 00000111B  ;7
-RETLW 01111111B  ;8
-RETLW 01101111B  ;9
+ ANDLW 15   ;Der Zähler wird auf die unteren 4 Bit maskiert
+ ;auf die erste Dezimalstelle geachtet wird
+ ADDWF PCL   ;Wert des Zählers wird auf den Programmcounter
+ RETLW 00111111B  ;0
+ RETLW 00000110B  ;1
+ RETLW 01011011B  ;2
+ RETLW 01001111B  ;3
+ RETLW 01100110B  ;4
+ RETLW 01101101B  ;5
+ RETLW 01111101B  ;6
+ RETLW 00000111B  ;7
+ RETLW 01111111B  ;8
+ RETLW 01101111B  ;9
 ANZEIGE
-MOVF ZAEHLER,W  ;Zählerstand ins W Register laden
-CALL TABELLE  ;Aufruf der Tabelle, Rückgabe ist Bitmuster
-MOVWF SEGRIGHT
-
-SWAPF ZAEHLER,W  ;Tauscht obere und untere 4 Bits im ZAEHLE
-CALL TABELLE  ;Aufruf der Tabelle, Rückgabe ist Bitmuster
-MOVWF SEGLEFT
-return
+ MOVF ZAEHLER,W  ;Zählerstand ins W Register laden
+ CALL TABELLE  ;Aufruf der Tabelle, Rückgabe ist Bitmuster
+ MOVWF SEGRIGHT
+ 
+ SWAPF ZAEHLER,W  ;Tauscht obere und untere 4 Bits im ZAEHLE
+ CALL TABELLE  ;Aufruf der Tabelle, Rückgabe ist Bitmuster
+ MOVWF SEGLEFT
+ return
