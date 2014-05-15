@@ -203,6 +203,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Assembler.xshd" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Compiler\ass16txt.ger">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

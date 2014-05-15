@@ -1,0 +1,549 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PICSimulator.App" Collapsed="true">
+    <Position X="17.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Helper.BinaryHelper" Collapsed="true">
+    <Position X="8" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAACAAACAAAAAAAAAQAAAAAAAAAAACAA=</HashCode>
+      <FileName>Helper\BinaryHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Helper.FrequencyCounter" Collapsed="true">
+    <Position X="2.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAgABAAAAAAAAIAAEAAAAAAAAAAAACA=</HashCode>
+      <FileName>Helper\FrequencyCounter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.CircularStack" Collapsed="true">
+    <Position X="4.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAEAAAAAAAAAIAAAACAAAAAAAAQAAAACAA=</HashCode>
+      <FileName>Model\CircularStack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.PICClock" Collapsed="true">
+    <Position X="3" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQBAAAAAAAABIAACAAAAAAAAIABAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Model\PICClock.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.PICController" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AoggCoBAEKCxBIMQAwEQABYACMAAMEAAI4wlmYACkok=</HashCode>
+      <FileName>Model\PICController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.PICInterruptLogic" Collapsed="true">
+    <Position X="3" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAIAQgBQEAAAAAAAAAQAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\PICInterruptLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.PICMemory" Collapsed="true">
+    <Position X="4.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>iC0ECBCQQyQBAJARgggAABoaAYBCMKAAAQAAhgEGkgA=</HashCode>
+      <FileName>Model\PICMemory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.PICProgramLoader" Collapsed="true">
+    <Position X="8" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEACAAAAAAAAAAAAAAAUAAAAIAEAA=</HashCode>
+      <FileName>Model\PICProgramLoader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.PICTimer" Collapsed="true">
+    <Position X="3" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQFAAAAAAAABAAAABAAAAAAAAAAAAAAAAAAAACAACA=</HashCode>
+      <FileName>Model\PICTimer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.PICWatchDogTimer" Collapsed="true">
+    <Position X="4.75" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQBAAAAAAAABIAAAAAAAAAAAAAAAAAACAAAAAKEABA=</HashCode>
+      <FileName>Model\PICWatchDogTimer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.BinaryFormatParser" Collapsed="true">
+    <Position X="8" Y="1.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AIAgAAAAAAAAAAAAABAAAAAAAAAQgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Commands\BinaryFormatParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICComandHelper" Collapsed="true">
+    <Position X="5.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Commands\PICComandHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand" Collapsed="true">
+    <Position X="1.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQlAAAABAAAAAAQAAAAAACAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_ADDLW" Collapsed="true">
+    <Position X="18" Y="15" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAAAAQAAAAAAAAAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_ADDLW.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_ADDWF" Collapsed="true">
+    <Position X="4.5" Y="13.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQACAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_ADDWF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_ANDLW" Collapsed="true">
+    <Position X="13.5" Y="13.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAAAAQAAAAAAAAAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_ANDLW.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_ANDWF" Collapsed="true">
+    <Position X="22.5" Y="13.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQACAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_ANDWF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_BCF" Collapsed="true">
+    <Position X="27" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQACAAQAAAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_BCF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_BSF" Collapsed="true">
+    <Position X="11.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQACAAQAAAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_BSF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_BTFSC" Collapsed="true">
+    <Position X="20.25" Y="11.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQACACQAAAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_BTFSC.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_BTFSS" Collapsed="true">
+    <Position X="29.25" Y="11.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQACACQAAAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_BTFSS.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_CALL" Collapsed="true">
+    <Position X="11.25" Y="15" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQAAAAAAAAAAACAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_CALL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_CLRF" Collapsed="true">
+    <Position X="20.25" Y="15" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQAAAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_CLRF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_CLRW" Collapsed="true">
+    <Position X="6.75" Y="13.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQAAAAAAAAAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_CLRW.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_CLRWDT" Collapsed="true">
+    <Position X="15.75" Y="13.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQAAAAAAAAAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_CLRWDT.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_COMF" Collapsed="true">
+    <Position X="24.75" Y="13.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQACAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_COMF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_DECF" Collapsed="true">
+    <Position X="4.5" Y="11.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQACAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_DECF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_DECFSZ" Collapsed="true">
+    <Position X="13.5" Y="11.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAACQACAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_DECFSZ.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_GOTO" Collapsed="true">
+    <Position X="22.5" Y="11.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQAAAAAAAAAAACAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_GOTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_INCF" Collapsed="true">
+    <Position X="4.5" Y="15" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQACAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_INCF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_INCFSZ" Collapsed="true">
+    <Position X="13.5" Y="15" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAACQACAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_INCFSZ.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_IORLW" Collapsed="true">
+    <Position X="22.5" Y="15" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAAAAQAAAAAAAAAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_IORLW.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_IORWF" Collapsed="true">
+    <Position X="9" Y="13.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQACAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_IORWF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_MOVF" Collapsed="true">
+    <Position X="18" Y="13.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQACAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_MOVF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_MOVLW" Collapsed="true">
+    <Position X="27" Y="13.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAAAAQAAAAAAAAAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_MOVLW.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_MOVWF" Collapsed="true">
+    <Position X="6.75" Y="11.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQAAAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_MOVWF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_NOP" Collapsed="true">
+    <Position X="15.75" Y="11.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQAAAAAAAAAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_NOP.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_RETFIE" Collapsed="true">
+    <Position X="24.75" Y="11.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQAAAAAAAAAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_RETFIE.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_RETLW" Collapsed="true">
+    <Position X="6.75" Y="15" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAAAAQAAAAAAAAAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_RETLW.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_RETURN" Collapsed="true">
+    <Position X="15.75" Y="15" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQAAAAAAAAAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_RETURN.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_RLF" Collapsed="true">
+    <Position X="24.75" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQACAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_RLF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_RRF" Collapsed="true">
+    <Position X="11.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQACAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_RRF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_SLEEP" Collapsed="true">
+    <Position X="20.25" Y="13.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQAAAAAAAAAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_SLEEP.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_SUBLW" Collapsed="true">
+    <Position X="29.25" Y="13.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAAAAQAAAAAAAAAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_SUBLW.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_SUBWF" Collapsed="true">
+    <Position X="9" Y="11.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQACAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_SUBWF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_SWAPF" Collapsed="true">
+    <Position X="18" Y="11.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQACAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_SWAPF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_XORLW" Collapsed="true">
+    <Position X="27" Y="11.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAQAAAAQAAAAAAAAAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_XORLW.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Commands.PICCommand_XORWF" Collapsed="true">
+    <Position X="9" Y="15" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAQACAAAAABAAAAAAAAIQAAAAA=</HashCode>
+      <FileName>Model\Commands\PICCommand_XORWF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Events.BreakPointChangedEvent" Collapsed="true">
+    <Position X="6.25" Y="7.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAkAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Model\Events\Incoming\BreakPointChangedEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Events.ChangePICModeEvent" Collapsed="true">
+    <Position X="8.5" Y="7.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Model\Events\Incoming\ChangePICModeEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Events.ExternalClockChangedEvent" Collapsed="true">
+    <Position X="1" Y="7.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAECAAAAAAAIIABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Events\Incoming\ExternalClockChangedEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Events.ManuallyRegisterChangedEvent" Collapsed="true">
+    <Position X="3.5" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAkAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Model\Events\Incoming\ManuallyRegisterChangedEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Model.Events.PICEvent" Collapsed="true">
+    <Position X="5.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Events\PICEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Properties.Resources" Collapsed="true">
+    <Position X="17.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACIAAAEEIABAAAAAABEgAAAQIAABAACAAAgEAAQIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.Properties.Settings" Collapsed="true">
+    <Position X="17.75" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.View._7SegmentDisplay" Collapsed="true">
+    <Position X="11.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAgAAwGgAgAAAAAAAAAAAAAAAACAAQAAAAI=</HashCode>
+      <FileName>View\Controls\7SegmentDisplay.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.View.ChangeMarkTextBlock" Collapsed="true">
+    <Position X="11" Y="7.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAIAAAAAAAAiAAAAAA=</HashCode>
+      <FileName>View\Controls\ChangeMarkTextBlock.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.View.ChangeMarkTextBox" Collapsed="true">
+    <Position X="11" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgQCAAAAAAAiQAAAAIAIAAAAAQmAAAAAA=</HashCode>
+      <FileName>View\Controls\ChangeMarkTextBox.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.View.CircularStackDisplay" Collapsed="true">
+    <Position X="13" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAIAAAAAAADAAAAAACAAAAgAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>View\Controls\CircularStackDisplay.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.View.IORegisterGrid" Collapsed="true">
+    <Position X="13" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AkEgAAAIAABAATiAAgIgAAQSAACAAAA0CEQBAGQMAAA=</HashCode>
+      <FileName>View\Controls\IORegisterGrid.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.View.RegisterBox" Collapsed="true">
+    <Position X="13" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAgAAAEAEAAAAAAAgAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>View\Controls\RegisterBox.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.View.RegisterClock" Collapsed="true">
+    <Position X="13" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQQAAAAAAACAAAAAgAAABAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Controls\RegisterClock.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.View.RegisterGrid" Collapsed="true">
+    <Position X="11.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAEAwAAwgCgAAQIAAACAEAABAAAACA=</HashCode>
+      <FileName>View\Controls\RegisterGrid.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.View.RS232RegisterLink" Collapsed="true">
+    <Position X="13" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQQAIAAAIAAEABAIQAAIZEAEACAAAIAAgAAAACARAA=</HashCode>
+      <FileName>View\Controls\RS232RegisterLink.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.View.SevenSegmentRegister" Collapsed="true">
+    <Position X="13" Y="7.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Controls\SevenSegmentRegister.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.View.SimpleToolbarButton" Collapsed="true">
+    <Position X="11" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAABAAAAAAAAAEEAgAAAAAAAAAAIAAA=</HashCode>
+      <FileName>View\Controls\SimpleToolbarButton.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.View.AutoGreyableImage" Collapsed="true">
+    <Position X="11" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Controls\SimpleToolbarButton.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.View.SimpleToolbarSeparator" Collapsed="true">
+    <Position X="10.75" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Controls\SimpleToolbarSeparator.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.View.SpecialRegisterGrid" Collapsed="true">
+    <Position X="13" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAiAAQIAQAAwCgAgIAAQAAAAjwDwBACAAAAgAAABA=</HashCode>
+      <FileName>View\Controls\SpecialRegisterGrid.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.View.CustomCmds" Collapsed="true">
+    <Position X="11.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgCAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAEI=</HashCode>
+      <FileName>View\CustomCmds.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.View.FrequencyInputDialog" Collapsed="true">
+    <Position X="11" Y="8.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAAEAAgAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Dialogs\FrequencyInputDialog.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.View.IconBarMargin" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABEgAABgCAAhAACQAgAAAAQAAAAAAAAIEAQIAIAAAo=</HashCode>
+      <FileName>View\IconBarMargin.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PICSimulator.View.MainWindow" Collapsed="true">
+    <Position X="12.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAkgAhGJAABGAEAAMAACFigAhEMAACAAwASIJKAIAA=</HashCode>
+      <FileName>View\MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PICSimulator.View.SourcecodeDocument" Collapsed="true">
+    <Position X="13" Y="9.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>QCQAAIiBAQAEAAIAAAAAAAAAAAAAABEAABAgAAAAAAA=</HashCode>
+      <FileName>View\SourcecodeDocument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="PICSimulator.Model.PICControllerMode" Collapsed="true">
+    <Position X="1.75" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>IAQAAAQAIAAAAAAAAAAAAAAAAAAAAQAIAAAAAAAAAAA=</HashCode>
+      <FileName>Model\PICControllerMode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PICSimulator.Model.PICControllerSpeed" Collapsed="true">
+    <Position X="3.75" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>gAAAQAAAAAIAAEAAAAAAAAAIAAAIAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Model\PICControllerSpeed.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PICSimulator.Model.PICInterruptType" Collapsed="true">
+    <Position X="5.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAgEAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\PICInterruptType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
